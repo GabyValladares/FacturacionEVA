@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author sebaa
  */
-public class ProductoControlador {
+public class ClienteControlador {
     //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
     ConexionBDD conectar = new ConexionBDD();
     //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
@@ -24,21 +24,23 @@ public class ProductoControlador {
     //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
     
-    public ArrayList<String[]> obtenerProductos() {
+    public ArrayList<String[]> obtenerClientes() {
         ArrayList<String[]> lregistros = new ArrayList<>();
 
         try {
-            String sentenciaSQL = "select * from productos;";
+            String sentenciaSQL = "select * from clientes;";
             ejecutar = conectado.prepareCall(sentenciaSQL);
             ResultSet res = ejecutar.executeQuery();
 
             while (res.next()) {
-                String[] listaProductos = new String[3];
-                listaProductos[0] = res.getInt("id_prod") + "";
-                listaProductos[1] = res.getString("nombre");
-                listaProductos[2] = res.getDouble("precio") + "";
-                lregistros.add(listaProductos);
-
+                String[] listaClientes = new String[6];
+                listaClientes[0] = res.getInt("id") + "";
+                listaClientes[1] = res.getString("nombre");
+                listaClientes[2] = res.getString("email");
+                listaClientes[3] = res.getString("telefono");
+                listaClientes[4] = res.getString("tipo_cliente");
+                listaClientes[5] = res.getDouble("descuento_vip") + "";
+                lregistros.add(listaClientes);
             }
 
             ejecutar.close();
@@ -49,8 +51,6 @@ public class ProductoControlador {
         }
         return lregistros;
     }
-}         
-
-
-
-
+    
+    
+}
