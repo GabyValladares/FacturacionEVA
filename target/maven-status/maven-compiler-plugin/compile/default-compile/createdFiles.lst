@@ -1,0 +1,13 @@
+modelo\ClienteVIP.class
+controlador\FacturaDAO.class
+modelo\ClienteRegular.class
+modelo\DetalleFactura.class
+modelo\Exportable.class
+modelo\PDFExporter.class
+controlador\FacturaController.class
+controlador\ClienteDAO.class
+controlador\ConexionBDD.class
+modelo\Cliente.class
+modelo\Factura.class
+modelo\Producto.class
+controlador\Main.class
