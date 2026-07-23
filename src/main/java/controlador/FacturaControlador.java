@@ -47,7 +47,7 @@ public class FacturaControlador implements Exportable {
          
             if (filasAfectadas > 0) {
                 for (DetalleFactura detalle : factura.getListaArticulos()) {
-                    detalleControlador.guardarDetalle(factura.getIdFactura(), detalle);
+//                    detalleControlador.guardarDetalle(factura.getIdFactura(), detalle);
                 }
                 return true;
             }

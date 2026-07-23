@@ -1,33 +1,32 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controlador;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- *
- * @author Usuario
- */
 public class ConexionBDD {
-    //ATRIBUTO
-    java.sql.Connection conexion;
-    
-     public java.sql.Connection conectar(){
-        //LANZAR CÓDIGO DE PRUEBA 
+
+    Connection conexion;
+
+    public Connection conectar() {
+
         try {
-            //Manera de Conexión a la Base de Datos
-            Class.forName("com.mysql.jdbc.Driver");
-            //Parámetros de conexión url/usuario/clave en mysql
-            conexion=DriverManager.getConnection("jdbc:mysql://localhost/facturero?autoReconnect=true&useSSL=false","root","Tiepo10Seguro");
-            System.out.println("CONECTADO"); 
-        } catch (ClassNotFoundException | SQLException e)//CAPTURAR ERRORES 
-        {
-             System.out.println("ERROR DE CONEXION A LA BASE DE DATOS");
+            // Driver actual de MySQL Connector/J 8+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conexion = DriverManager.getConnection(
+                    "jdbc:mysql://localhost/facturero?autoReconnect=true&useSSL=false",
+                    "root",
+                    "Tiepo10Seguro"
+            );
+
+            System.out.println("CONECTADO");
+
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("ERROR DE CONEXIÓN");
+            e.printStackTrace();
         }
+
         return conexion;
     }
-    
 }

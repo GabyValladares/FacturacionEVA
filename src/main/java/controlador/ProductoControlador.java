@@ -8,37 +8,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 
-public class ClienteControlador {
+public class ProductoControlador {
+    //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
     ConexionBDD conectar = new ConexionBDD();
-    //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQ
-
+    //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
     Connection conectado = (Connection) conectar.conectar();
-
     //CLASE QUE ME PERMITE EJECUTAR MI SENTENCIA SQL
     PreparedStatement ejecutar;
     //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
     
-
-    public ArrayList<String[]> obtenerCliente() {
+    public ArrayList<String[]> obtenerProductos() {
         ArrayList<String[]> lregistros = new ArrayList<>();
 
         try {
-            String sentenciaSQL = "select * from cliente;";
-
+            String sentenciaSQL = "select * from producto;";
             ejecutar = conectado.prepareCall(sentenciaSQL);
             ResultSet res = ejecutar.executeQuery();
 
             while (res.next()) {
-
-                String[] listaCliente = new String[6];
-                listaCliente[0] = res.getInt("id") + "";
-                listaCliente[1] = res.getString("nombre");
-                listaCliente[2] = res.getString("email");
-                listaCliente[3] = res.getString("telefono");
-                listaCliente[4] = res.getString("tipo_cliente");
-                listaCliente[5] = res.getDouble("descuento_vip")+"";
-                lregistros.add(listaCliente);
+                String[] listaProductos = new String[3];
+                listaProductos[0] = res.getInt("id") + "";
+                listaProductos[1] = res.getString("nombre");
+                listaProductos[2] = res.getDouble("precio") + "";
+                lregistros.add(listaProductos);
 
             }
 
@@ -46,9 +39,12 @@ public class ClienteControlador {
             conectado.close();
             return lregistros;
         } catch (SQLException e) {
-
-}
+            System.out.println("------" + e);
+        }
         return lregistros;
     }
+}         
 
-}
+
+
+
