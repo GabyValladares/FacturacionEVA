@@ -1,7 +1,11 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
+
+
 package controlador;
 
 import java.sql.Connection;
@@ -9,6 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import controlador.ConexionBDD;
+
 
 /**
  *
@@ -24,14 +31,15 @@ public class ClienteControlador {
     //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
     
+
     public ArrayList<String[]> obtenerClientes() {
         ArrayList<String[]> lregistros = new ArrayList<>();
 
         try {
-            String sentenciaSQL = "select * from clientes;";
+            Connection conectado = conectar.conectar();
+            String sentenciaSQL = "SELECT * FROM clientes";
             ejecutar = conectado.prepareCall(sentenciaSQL);
             ResultSet res = ejecutar.executeQuery();
-
             while (res.next()) {
                 String[] listaClientes = new String[6];
                 listaClientes[0] = res.getInt("id") + "";
@@ -41,16 +49,17 @@ public class ClienteControlador {
                 listaClientes[4] = res.getString("tipo_cliente");
                 listaClientes[5] = res.getDouble("descuento_vip") + "";
                 lregistros.add(listaClientes);
+
             }
 
             ejecutar.close();
             conectado.close();
             return lregistros;
         } catch (SQLException e) {
+
             System.out.println("------" + e);
         }
         return lregistros;
     }
-    
-    
 }
+

@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.DetalleFactura;
 
 /**
  *
@@ -27,6 +28,7 @@ public class DetalleFacturaControlador {
     ResultSet resultado;
 
     //MÉTODOS DE TRANSACCIONABILIDAD
+
 //    public void insertarDetalleFactura(Pais p) {
 //        //1.- UTILIZAR EXCEPCIÓN
 //        try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
@@ -55,29 +57,41 @@ public class DetalleFacturaControlador {
 //
 //    }
 
-    public ArrayList<String[]> obtenerPaises() {
-        ArrayList<String[]> lregistros = new ArrayList<>();
+  
 
-        try {
-            String sentenciaSQL = "select *from paises;";
-            ejecutar = conectado.prepareCall(sentenciaSQL);
-            ResultSet res = ejecutar.executeQuery();
+    private ConexionBDD conexionBDD;
 
-            while (res.next()) {
-                String[] listaPaises = new String[3];
-                listaPaises[0] = res.getInt("id") + "";
-                listaPaises[1] = res.getString("nombre");
-                listaPaises[2] = res.getString("capital");
-                lregistros.add(listaPaises);
+    public DetalleFacturaControlador() {
+        this.conexionBDD = new ConexionBDD();
+    }
 
-            }
 
-            ejecutar.close();
-            conectado.close();
-            return lregistros;
-        } catch (SQLException e) {
-            System.out.println("------" + e);
+    public boolean guardarDetalle(int idFactura, DetalleFactura detalle) {
+        String sql = "INSERT INTO detalle_factura (id_factura, id_producto, cantidad, subtotal) VALUES (?, ?, ?, ?)";
+        Connection con = conexionBDD.conectar();
+
+        if (con == null) {
+            return false;
         }
-        return lregistros;
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idFactura);
+            ps.setInt(2, detalle.getProducto().getId());
+            ps.setInt(3, detalle.getCantidad());
+            ps.setDouble(4, detalle.getSubtotal());
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error al guardar detalle: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                if (con != null) con.close();
+            } catch (SQLException ex) {
+                System.err.println("Error al cerrar conexion: " + ex.getMessage());
+            }
+        }
     }
 }
