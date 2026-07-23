@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package modelo;
 
 /**
@@ -47,6 +44,10 @@ public class Producto {
         this.precio = precio;
     }
     
-     
+     // Dentro de la clase modelo.Producto
+@Override
+public String toString() {
+    return "Producto{id=" + id + ", nombre='" + nombre + "', precio=" + precio + "}";
+}
     
 }

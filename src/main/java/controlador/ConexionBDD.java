@@ -16,12 +16,15 @@ public class ConexionBDD {
     java.sql.Connection conexion;
     
      public java.sql.Connection conectar(){
-        //LANZAR CÃ“DIGO DE PRUEBA 
+        //LANZAR CÓDIGO DE PRUEBA 
         try {
-            //Manera de ConexiÃ³n a la Base de Datos
+            //Manera de Conexión a la Base de Datos
             Class.forName("com.mysql.jdbc.Driver");
-            //ParÃ¡metros de conexiÃ³n url/usuario/clave en mysql
+            //Parámetros de conexión url/usuario/clave en mysql
+
             conexion=DriverManager.getConnection("jdbc:mysql://localhost/facturacion?autoReconnect=true&useSSL=false","root","Weak");
+
+
             System.out.println("CONECTADO"); 
         } catch (ClassNotFoundException | SQLException e)//CAPTURAR ERRORES 
         {

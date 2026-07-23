@@ -22,11 +22,11 @@ import modelo.Factura;
 public class FacturaControlador implements Exportable {
 
     private ConexionBDD conexionBDD;
-    private DetalleFacturaControlador detalleControlador;
+    //private DetalleFacturaControlador detalleControlador;
 
     public FacturaControlador() {
         this.conexionBDD = new ConexionBDD();
-        this.detalleControlador = new DetalleFacturaControlador();
+//        this.detalleControlador = new DetalleFacturaControlador();
     }
 
     // --- GUARDAR EN BASE DE DATOS ---
@@ -50,7 +50,7 @@ public class FacturaControlador implements Exportable {
          
             if (filasAfectadas > 0) {
                 for (DetalleFactura detalle : factura.getListaArticulos()) {
-                    detalleControlador.guardarDetalle(factura.getIdFactura(), detalle);
+//                    detalleControlador.guardarDetalle(factura.getIdFactura(), detalle);
                 }
                 return true;
             }

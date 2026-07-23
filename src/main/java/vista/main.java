@@ -15,18 +15,11 @@ import javax.swing.JOptionPane;
  */
 public class Main {
     public static void main(String[] args) {
-        ConexionBDD c=new ConexionBDD();
+        ConexionBDD c = new ConexionBDD();
         c.conectar();
-    }
-        
-        public static void mostarClientes(){
-            
-            ConexionBDD c = new ConexionBDD();
-        c.conectar();
-
         ClienteControlador controlador = new ClienteControlador();
 
-        ArrayList<String[]> clientes = controlador.listaCliente();
+        ArrayList<String[]> clientes = controlador.obtenercliente();
 
         // Mostrar en consola
         for (String[] cliente : clientes) {
@@ -35,7 +28,7 @@ public class Main {
             System.out.println("Email: " + cliente[2]);
             System.out.println("Teléfono: " + cliente[3]);
             System.out.println("tipo_cliente" + cliente[4]);
-            System.out.println("descuento_vip"+ cliente[5]);
+            System.out.println("descuento_vip" + cliente[5]);
             System.out.println("-------------------------");
         }
 
@@ -71,10 +64,31 @@ public class Main {
             );
 
         }
-            
-        }
-                
-        
-    
-    
+
+    }
 }
+
+//    public static void main(String[] args) {
+//        // 1. Instanciar el controlador correctamente
+//        clienteControlador controlador = new clienteControlador();
+//
+//        // 2. Obtener la lista usando el nombre correcto del método: obtenerClientes()
+//        List<Cliente> clientes = controlador.obtenerClientes();
+//
+//        // 3. Verificar e imprimir
+//        if (clientes.isEmpty()) {
+//            System.out.println(" La lista está vacía o no se conectó a la base de datos.");
+//        } else {
+//            System.out.println("=== LISTA DE CLIENTES REGISTRADOS ===");
+//            
+//            for (Cliente c : clientes) { 
+//                System.out.println("ID: " + c.getId() + 
+//                                   " | Nombre: " + c.getNombre() + 
+//                                   " | Email: " + c.getEmail()  +
+//                                   " | Teléfono: " + c.getTelefono());
+//            }
+//            
+//            System.out.println("Total de clientes encontrados: " + clientes.size());
+//        }
+//    }
+//}
