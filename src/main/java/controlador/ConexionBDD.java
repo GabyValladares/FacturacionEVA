@@ -23,9 +23,7 @@ public class ConexionBDD {
             //Parámetros de conexión url/usuario/clave en mysql
 
             conexion=DriverManager.getConnection("jdbc:mysql://localhost/ecoinvoice?autoReconnect=true&useSSL=false","root","saul04");
-
-            conexion=DriverManager.getConnection("jdbc:mysql://localhost/ecolnvoice?autoReconnect=true&useSSL=false","root","admin");
-
+            //conexion=DriverManager.getConnection("jdbc:mysql://localhost/ecolnvoice?autoReconnect=true&useSSL=false","root","admin");
             System.out.println("CONECTADO"); 
         } catch (ClassNotFoundException | SQLException e)//CAPTURAR ERRORES 
         {

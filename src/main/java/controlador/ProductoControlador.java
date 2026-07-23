@@ -23,33 +23,35 @@ public class ProductoControlador {
     PreparedStatement ejecutar;
     //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
+
+    //MÉTODOS DE TRANSACCIONABILIDAD
     
-    
+ 
+
     public ArrayList<String[]> obtenerProductos() {
         ArrayList<String[]> lregistros = new ArrayList<>();
 
         try {
-            String sentenciaSQL = "SELECT * FROM productos";
+            String sentenciaSQL = "select *from producto;";
             ejecutar = conectado.prepareCall(sentenciaSQL);
             ResultSet res = ejecutar.executeQuery();
 
             while (res.next()) {
                 String[] listaProductos = new String[3];
-
                 listaProductos[0] = String.valueOf(res.getInt("id"));
                 listaProductos[1] = res.getString("nombre");
                 listaProductos[2] = res.getString("precio");
-
                 lregistros.add(listaProductos);
             }
             res.close();
             ejecutar.close();
             conectado.close();
-
+            return lregistros;
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("------" + e);
         }
         return lregistros;
-
     }
+    
+    
 }
