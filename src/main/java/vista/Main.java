@@ -4,9 +4,9 @@
  */
 package vista;
 
+import controlador.ConexionBDD;
 import controlador.ProductoControlador;
-import modelo.Producto;
-import java.util.List;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,52 +15,59 @@ import javax.swing.JOptionPane;
  */
 public class Main {
     public static void main(String[] args) {
-        ProductoControlador control = new ProductoControlador();
-        
-        // Lista de productos
-        List<Producto> lista = control.obtenerProductos();
-        
-        if (lista.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay productos registrados en la base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+
+        // Conectar a la base de datos
+        ConexionBDD conexion = new ConexionBDD();
+        conexion.conectar();
+
+        // Crear controlador
+        ProductoControlador productoControlador = new ProductoControlador();
+
+        // Obtener productos
+        ArrayList<String[]> listaProductos = productoControlador.obtenerProductos();
+
+        // Verificar si existen productos
+        if (listaProductos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No existen productos registrados");
             return;
         }
-        
-        // Menu
-        StringBuilder menuProductos = new StringBuilder("----- PRODUCTOS DISPONIBLES -----\n\n");
-        for (Producto p : lista) {
-            menuProductos.append("ID: ").append(p.getId())
-                         .append(" , ").append(p.getNombre())
-                         .append(" , Precio: $").append(p.getPrecio())
-                         .append("\n");
+
+        // Mostrar Joption
+        Object[] productos = new Object[listaProductos.size()];
+
+        int indice = 0;
+
+        for (String[] producto : listaProductos) {
+
+            productos[indice] = producto[1];
+
+            System.out.println(
+                    producto[0]
+                    + " - "
+                    + producto[1]
+                    + " | Precio: $" + producto[2]);
+
+            indice++;
         }
-        menuProductos.append("\nIngrese el ID del producto que desea elegir:");
-        
-        // Ventana
-        String entradaId = JOptionPane.showInputDialog(null, menuProductos.toString(), "Selección de Producto", JOptionPane.QUESTION_MESSAGE);
-        
-        if (entradaId == null || entradaId.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Operación cancelada", "Aviso", JOptionPane.WARNING_MESSAGE);
+
+        // Mostrar lista de productos
+        String productoElegido = (String) JOptionPane.showInputDialog(
+                null,
+                "Escoja un producto",
+                "Lista de Productos",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                productos,
+                productos[0]
+        );
+
+        // Si el usuario presiona Cancelar
+        if (productoElegido == null) {
             return;
         }
-        
-        try {
-            int idElegido = Integer.parseInt(entradaId);
-            Producto productoElegido = control.obtenerProductoPorId(idElegido);
-            
-            if (productoElegido != null) {
-                JOptionPane.showMessageDialog(null, 
-                    """
-                    \u00a1Producto seleccionado con \u00e9xito!
-                    
-                     Nombre: """ + productoElegido.getNombre() + "\n" +
-                    " Precio: $" + productoElegido.getPrecio(), 
-                    "Producto Seleccionado", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "El ID ingresado no existe en la base de datos", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar un número entero válido", "Error de formato", JOptionPane.ERROR_MESSAGE);
-        }
+
+        JOptionPane.showMessageDialog(
+                null,
+                "El producto escogido es: " + productoElegido);
     }
 }

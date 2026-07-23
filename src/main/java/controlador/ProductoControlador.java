@@ -9,63 +9,68 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-import modelo.Producto;
 
 /**
  *
  * @author Justin
  */
 public class ProductoControlador {
-    private final ConexionBDD conexionBDD; 
+    // Conexión
+    ConexionBDD conexion = new ConexionBDD();
+    Connection conectado = conexion.conectar();
 
-    public ProductoControlador() {
-        this.conexionBDD = new ConexionBDD();
-    }
+    PreparedStatement ejecutar;
+    ResultSet resultado;
 
-    // Metodo para obtener todos los productos de la base de datos
-    public List<Producto> obtenerProductos() {
-        List<Producto> listaProductos = new ArrayList<>();
-        Connection conexion = conexionBDD.conectar();
-        String sql = "SELECT * FROM productos";
-        
+    public ArrayList<String[]> obtenerProductos() {
+
+        ArrayList<String[]> listaProductos = new ArrayList<>();
+
         try {
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            
-            while (rs.next()) {
-                Producto p = new Producto();
-                p.setId(rs.getInt("id_producto")); 
-                p.setNombre(rs.getString("nombre"));
-                p.setPrecio(rs.getDouble("precio"));
-                listaProductos.add(p);
+
+            String sql = "SELECT * FROM productos";
+
+            ejecutar = conectado.prepareStatement(sql);
+
+            resultado = ejecutar.executeQuery();
+
+            while (resultado.next()) {
+
+                String[] producto = new String[3];
+
+                producto[0] = String.valueOf(resultado.getInt("id_producto"));
+                producto[1] = resultado.getString("nombre");
+                producto[2] = String.valueOf(resultado.getDouble("precio"));
+
+                listaProductos.add(producto);
             }
+
         } catch (SQLException e) {
-            System.out.println("Error al obtener los productos: " + e.getMessage());
+
+            System.out.println("Error al obtener productos: " + e.getMessage());
+
+        } finally {
+
+            try {
+
+                if (resultado != null) {
+                    resultado.close();
+                }
+
+                if (ejecutar != null) {
+                    ejecutar.close();
+                }
+
+                if (conectado != null) {
+                    conectado.close();
+                }
+
+            } catch (SQLException e) {
+
+                System.out.println("Error al cerrar recursos: " + e.getMessage());
+
+            }
         }
         return listaProductos;
-    }
-
-    // Metodo para buscar un producto específico por su ID
-    public Producto obtenerProductoPorId(int id) {
-        Producto producto = null;
-        Connection conexion = conexionBDD.conectar();
-        String sql = "SELECT * FROM productos WHERE id_producto = ?";
-        
-        try {
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            
-            if (rs.next()) {
-                producto = new Producto();
-                producto.setId(rs.getInt("id_producto"));
-                producto.setNombre(rs.getString("nombre"));
-                producto.setPrecio(rs.getDouble("precio"));
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al buscar el producto: " + e.getMessage());
-        }
-        return producto;
     }
 }
