@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package controlador;
 
 import java.sql.Connection;
@@ -6,7 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ClienteControlador {
+/**
+ *
+ * @author Asus
+ */
+public class ProductoControlador {
      //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
     ConexionBDD conectar = new ConexionBDD();
     //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
@@ -17,31 +25,31 @@ public class ClienteControlador {
     ResultSet resultado;
     
     
-    public ArrayList<String[]> obtenerCliente() {
+    public ArrayList<String[]> obtenerProductos() {
         ArrayList<String[]> lregistros = new ArrayList<>();
+
         try {
-            String sentenciaSQL = "select *from cliente";
+            String sentenciaSQL = "SELECT * FROM productos";
             ejecutar = conectado.prepareCall(sentenciaSQL);
             ResultSet res = ejecutar.executeQuery();
 
             while (res.next()) {
-                String[] listaClien = new String[6];
-                listaClien[0] = res.getInt("id") + "";
-                listaClien[1] = res.getString("nombre");
-                listaClien[2] = res.getString("email");
-                listaClien[3] = res.getString("telefono");
-                listaClien[4] = res.getString("tipo_cliente");
-                listaClien[5] = res.getDouble("descuento_vip") + "";
-                lregistros.add(listaClien);
+                String[] listaProductos = new String[3];
+
+                listaProductos[0] = String.valueOf(res.getInt("id"));
+                listaProductos[1] = res.getString("nombre");
+                listaProductos[2] = res.getString("precio");
+
+                lregistros.add(listaProductos);
             }
+            res.close();
             ejecutar.close();
             conectado.close();
-            return lregistros;
+
         } catch (SQLException e) {
-            System.out.println("------" + e);
+            System.out.println(e);
         }
         return lregistros;
+
     }
-    
-    
 }

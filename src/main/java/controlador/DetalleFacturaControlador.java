@@ -31,6 +31,8 @@ public class DetalleFacturaControlador {
     //MÉTODOS DE TRANSACCIONABILIDAD
    // public void insertarDetalleFactura() {
         
+
+//    public void insertarDetalleFactura(Pais p) {
 //        //1.- UTILIZAR EXCEPCIÓN
 //        try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
 //            String sentenciaSQL = "INSERT INTO Paises(nombre,capital)values "
@@ -57,7 +59,6 @@ public class DetalleFacturaControlador {
 //        }
 //
 //    }
-//
 //    public ArrayList<String[]> obtenerPaises() {
 //        ArrayList<String[]> lregistros = new ArrayList<>();
 //
@@ -89,10 +90,33 @@ public class DetalleFacturaControlador {
 //    }
     
     public static void main(String[] args) {
-        ClienteControlador ct = new ClienteControlador();
-        
-        
+        ClienteControlador ct = new ClienteControlador();  
     }
-   
+    
+    public ArrayList<String[]> obtenerPaises() {
+        ArrayList<String[]> lregistros = new ArrayList<>();
+
+        try {
+            String sentenciaSQL = "select *from paises;";
+            ejecutar = conectado.prepareCall(sentenciaSQL);
+            ResultSet res = ejecutar.executeQuery();
+
+            while (res.next()) {
+                String[] listaPaises = new String[3];
+                listaPaises[0] = res.getInt("id") + "";
+                listaPaises[1] = res.getString("nombre");
+                listaPaises[2] = res.getString("capital");
+                lregistros.add(listaPaises);
+
+            }
+
+            ejecutar.close();
+            conectado.close();
+            return lregistros;
+        } catch (SQLException e) {
+            System.out.println("------" + e);
+        }
+        return lregistros;
+    }
 }
 
