@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
  */
 public class DetalleFacturaControlador {
     
-    //INSTANCIAR LA CONEXIÃ“N A LA BASE DE DATOS
+    //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
     ConexionBDD conectar = new ConexionBDD();
     //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
     Connection conectado = (Connection) conectar.conectar();
@@ -26,22 +26,23 @@ public class DetalleFacturaControlador {
     //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
 //
-////    MÃ‰TODOS DE TRANSACCIONABILIDAD
+
+    //MÉTODOS DE TRANSACCIONABILIDAD
 //    public void insertarDetalleFactura(Pais p) {
-//        //1.- UTILIZAR EXCEPCIÃ“N
-//        try {//LANZAR TESTEAR UN CONJUNTO DE CÃ“DIGO 
+//        //1.- UTILIZAR EXCEPCIÓN
+//        try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
 //            String sentenciaSQL = "INSERT INTO Paises(nombre,capital)values "
 //                    + "('" + p.getNombre() + "','" + p.getCapital() + "');";
 //            ejecutar = conectado.prepareCall(sentenciaSQL);
-//            //TODA INSERCIÃ“N DEVUELVE UN ESTADO >0 CUANDO FUE FAVORABLE Y MENOR A O CUANDO NO SE REALIZÃ“ 
+//            //TODA INSERCIÓN DEVUELVE UN ESTADO >0 CUANDO FUE FAVORABLE Y MENOR A O CUANDO NO SE REALIZÓ 
 //            int res = ejecutar.executeUpdate();
 //            if (res > 0) {
 //                JOptionPane.showMessageDialog(null,
-//                        "PaÃ­s Creado con Ã©xito");
+//                        "País Creado con éxito");
 //                ejecutar.close();
 //            } else {
 //                JOptionPane.showMessageDialog(null,
-//                        "El PaÃ­s no ha sido creado,"
+//                        "El País no ha sido creado,"
 //                        + " revise que los datos ingresados sean correctos");
 //            }
 //            conectado.close();
