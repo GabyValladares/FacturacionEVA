@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import javax.swing.JOptionPane;
 import modelo.Producto;
 
@@ -16,6 +17,7 @@ import modelo.Producto;
  * @author LENOVO
  */
 public class ProductoControlador {
+    //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
 
     ConexionBDD conectar = new ConexionBDD();
     //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
@@ -53,3 +55,4 @@ public class ProductoControlador {
         }
     }
 }
+
