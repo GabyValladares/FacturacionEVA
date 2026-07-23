@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  * @author hp
  */
 public class DetalleFacturaControlador {
-    public static void main(String[] args) {
+    //public static void main(String[] args) {
         
     
     //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
@@ -84,8 +84,15 @@ public class DetalleFacturaControlador {
 //        return lregistros;
 //    }
 
-    ConexionBDD cb = new ConexionBDD();
-    cb.conectar();
+//    ConexionBDD cb = new ConexionBDD();
+//    cb.conectar();
+//    }
+    
+    public static void main(String[] args) {
+        ClienteControlador ct = new ClienteControlador();
+        
+        
     }
+   
 }
 
