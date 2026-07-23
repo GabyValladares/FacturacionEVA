@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
  * @author hp
  */
 public class DetalleFacturaControlador {
+    //public static void main(String[] args) {
+        
     
     //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
     ConexionBDD conectar = new ConexionBDD();
@@ -27,8 +29,12 @@ public class DetalleFacturaControlador {
     ResultSet resultado;
 
     //MÉTODOS DE TRANSACCIONABILIDAD
+
 //    public void insertarDetalleFactura(Pais p) {
-//        //1.- UTILIZAR EXCEPCIÓN
+
+   // public void insertarDetalleFactura() {
+        
+
 //        try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
 //            String sentenciaSQL = "INSERT INTO Paises(nombre,capital)values "
 //                    + "('" + p.getNombre() + "','" + p.getCapital() + "');";
@@ -55,6 +61,7 @@ public class DetalleFacturaControlador {
 //
 //    }
 
+
     public ArrayList<String[]> obtenerPaises() {
         ArrayList<String[]> lregistros = new ArrayList<>();
 
@@ -80,4 +87,44 @@ public class DetalleFacturaControlador {
         }
         return lregistros;
     }
+
+//
+//    public ArrayList<String[]> obtenerPaises() {
+//        ArrayList<String[]> lregistros = new ArrayList<>();
+//
+//        try {
+//            String sentenciaSQL = "select *from paises;";
+//            ejecutar = conectado.prepareCall(sentenciaSQL);
+//            ResultSet res = ejecutar.executeQuery();
+//
+//            while (res.next()) {
+//                String[] listaPaises = new String[3];
+//                listaPaises[0] = res.getInt("id") + "";
+//                listaPaises[1] = res.getString("nombre");
+//                listaPaises[2] = res.getString("capital");
+//                lregistros.add(listaPaises);
+//
+//            }
+//
+//            ejecutar.close();
+//            conectado.close();
+//            return lregistros;
+//        } catch (SQLException e) {
+//            System.out.println("------" + e);
+//        }
+//        return lregistros;
+//    }
+
+//    ConexionBDD cb = new ConexionBDD();
+//    cb.conectar();
+//    }
+    
+    public static void main(String[] args) {
+        ClienteControlador ct = new ClienteControlador();
+        
+        
+    }
+   
+
 }
+
