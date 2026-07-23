@@ -4,17 +4,26 @@
  */
 package vista;
 
+
+import controlador.ClienteControlador;
+import java.util.ArrayList;
+
 /**
  *
  * @author hp
  */
 public class FacturaVista extends javax.swing.JFrame {
+    ClienteControlador cc = new ClienteControlador();
+    ArrayList<String[]> listaClientes = new ArrayList<>();
 
     /**
      * Creates new form FacturaVista
      */
     public FacturaVista() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        
+       
     }
 
     /**
@@ -53,6 +62,11 @@ public class FacturaVista extends javax.swing.JFrame {
         lblNombres.setText("Nombres:");
 
         cmbClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbClientesActionPerformed(evt);
+            }
+        });
 
         lblFecha.setText("Fecha:");
 
@@ -175,6 +189,21 @@ public class FacturaVista extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+public void cargarClientesCombo() {
+    cmbClientes.removeAllItems();
+    listaClientes = cc.obtenerClientes();
+
+    for (String[] cliente : listaClientes) {
+        cmbClientes.addItem(cliente[1]);
+    }
+
+        
+    }
+    private void cmbClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClientesActionPerformed
+        // TODO add your handling code here:
+   
+     
+    }//GEN-LAST:event_cmbClientesActionPerformed
 
     /**
      * @param args the command line arguments
