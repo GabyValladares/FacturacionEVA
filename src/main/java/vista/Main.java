@@ -5,7 +5,10 @@
 package vista;
 
 import controlador.ConexionBDD;
+import controlador.ProductoControlador;
 import java.sql.Connection;
+import javax.swing.JOptionPane;
+import modelo.Producto;
 
 /**
  *
@@ -25,5 +28,15 @@ public class Main {
             System.out.println("No se pudo conectar a la base de datos.");
         }
 
+        Producto producto = new Producto();
+
+        producto.setId(Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del producto:")));
+
+        producto.setNombre(JOptionPane.showInputDialog("Ingrese el nombre del producto:"));
+
+        producto.setPrecio(Double.parseDouble(JOptionPane.showInputDialog("Ingrese el precio del producto:")));
+
+        ProductoControlador controlador = new ProductoControlador();
+        controlador.insertarProducto(producto);
     }
 }
