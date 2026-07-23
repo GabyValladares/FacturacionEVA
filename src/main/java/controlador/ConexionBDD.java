@@ -21,7 +21,7 @@ public class ConexionBDD {
             //Manera de Conexión a la Base de Datos
             Class.forName("com.mysql.jdbc.Driver");
             //Parámetros de conexión url/usuario/clave en mysql
-            conexion=DriverManager.getConnection("jdbc:mysql://localhost/facturacion?autoReconnect=true&useSSL=false","root","Weak");
+            conexion=DriverManager.getConnection("jdbc:mysql://localhost/facturero?autoReconnect=true&useSSL=false","root","Tiepo10Seguro");
             System.out.println("CONECTADO"); 
         } catch (ClassNotFoundException | SQLException e)//CAPTURAR ERRORES 
         {
