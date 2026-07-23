@@ -15,7 +15,7 @@ public class main {
 
         // 3. Verificar e imprimir
         if (clientes.isEmpty()) {
-            System.out.println("⚠️ La lista está vacía o no se conectó a la base de datos.");
+            System.out.println(" La lista está vacía o no se conectó a la base de datos.");
         } else {
             System.out.println("=== LISTA DE CLIENTES REGISTRADOS ===");
             
