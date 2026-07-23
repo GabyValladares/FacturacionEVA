@@ -39,8 +39,8 @@ public class ProductoControlador {
             while (res.next()) {
                 String[] listaProductos = new String[3];
                 listaProductos[0] = res.getInt("id_producto") + "";
-                listaProductos[1] = res.getString("nombre");
-                listaProductos[2] = res.getString("precio");
+                listaProductos[1] = res.getString("nombre_producto");
+                listaProductos[2] = res.getString("precio_producto");
                 lregistros.add(listaProductos);
 
             }
