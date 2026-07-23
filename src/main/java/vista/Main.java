@@ -13,15 +13,22 @@ import javax.swing.JOptionPane;
  *
  * @author KEVIN
  */
-public class Main { 
-      public static void main(String[] args) {
+public class Main {
+    public static void main(String[] args) {
+        ConexionBDD c=new ConexionBDD();
+        c.conectar();
+    }
+        
+        public static void mostarClientes(){
             
             ConexionBDD c = new ConexionBDD();
-            c.conectar();
-            ClienteControlador controlador = new ClienteControlador();
-            ArrayList<String[]> clientes = controlador.obtenercliente();
+        c.conectar();
 
-         //Mostrar en consola
+        ClienteControlador controlador = new ClienteControlador();
+
+        ArrayList<String[]> clientes = controlador.listaCliente();
+
+        // Mostrar en consola
         for (String[] cliente : clientes) {
             System.out.println("ID: " + cliente[0]);
             System.out.println("Nombre: " + cliente[1]);
@@ -32,8 +39,9 @@ public class Main {
             System.out.println("-------------------------");
         }
 
-         //Lista desplegable
+        // Lista desplegable
         Object[] nombreClientes = new Object[clientes.size()];
+
         for (int i = 0; i < clientes.size(); i++) {
             nombreClientes[i] = clientes.get(i)[1]; // Nombre del cliente
         }
@@ -65,5 +73,8 @@ public class Main {
         }
             
         }
-                  
+                
+        
+    
+    
 }
