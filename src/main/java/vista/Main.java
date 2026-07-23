@@ -4,6 +4,7 @@
  */
 package vista;
 
+import controlador.ClienteControlador;
 import controlador.ConexionBDD;
 import controlador.ProductoControlador;
 import java.util.ArrayList;
@@ -69,5 +70,16 @@ public class Main {
         JOptionPane.showMessageDialog(
                 null,
                 "El producto escogido es: " + productoElegido);
+    
+     ClienteControlador pc = new ClienteControlador();
+        ArrayList<String[]> clientes = pc.obtenerClientes();
+        String lista1 = "LISTA DE CLIENTES\n\n";
+
+        for (int i = 0; i < clientes.size(); i++) {
+            lista1 += (i + 1) + ". " + clientes.get(i)[1] + " - " + clientes.get(i)[2] + "\n";
+        }
+        JOptionPane.showMessageDialog(null, lista1);
+    
+      
     }
 }

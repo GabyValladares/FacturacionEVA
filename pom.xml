@@ -11,6 +11,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <exec.mainClass>com.mycompany.facturacion.Facturacion</exec.mainClass>
     </properties>
+
     <dependencies>
         
         <dependency>

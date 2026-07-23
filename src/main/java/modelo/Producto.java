@@ -10,7 +10,7 @@ package modelo;
  */
 public class Producto {
     //Contiene id, nombre y precio.
-    private int id;
+    private int id_prod;
     private String nombre;
     private double precio;
 
@@ -18,17 +18,17 @@ public class Producto {
     }
 
     public Producto(int id, String nombre, double precio) {
-        this.id = id;
+        this.id_prod = id;
         this.nombre = nombre;
         this.precio = precio;
     }
 
     public int getId() {
-        return id;
+        return id_prod;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id_prod = id;
     }
 
     public String getNombre() {
