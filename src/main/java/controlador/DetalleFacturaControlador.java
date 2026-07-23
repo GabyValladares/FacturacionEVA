@@ -55,8 +55,8 @@
 ////
 ////    }
 ////
-////    public ArrayList<String[]> obtenerPaises() {
-////        ArrayList<String[]> lregistros = new ArrayList<>();
+//    public ArrayList<String[]> obtenerPaises() {
+//        ArrayList<String[]> lregistros = new ArrayList<>();
 ////
 ////        try {
 ////            String sentenciaSQL = "select *from paises;";

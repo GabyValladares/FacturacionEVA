@@ -44,6 +44,10 @@ public class Producto {
         this.precio = precio;
     }
     
-     
+     // Dentro de la clase modelo.Producto
+@Override
+public String toString() {
+    return "Producto{id=" + id + ", nombre='" + nombre + "', precio=" + precio + "}";
+}
     
 }

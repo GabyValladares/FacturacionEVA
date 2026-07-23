@@ -1,20 +1,32 @@
 package vista;
 
-import controlador.ConexionBDD;
+import controlador.clienteControlador;
+import modelo.Cliente;
+import java.util.List;
 
 public class main {
+
     public static void main(String[] args) {
-        // Crear objeto de la clase ConexionBDD
-        ConexionBDD conexionBDD = new ConexionBDD();
-        
-        // Llamar al método conectar
-        java.sql.Connection conn = conexionBDD.conectar();
-        
-        // Verificar si la conexión fue exitosa
-        if (conn != null) {
-            System.out.println("La conexión se estableció correctamente.");
+        // 1. Instanciar el controlador correctamente
+        clienteControlador controlador = new clienteControlador();
+
+        // 2. Obtener la lista usando el nombre correcto del método: obtenerClientes()
+        List<Cliente> clientes = controlador.obtenerClientes();
+
+        // 3. Verificar e imprimir
+        if (clientes.isEmpty()) {
+            System.out.println("⚠️ La lista está vacía o no se conectó a la base de datos.");
         } else {
-            System.out.println("No se pudo establecer la conexión.");
+            System.out.println("=== LISTA DE CLIENTES REGISTRADOS ===");
+            
+            for (Cliente c : clientes) { 
+                System.out.println("ID: " + c.getId() + 
+                                   " | Nombre: " + c.getNombre() + 
+                                   " | Email: " + c.getEmail()  +
+                                   " | Teléfono: " + c.getTelefono());
+            }
+            
+            System.out.println("Total de clientes encontrados: " + clientes.size());
         }
     }
 }
