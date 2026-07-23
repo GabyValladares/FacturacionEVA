@@ -4,7 +4,10 @@
  */
 package vista;
 
-import controlador.ConexionBDD;
+import controlador.ProductoControlador;
+import modelo.Producto;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,7 +15,52 @@ import controlador.ConexionBDD;
  */
 public class Main {
     public static void main(String[] args) {
-        ConexionBDD c = new ConexionBDD();
-        c.conectar();
+        ProductoControlador control = new ProductoControlador();
+        
+        // Lista de productos
+        List<Producto> lista = control.obtenerProductos();
+        
+        if (lista.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay productos registrados en la base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Menu
+        StringBuilder menuProductos = new StringBuilder("----- PRODUCTOS DISPONIBLES -----\n\n");
+        for (Producto p : lista) {
+            menuProductos.append("ID: ").append(p.getId())
+                         .append(" , ").append(p.getNombre())
+                         .append(" , Precio: $").append(p.getPrecio())
+                         .append("\n");
+        }
+        menuProductos.append("\nIngrese el ID del producto que desea elegir:");
+        
+        // Ventana
+        String entradaId = JOptionPane.showInputDialog(null, menuProductos.toString(), "Selección de Producto", JOptionPane.QUESTION_MESSAGE);
+        
+        if (entradaId == null || entradaId.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Operación cancelada", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        try {
+            int idElegido = Integer.parseInt(entradaId);
+            Producto productoElegido = control.obtenerProductoPorId(idElegido);
+            
+            if (productoElegido != null) {
+                JOptionPane.showMessageDialog(null, 
+                    """
+                    \u00a1Producto seleccionado con \u00e9xito!
+                    
+                     Nombre: """ + productoElegido.getNombre() + "\n" +
+                    " Precio: $" + productoElegido.getPrecio(), 
+                    "Producto Seleccionado", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "El ID ingresado no existe en la base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar un número entero válido", "Error de formato", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
