@@ -5,6 +5,7 @@
 package vista;
 
 import controlador.ConexionBDD;
+
 import controlador.ProductoControlador;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
@@ -37,6 +38,15 @@ public class Main {
         producto.setPrecio(Double.parseDouble(JOptionPane.showInputDialog("Ingrese el precio del producto:")));
 
         ProductoControlador controlador = new ProductoControlador();
-        controlador.insertarProducto(producto);
+     
     }
+
+
+/**
+ *
+ * @author hp
+ */
+
+    
+
 }
