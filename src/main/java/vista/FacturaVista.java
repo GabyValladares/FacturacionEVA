@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package vista;
 
 import controlador.ClienteControlador;
@@ -9,12 +5,17 @@ import controlador.ProductoControlador;
 import java.util.ArrayList;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import modelo.DetalleFactura;
+import modelo.Producto;
 
 /**
  *
  * @author hp
  */
 public class FacturaVista extends javax.swing.JFrame {
+
+    ArrayList<String[]> lP;
+    ArrayList<DetalleFactura> lDF=new ArrayList<>();
 
     /**
      * Creates new form FacturaVista
@@ -66,8 +67,19 @@ public class FacturaVista extends javax.swing.JFrame {
 
         cmbProductos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cmbProductosMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                cmbProductosMouseEntered(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 cmbProductosMousePressed(evt);
+            }
+        });
+        cmbProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbProductosActionPerformed(evt);
             }
         });
 
@@ -82,6 +94,12 @@ public class FacturaVista extends javax.swing.JFrame {
 
         lblCantidad.setText("CANTIDAD");
 
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyReleased(evt);
+            }
+        });
+
         lblSubTotal.setText("SUBTOTAL");
 
         txtSubTotal.setEditable(false);
@@ -89,9 +107,19 @@ public class FacturaVista extends javax.swing.JFrame {
         lblPrecio.setText("PRECIO");
 
         txtPrecio.setEditable(false);
+        txtPrecio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPrecioActionPerformed(evt);
+            }
+        });
 
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnAgregar.setText("+");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         btnPDF.setText("GENERAR PDF");
 
@@ -186,37 +214,93 @@ public class FacturaVista extends javax.swing.JFrame {
 
     private void cmbProductosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbProductosMousePressed
         // TODO add your handling code here:
-        Object o=cmbProductos.getSelectedItem();
+        Object o = cmbProductos.getSelectedItem();
     }//GEN-LAST:event_cmbProductosMousePressed
-public void cargarProductos(){
-    ProductoControlador pc=new ProductoControlador();
-    ArrayList<String[]>lP=pc.obtenerProductos();
-    DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
-  
-    for (String[] p: lP) {
+
+    private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
+
+    }//GEN-LAST:event_txtPrecioActionPerformed
+
+    private void cmbProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductosActionPerformed
+        int indice = this.productoSeleccionado();
+        if (indice >= 0)
+            txtPrecio.setText(lP.get(indice)[2]);
+    }//GEN-LAST:event_cmbProductosActionPerformed
+
+    private void cmbProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbProductosMouseClicked
+
+    }//GEN-LAST:event_cmbProductosMouseClicked
+
+    private void cmbProductosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbProductosMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbProductosMouseEntered
+
+    private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
+        // TODO add your handling code here:
+        double precio = Double.parseDouble(txtPrecio.getText());
+        int cantidad = Integer.parseInt(txtCantidad.getText());
+        if(!txtCantidad.getText().isEmpty())
+        txtSubTotal.setText((precio * cantidad) + "");
+    }//GEN-LAST:event_txtCantidadKeyReleased
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+        Producto p = new Producto();
+        p.setId(Integer.parseInt(lP.get(this.productoSeleccionado())[0]));
+        p.setNombre(lP.get(this.productoSeleccionado())[1]);
+        p.setPrecio(Double.parseDouble(lP.get(this.productoSeleccionado())[2]));
+        //OBJETO DETALLE FACTURA
+        DetalleFactura dF = new DetalleFactura();
+        dF.setProducto(p);
+        dF.setCantidad(Integer.parseInt(txtCantidad.getText()));
+        dF.setSubtotal(Double.parseDouble(txtSubTotal.getText()));
+        //Añado a la lista dinámica 
+        lDF.add(dF);
+        //muestro en la vista en el TextArea
+        txtADetalle.append(dF.toString());
+        this.limpiarDetalle();
         
-        modelo.addElement(p[1]);
-       
+    }//GEN-LAST:event_btnAgregarActionPerformed
+    public void cargarProductos() {
+        ProductoControlador pc = new ProductoControlador();
+        lP = pc.obtenerProductos();
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+
+        for (String[] p : lP) {
+
+            modelo.addElement(p[1]);
+
+        }
+        cmbProductos.setModel(modelo);
+
     }
-    cmbProductos.setModel(modelo);
 
+    public void cargarClientes() {
+        ClienteControlador cc = new ClienteControlador();
+        ArrayList<String[]> lP = cc.obtenerClientes();
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
 
-}
-public void cargarClientes(){
-    ClienteControlador cc=new ClienteControlador();
-    ArrayList<String[]>lP=cc.obtenerClientes();
-    DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
-  
-    for (String[] p: lP) {
-        
-        modelo.addElement(p[1]);
-        
+        for (String[] p : lP) {
+
+            modelo.addElement(p[1]);
+
+        }
+        cmbClientes.setModel(modelo);
+
     }
-    cmbClientes.setModel(modelo);
-    
 
+    public int productoSeleccionado() {
+        if (lP != null || !lP.isEmpty()) {
+            return cmbProductos.getSelectedIndex();
+        }
+        return -1;
 
-}
+    }
+    public void limpiarDetalle(){
+        txtPrecio.setText("");
+        txtCantidad.setText("");
+        txtSubTotal.setText("");
+    }
     /**
      * @param args the command line arguments
      */

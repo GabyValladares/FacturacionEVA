@@ -9,7 +9,7 @@ package modelo;
  * @author hp
  */
 public abstract class Cliente {
-
+//CÉDULA +DIRECCIÓN
     private int id;
     private String nombre;
     private String email;
