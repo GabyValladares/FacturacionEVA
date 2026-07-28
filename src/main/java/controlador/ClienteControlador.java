@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import controlador.ConexionBDD;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -61,5 +62,9 @@ public class ClienteControlador {
         }
         return lregistros;
     }
+    
+       
+    
+    
 }
 
