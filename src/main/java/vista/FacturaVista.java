@@ -4,17 +4,26 @@
  */
 package vista;
 
+import controlador.ClienteControlador;
+import controlador.ProductoControlador;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author hp
  */
 public class FacturaVista extends javax.swing.JFrame {
+    controlador.ClienteControlador clicont = new controlador.ClienteControlador();
+    controlador.ProductoControlador procont = new controlador.ProductoControlador();
 
     /**
      * Creates new form FacturaVista
      */
     public FacturaVista() {
         initComponents();
+        mostrarClientes();
+        listarProductos();
     }
 
     /**
@@ -96,7 +105,7 @@ public class FacturaVista extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(75, 75, 75)
                                 .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -176,6 +185,27 @@ public class FacturaVista extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void mostrarClientes() {
+        cmbClientes.removeAllItems();
+        ClienteControlador p = new ClienteControlador();
+        ArrayList<String[]> clientes = p.obtenerClientes();
+        
+        for (int i = 0; i < clientes.size(); i++) {
+            cmbClientes.addItem(clientes.get(i)[1]);
+        }
+    }
+    
+    private void listarProductos() {
+        cmbProductos.removeAllItems();
+        ProductoControlador pc1= new ProductoControlador();
+        ArrayList<String[]> lProducto = pc1.obtenerProductos();
+        
+        for(String[] producto : lProducto){ 
+            cmbProductos.addItem(producto[1]);
+        }
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
