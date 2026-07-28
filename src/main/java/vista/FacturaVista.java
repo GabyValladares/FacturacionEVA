@@ -187,8 +187,8 @@ public class FacturaVista extends javax.swing.JFrame {
 
     private void mostrarClientes() {
         cmbClientes.removeAllItems();
-        ClienteControlador p = new ClienteControlador();
-        ArrayList<String[]> clientes = p.obtenerClientes();
+        ClienteControlador ct = new ClienteControlador();
+        ArrayList<String[]> clientes = ct.obtenerClientes();
         
         for (int i = 0; i < clientes.size(); i++) {
             cmbClientes.addItem(clientes.get(i)[1]);
