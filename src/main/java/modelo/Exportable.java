@@ -10,4 +10,5 @@ package modelo;
  */
 public interface Exportable {
     public void generarPDF(Factura factura, String rutaDestino);
+
 }

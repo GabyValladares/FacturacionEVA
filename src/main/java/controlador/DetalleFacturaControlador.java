@@ -26,7 +26,12 @@ public class DetalleFacturaControlador {
     //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
 
+
     //MÉTODOS DE TRANSACCIONABILIDAD
+
+//
+////    MÉTODOS DE TRANSACCIONABILIDAD
+
 //    public void insertarDetalleFactura(Pais p) {
 //        //1.- UTILIZAR EXCEPCIÓN
 //        try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
