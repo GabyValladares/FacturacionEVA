@@ -10,6 +10,7 @@ package modelo;
  */
 public abstract class Cliente {
 
+    //cedual + direccion 
     private int id;
     private String nombre;
     private String email;

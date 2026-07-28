@@ -8,6 +8,10 @@ import controlador.ClienteControlador;
 import controlador.ProductoControlador;
 import java.util.ArrayList;
 import modelo.Cliente;
+import modelo.ClienteRegular;
+import modelo.DetalleFactura;
+import modelo.Factura;
+import modelo.Producto;
 
 /**
  *
@@ -15,6 +19,9 @@ import modelo.Cliente;
  */
 public class FacturaVista extends javax.swing.JFrame {
 
+    ArrayList<String[]> listaProducto;
+     ArrayList<DetalleFactura> LDF = new ArrayList<>();
+     
     /**
      * Creates new form FacturaVista
      */
@@ -67,6 +74,14 @@ public class FacturaVista extends javax.swing.JFrame {
 
         lblFecha.setText("Fecha:");
 
+        cmbProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cmbProductosMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                cmbProductosMousePressed(evt);
+            }
+        });
         cmbProductos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbProductosActionPerformed(evt);
@@ -84,12 +99,23 @@ public class FacturaVista extends javax.swing.JFrame {
 
         lblCantidad.setText("CANTIDAD");
 
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyReleased(evt);
+            }
+        });
+
         lblSubTotal.setText("SUBTOTAL");
 
         txtSubTotal.setEditable(false);
         txtSubTotal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSubTotalActionPerformed(evt);
+            }
+        });
+        txtSubTotal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSubTotalKeyReleased(evt);
             }
         });
 
@@ -99,6 +125,11 @@ public class FacturaVista extends javax.swing.JFrame {
 
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnAgregar.setText("+");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         btnPDF.setText("GENERAR PDF");
 
@@ -199,31 +230,97 @@ public class FacturaVista extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbClientesActionPerformed
 
     private void cmbProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductosActionPerformed
-        // TODO add your handling code here:
+        int indice = this.recuperarProductoSeleccionado();
+        if (indice >= 0) {
+            txtPrecio.setText(listaProducto.get(indice)[2]);
+        }
     }//GEN-LAST:event_cmbProductosActionPerformed
+
 
     private void txtSubTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSubTotalActionPerformed
         // TODO add your handling code here:
+        Factura f = new Factura();
+        f.calcularSubTotal();
     }//GEN-LAST:event_txtSubTotalActionPerformed
+
+    private void cmbProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbProductosMouseClicked
+        // TODO add your handling code here:
+        if (listaProducto != null || !listaProducto.isEmpty()) {
+            int indice = cmbProductos.getSelectedIndex();
+            if (indice >= 0) {
+                txtPrecio.setText(listaProducto.get(indice)[2]);
+            }
+        }
+    }//GEN-LAST:event_cmbProductosMouseClicked
+
+    private void cmbProductosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbProductosMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbProductosMousePressed
+
+    private void txtSubTotalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSubTotalKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSubTotalKeyReleased
+
+
+    private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
+        // TODO add your handling code here:
+        double precio = Double.parseDouble(txtPrecio.getText());
+        int cantidad = Integer.parseInt(txtCantidad.getText());
+        if(!txtCantidad.getText().isEmpty()){
+        txtSubTotal.setText((precio * cantidad) + "");
+        }
+    }//GEN-LAST:event_txtCantidadKeyReleased
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+        Producto p = new Producto();
+        p.setId(Integer.parseInt(listaProducto.get(this.recuperarProductoSeleccionado())[0]));
+        p.setNombre(listaProducto.get(this.recuperarProductoSeleccionado())[1]);
+        p.setPrecio(Double.parseDouble(listaProducto.get(this.recuperarProductoSeleccionado())[2]));
+        
+        //objeto detalle factura 
+        DetalleFactura df = new DetalleFactura();
+        df.setProducto(p);
+        df.setCantidad(Integer.parseInt(txtCantidad.getText()));
+        df.setSubtotal(Double.parseDouble(txtSubTotal.getText()));
+        LDF.add(df);
+        txtADetalle.append(df.toString());
+        this.limpiarDetalle();
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
     private void cargarProducto() {
         ProductoControlador pc = new ProductoControlador();
-        ArrayList<String[]> listaProducto = pc.obtenerProductos();
-        cmbProductos.removeAllItems();
+        listaProducto = pc.obtenerProductos();
 
         for (String[] producto : listaProducto) {
+            Producto p = new Producto();
+            p.setPrecio(Double.parseDouble(producto[2]));
+
             cmbProductos.addItem(producto[1]);
         }
     }
-    
-    private void cargarClientes(){
+
+    private void cargarClientes() {
         ClienteControlador ct = new ClienteControlador();
         ArrayList<String[]> listaCliente = ct.obtenerCliente();
         cmbClientes.removeAllItems();
-        
-        for(String[] cliente : listaCliente){
-            cmbClientes.addItem(cliente[1]+" - "+cliente[4]);
-            
+
+        for (String[] cliente : listaCliente) {
+            cmbClientes.addItem(cliente[1] + " - " + cliente[4]);
         }
+    }
+
+    public int recuperarProductoSeleccionado() {
+        if (listaProducto != null || !listaProducto.isEmpty()) {
+            return cmbProductos.getSelectedIndex();
+        }
+        return -1;
+    }
+    
+    public void limpiarDetalle(){
+        txtPrecio.setText("");
+        txtCantidad.setText("");
+        txtSubTotal.setText("");
     }
 
     /**
