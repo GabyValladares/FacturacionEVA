@@ -6,6 +6,7 @@ package vista;
 
 import controlador.ClienteControlador;
 import controlador.ConexionBDD;
+import controlador.ProductoControlador;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -67,6 +68,18 @@ public class Main {
 
     }
 }
+    
+//    public void caragarProductos() {
+//        ProductoControlador po=new ProductoControlador();
+//        ArrayList<String[]>lp=po.obtenerTodosProductos();
+//        ArrayList<String>nombresProducto=new ArrayList<>();
+//        for (String [] p: lp){
+//            nombresProducto.add(lp.get(0)[1]);
+//            
+//            
+//        }
+//        
+//    
 
 //    public static void main(String[] args) {
 //        // 1. Instanciar el controlador correctamente
