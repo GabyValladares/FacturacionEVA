@@ -4,17 +4,22 @@
  */
 package vista;
 
-
 import controlador.ClienteControlador;
+import controlador.ProductoControlador;
 import java.util.ArrayList;
+import java.util.List;
+import modelo.Producto;
 
 /**
  *
  * @author hp
  */
 public class FacturaVista extends javax.swing.JFrame {
+
     ClienteControlador cc = new ClienteControlador();
     ArrayList<String[]> listaClientes = new ArrayList<>();
+    ProductoControlador pc = new ProductoControlador();
+    List<Producto> listaProductos = new ArrayList<>();
 
     /**
      * Creates new form FacturaVista
@@ -22,8 +27,8 @@ public class FacturaVista extends javax.swing.JFrame {
     public FacturaVista() {
         initComponents();
         this.setLocationRelativeTo(null);
-        
-       
+        cargarClientesCombo();
+        cargarProductosCombo();
     }
 
     /**
@@ -71,6 +76,11 @@ public class FacturaVista extends javax.swing.JFrame {
         lblFecha.setText("Fecha:");
 
         cmbProductos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbProductosActionPerformed(evt);
+            }
+        });
 
         lblDetalle.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblDetalle.setText("DETALLE DE LOS PRODUCTOS");
@@ -190,20 +200,32 @@ public class FacturaVista extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 public void cargarClientesCombo() {
-    cmbClientes.removeAllItems();
-    listaClientes = cc.obtenerClientes();
 
-    for (String[] cliente : listaClientes) {
-        cmbClientes.addItem(cliente[1]);
+        cmbClientes.removeAllItems();
+        listaClientes = cc.obtenerClientes();
+
+        for (String[] cliente : listaClientes) {
+            cmbClientes.addItem(cliente[1]);
+        }
     }
 
-        
+
+    public void cargarProductosCombo() {
+        cmbProductos.removeAllItems();
+        listaProductos = pc.obtenerProductos();
+        for (Producto p : listaProductos) {
+            cmbProductos.addItem(p.getNombre());
+        }
     }
     private void cmbClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClientesActionPerformed
         // TODO add your handling code here:
-   
-     
+
     }//GEN-LAST:event_cmbClientesActionPerformed
+
+    private void cmbProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductosActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_cmbProductosActionPerformed
 
     /**
      * @param args the command line arguments

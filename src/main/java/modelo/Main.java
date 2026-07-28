@@ -5,11 +5,9 @@
 package modelo;
 
 import controlador.ClienteControlador;
-import controlador.ConexionBDD;
-import controlador.FacturaControlador;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-
+import controlador.ConexionBDD;
 /**
  *
  * @author AMARU
@@ -24,16 +22,7 @@ public class Main {
 }
          
        public static void mostrarClientes() {
-        ClienteControlador p = new ClienteControlador();
-        ArrayList<String[]> clientes = p.obtenerClientes();
-        String lista = "LISTA DE CLIENTES\n\n";
-
-        for (int i = 0; i < clientes.size(); i++) {
-            lista += (i + 1) + ". " + clientes.get(i)[1] + " - " + clientes.get(i)[2] + "\n";
-        }
-        JOptionPane.showMessageDialog(null, lista);
-    
-        prueba.conectar();
+        
     
     }
 }

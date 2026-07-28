@@ -41,7 +41,7 @@ public class ClienteControlador {
                 cliente[3] = resultado.getString("telefono");
                 cliente[4] = resultado.getString("tipo_cliente");
                 cliente[5] = resultado.getDouble("descuento_vip") + "";
-                lista.addLast(cliente);
+                lista.add(cliente);
             }
         } 
         catch (SQLException e) {
