@@ -32,6 +32,10 @@ public class ClienteVIP extends Cliente {
         this.porcentajeFidelidad = porcentajeFidelidad;
     }
 
+    @Override
+    public String toString() {
+        return getNombre()+ " - cliente VIP";
+    }
     
     @Override
     public double calcularDescuento(double subtotal) {

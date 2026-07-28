@@ -57,5 +57,7 @@ public abstract class Cliente {
         this.telefono = telefono;
     }
     
+    
+    
     public abstract double calcularDescuento(double subtotal);
 }
