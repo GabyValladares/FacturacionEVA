@@ -8,6 +8,7 @@ import controlador.ConexionBDD;
 import controlador.ProductoControlador;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.Producto;
 
 public class Main {
 
@@ -85,7 +86,20 @@ public class Main {
         prod,
         prod[0]);
         JOptionPane.showInternalMessageDialog(null, "El producto escogido es: " + productoElegido);    
-            
+      
+        
+        Producto p1 = new Producto();
+
+        p1.setNombre(JOptionPane.showInputDialog(
+                "Ingrese el nombre del producto"));
+
+        p1.setPrecio(Double.parseDouble(JOptionPane.showInputDialog(
+                "Ingrese el precio del producto")));
+
+        ProductoControlador pc = new ProductoControlador();
+
+        // INSERTAR PRODUCTO
+        pc.insertarProducto(p1);
     }
 }
 

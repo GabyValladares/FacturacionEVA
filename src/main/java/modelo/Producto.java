@@ -4,6 +4,9 @@
  */
 package modelo;
 
+import controlador.ProductoControlador;
+import java.util.ArrayList;
+
 /**
  *
  * @author hp
@@ -47,6 +50,7 @@ public class Producto {
         this.precio = precio;
     }
     
-     
-    
+   
 }
+    
+

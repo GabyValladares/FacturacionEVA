@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import modelo.Producto;
 
 
 public class ProductoControlador {
@@ -42,6 +44,40 @@ public class ProductoControlador {
             System.out.println("------" + e);
         }
         return lregistros;
+    }
+    
+    
+    public void insertarProducto(Producto p1) {
+        //1.- UTILIZAR EXCEPCIÓN
+        try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
+            Connection conectado = conectar.conectar();
+
+        String sentenciaSQL = "INSERT INTO producto(nombre,precio)values "
+                + "('" + p1.getNombre() + "','" + p1.getPrecio() + "');";
+
+        ejecutar = conectado.prepareCall(sentenciaSQL);
+
+        int res = ejecutar.executeUpdate();
+
+        if (res > 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Producto Creado con éxito");
+        }
+
+        ejecutar.close();
+        conectado.close();
+
+
+        } catch (SQLException e) {
+            //CAPTURAR PARA DARLE UN TRATAMIENTO 
+            JOptionPane.showMessageDialog(null,
+                    "ERROR:Comuniquese con el Administrador para solicitar ayuda");
+            System.out.println("---------------" + e);
+        }
+
+    
+
+
     }
 }         
 
