@@ -8,14 +8,17 @@ import controlador.ClienteControlador;
 import controlador.ProductoControlador;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.DetalleFactura;
 
 /**
  *
  * @author hp
  */
 public class FacturaVista extends javax.swing.JFrame {
+
     controlador.ClienteControlador clicont = new controlador.ClienteControlador();
     controlador.ProductoControlador procont = new controlador.ProductoControlador();
+    ArrayList<String[]> lProducto;
 
     /**
      * Creates new form FacturaVista
@@ -24,6 +27,9 @@ public class FacturaVista extends javax.swing.JFrame {
         initComponents();
         mostrarClientes();
         listarProductos();
+        productoSleccionado();
+        ArrayList<String[]> lF;
+        ArrayList
     }
 
     /**
@@ -66,6 +72,16 @@ public class FacturaVista extends javax.swing.JFrame {
         lblFecha.setText("Fecha:");
 
         cmbProductos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cmbProductosMouseClicked(evt);
+            }
+        });
+        cmbProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbProductosActionPerformed(evt);
+            }
+        });
 
         lblDetalle.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblDetalle.setText("DETALLE DE LOS PRODUCTOS");
@@ -78,6 +94,12 @@ public class FacturaVista extends javax.swing.JFrame {
 
         lblCantidad.setText("CANTIDAD");
 
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyReleased(evt);
+            }
+        });
+
         lblSubTotal.setText("SUBTOTAL");
 
         txtSubTotal.setEditable(false);
@@ -85,9 +107,19 @@ public class FacturaVista extends javax.swing.JFrame {
         lblPrecio.setText("PRECIO");
 
         txtPrecio.setEditable(false);
+        txtPrecio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPrecioActionPerformed(evt);
+            }
+        });
 
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnAgregar.setText("+");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         btnPDF.setText("GENERAR PDF");
 
@@ -185,27 +217,79 @@ public class FacturaVista extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txtPrecioActionPerformed
+
+    private void cmbProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbProductosMouseClicked
+        // TODO add your handling code here:
+        int indice = this.productoSeleccionado();
+        if (indice >= 0)
+            txtPrecio.setText(lProducto.get(indice)[2]);
+            }
+        }
+    }//GEN-LAST:event_cmbProductosMouseClicked
+
+    private void cmbProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductosActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_cmbProductosActionPerformed
+
+    private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
+        // TODO add your handling code here:
+        double precio = Double.parseDouble(txtPrecio.getText());
+        double cantidad = Double.parseDouble(txtCantidad.getText());
+        if(txtCantidad.getText().isEmpty())
+        txtSubTotal.setText((precio * cantidad) + "");
+    }//GEN-LAST:event_txtCantidadKeyReleased
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+        Producto p1 = new Producto();
+        p.setId(Integer.parseInt(lProductos.get(this.productoSelccionado())[0]));    
+        p.setNombre(lProductos.get(this.productoSelccionado())[1]));
+        p.setPrecio(Double.parseDouble(lProductos.get(this.productoSelccionado())[2]));   
+        DetalleFactura df = new DetalleFactura();
+        df.setCantidad(Integer.parseInt(txtCantidad.getText()));
+        df.setSubtotal(Double.parseDouble(txtSubtotal.getText()));
+        lDF.add(df);
+        txtADetalle.addapend(df.toString());
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
     private void mostrarClientes() {
         cmbClientes.removeAllItems();
-        ClienteControlador ct = new ClienteControlador();
-        ArrayList<String[]> clientes = ct.obtenerClientes();
-        
+        ClienteControlador p = new ClienteControlador();
+        ArrayList<String[]> clientes = p.obtenerClientes();
+
         for (int i = 0; i < clientes.size(); i++) {
             cmbClientes.addItem(clientes.get(i)[1]);
         }
     }
-    
+
     private void listarProductos() {
         cmbProductos.removeAllItems();
-        ProductoControlador pc1= new ProductoControlador();
-        ArrayList<String[]> lProducto = pc1.obtenerProductos();
-        
-        for(String[] producto : lProducto){ 
+        ProductoControlador pc1 = new ProductoControlador();
+        lProducto = pc1.obtenerProductos();
+
+        for (String[] producto : lProducto) {
             cmbProductos.addItem(producto[1]);
         }
     }
     
-    
+    public int productoSeleccionado(){
+        if (lProducto != null || !lProducto.isEmpty()) {
+            return cmbProductos.getSelectecIndex();
+            }
+        return -1;
+    }
+
+    public void limpiarDetalle () {
+        txtPrecio.setText("");
+        txtCantidad.setText("");
+        txtSubtotal.setText("");
+    }
+
     /**
      * @param args the command line arguments
      */

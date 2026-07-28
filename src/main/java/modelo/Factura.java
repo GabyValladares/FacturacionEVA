@@ -78,6 +78,11 @@ dinámica List<DetalleFactura> con los artículos agregados. */
         
         return this.calcularSubTotal()*0.15-calcularDescuento();
     }
+
+    @Override
+    public String toString() {
+        return producto.getNombre() + "-" + get.Precio() + "-" + cantidad + "-" + subtotal;
+    }
     
     
 }
