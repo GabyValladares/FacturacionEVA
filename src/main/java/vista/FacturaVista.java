@@ -4,6 +4,11 @@
  */
 package vista;
 
+import controlador.ClienteControlador;
+import controlador.ProductoControlador;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author hp
@@ -13,9 +18,34 @@ public class FacturaVista extends javax.swing.JFrame {
     /**
      * Creates new form FacturaVista
      */
+    
     public FacturaVista() {
-        initComponents();
+    initComponents();
+    cargarProductos();
+    cargarClientes();
+}
+
+public void cargarProductos() {
+    ProductoControlador pc = new ProductoControlador();
+    ArrayList<String[]> lista = pc.obtenerProductos();
+
+    cmbProductos.removeAllItems();
+
+    for (String[] producto : lista) {
+        cmbProductos.addItem(producto[1]);
     }
+}
+
+public void cargarClientes() {
+    ClienteControlador cc = new ClienteControlador();
+    ArrayList<String[]> lista = cc.obtenerCliente();
+
+    cmbClientes.removeAllItems();
+
+    for (String[] producto : lista) {
+        cmbClientes.addItem(producto[1]);
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -53,10 +83,20 @@ public class FacturaVista extends javax.swing.JFrame {
         lblNombres.setText("Nombres:");
 
         cmbClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbClientesActionPerformed(evt);
+            }
+        });
 
         lblFecha.setText("Fecha:");
 
         cmbProductos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbProductosActionPerformed(evt);
+            }
+        });
 
         lblDetalle.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblDetalle.setText("DETALLE DE LOS PRODUCTOS");
@@ -175,6 +215,19 @@ public class FacturaVista extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    
+    
+    private void cmbClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClientesActionPerformed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_cmbClientesActionPerformed
+
+    private void cmbProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductosActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_cmbProductosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,6 +263,8 @@ public class FacturaVista extends javax.swing.JFrame {
             }
         });
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
