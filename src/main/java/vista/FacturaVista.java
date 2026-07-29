@@ -242,6 +242,7 @@ public class FacturaVista extends javax.swing.JFrame {
         for (String[] producto : productos) {
             cmbProductos.addItem(producto[1] + " " + producto[2]);
         }
+        
     }//GEN-LAST:event_cmbProductosActionPerformed
 
     private void btnPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPDFActionPerformed
