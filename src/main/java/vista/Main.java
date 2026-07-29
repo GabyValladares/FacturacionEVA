@@ -33,7 +33,7 @@ public class Main {
 
         //PRODUCTO
         ProductoControlador pc = new ProductoControlador();
-        ArrayList<String[]> productos = pc.obtenerProductos();
+        ArrayList<String[]> productos = pc.obtenerProductosMarca(0);
         Object[] nombreProductos = new Object[productos.size()];
 
         for (int i = 0; i < productos.size(); i++) {

@@ -430,7 +430,7 @@ public class FacturaVista extends javax.swing.JFrame {
 
     private void cargarProducto() {
         ProductoControlador pc = new ProductoControlador();
-        listaProducto = pc.obtenerProductos();
+        listaProducto = pc.obtenerProductosMarca(WIDTH);
 
         for (String[] producto : listaProducto) {
             Producto p = new Producto();

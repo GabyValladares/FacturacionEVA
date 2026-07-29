@@ -1,21 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package controlador;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JComboBox;
 
-/**
- *
- * @author Asus
- */
-public class ProductoControlador {
-     //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
+public class MarcasControlador {
+       //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
     ConexionBDD conectar = new ConexionBDD();
     //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
     Connection conectado = (Connection) conectar.conectar();
@@ -24,25 +19,20 @@ public class ProductoControlador {
     //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
 
-    //MÉTODOS DE TRANSACCIONABILIDAD
-    
- 
-
-    public ArrayList<String[]> obtenerProductosMarca(int id) {
+    public ArrayList<String[]> obtenerMarcas() {
         ArrayList<String[]> lregistros = new ArrayList<>();
 
         try {
-            String sentenciaSQL = "call sp_consultaMarca('"+id+"')";
+            String sentenciaSQL = "select*from marcas";
             ejecutar = conectado.prepareCall(sentenciaSQL);
             ResultSet res = ejecutar.executeQuery();
 
             while (res.next()) {
-                String[] listaProductos = new String[4];
-                listaProductos[0] = res.getInt("id")+"";
-                listaProductos[1] = res.getString("nombre");
-                listaProductos[2] = res.getString("precio");
-                listaProductos[3] = res.getString("marca");
-                lregistros.add(listaProductos);
+                String[] listaMarcas = new String[3];
+                listaMarcas[0] = res.getInt("id_marca")+"";
+                listaMarcas[1] = res.getString("nombre");
+                listaMarcas[2] = res.getString("contacto");
+                lregistros.add(listaMarcas);
             }
             res.close();
             ejecutar.close();
@@ -55,4 +45,5 @@ public class ProductoControlador {
     }
     
     
+
 }
