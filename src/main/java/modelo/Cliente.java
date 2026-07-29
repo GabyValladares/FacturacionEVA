@@ -14,15 +14,19 @@ public abstract class Cliente {
     private String nombre;
     private String email;
     private String telefono;
+    private String tipoCliente;
+    private double descuentoVip;
 
     public Cliente() {
     }
 
-    public Cliente(int id, String nombre, String email, String telefono) {
+    public Cliente(int id, String nombre, String email, String telefono, String tipoCliente, double descuentoVip) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.telefono = telefono;
+        this.tipoCliente = tipoCliente;
+        this.descuentoVip = descuentoVip;
     }
 
     public int getId() {
@@ -56,6 +60,16 @@ public abstract class Cliente {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
+    public String getTipoCliente() {
+        return tipoCliente;
+    }
+
+    public void setTipoCliente(String tipoCliente) {
+        this.tipoCliente = tipoCliente;
+    }
+
+    
     
     public abstract double calcularDescuento(double subtotal);
 }
