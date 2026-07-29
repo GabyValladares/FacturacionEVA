@@ -15,71 +15,64 @@ import javax.swing.JOptionPane;
  * @author Justin
  */
 public class Main {
+
     public static void main(String[] args) {
 
-        // Conectar a la base de datos
+        // Conexion a la BDD
         ConexionBDD conexion = new ConexionBDD();
         conexion.conectar();
 
-        // Crear controlador
+        // PRODUCTOS
         ProductoControlador productoControlador = new ProductoControlador();
 
-        // Obtener productos
-        ArrayList<String[]> listaProductos = productoControlador.obtenerProductos();
+        ArrayList<String[]> productos = productoControlador.obtenerProductos();
 
-        // Verificar si existen productos
-        if (listaProductos.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No existen productos registrados");
-            return;
+        if (productos.isEmpty()) {
+
+            JOptionPane.showMessageDialog(null,
+                    "No existen productos registrados");
+
+        } else {
+
+            String listaProductos = "LISTA DE PRODUCTOS\n\n";
+
+            for (int i = 0; i < productos.size(); i++) {
+
+                listaProductos += (i + 1) + ". "
+                        + productos.get(i)[1]
+                        + "\n";
+
+            }
+
+            JOptionPane.showMessageDialog(null, listaProductos);
+
         }
 
-        // Mostrar Joption
-        Object[] productos = new Object[listaProductos.size()];
+        // CLIENTES
+        ClienteControlador clienteControlador = new ClienteControlador();
 
-        int indice = 0;
+        ArrayList<String[]> clientes = clienteControlador.obtenerClientes();
 
-        for (String[] producto : listaProductos) {
+        if (clientes.isEmpty()) {
 
-            productos[indice] = producto[1];
+            JOptionPane.showMessageDialog(null,
+                    "No existen clientes registrados");
 
-            System.out.println(
-                    producto[0]
-                    + " - "
-                    + producto[1]
-                    + " | Precio: $" + producto[2]);
+        } else {
 
-            indice++;
+            String listaClientes = "LISTA DE CLIENTES\n\n";
+
+            for (int i = 0; i < clientes.size(); i++) {
+
+                listaClientes += (i + 1) + ". "
+                        + clientes.get(i)[1]
+                        + "\n";
+
+            }
+
+            JOptionPane.showMessageDialog(null, listaClientes);
+
         }
 
-        // Mostrar lista de productos
-        String productoElegido = (String) JOptionPane.showInputDialog(
-                null,
-                "Escoja un producto",
-                "Lista de Productos",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                productos,
-                productos[0]
-        );
-
-        // Si el usuario presiona Cancelar
-        if (productoElegido == null) {
-            return;
-        }
-
-        JOptionPane.showMessageDialog(
-                null,
-                "El producto escogido es: " + productoElegido);
-    
-     ClienteControlador pc = new ClienteControlador();
-        ArrayList<String[]> clientes = pc.obtenerClientes();
-        String lista1 = "LISTA DE CLIENTES\n\n";
-
-        for (int i = 0; i < clientes.size(); i++) {
-            lista1 += (i + 1) + ". " + clientes.get(i)[1] + " - " + clientes.get(i)[2] + "\n";
-        }
-        JOptionPane.showMessageDialog(null, lista1);
-    
-      
     }
 }

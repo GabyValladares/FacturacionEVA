@@ -15,6 +15,7 @@ import java.util.ArrayList;
  * @author Justin
  */
 public class ProductoControlador {
+
     // Conexión
     ConexionBDD conexion = new ConexionBDD();
     Connection conectado = conexion.conectar();
@@ -43,6 +44,7 @@ public class ProductoControlador {
                 producto[2] = String.valueOf(resultado.getDouble("precio"));
 
                 listaProductos.add(producto);
+
             }
 
         } catch (SQLException e) {
@@ -61,18 +63,16 @@ public class ProductoControlador {
                     ejecutar.close();
                 }
 
-                if (conectado != null) {
-                    conectado.close();
-                }
-
             } catch (SQLException e) {
 
                 System.out.println("Error al cerrar recursos: " + e.getMessage());
 
             }
+
         }
+
         return listaProductos;
-        
+
     }
-    
+
 }
