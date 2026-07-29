@@ -26,33 +26,55 @@ public class ProductoControlador {
 
     //MÉTODOS DE TRANSACCIONABILIDAD
     
- 
-
     public ArrayList<String[]> obtenerProductos() {
         ArrayList<String[]> lregistros = new ArrayList<>();
-
         try {
             String sentenciaSQL = "select *from productos;";
             ejecutar = conectado.prepareCall(sentenciaSQL);
             ResultSet res = ejecutar.executeQuery();
-
+            
             while (res.next()) {
-                String[] listaProductos = new String[3];
-                listaProductos[0] = res.getInt("id_producto") + "";
-                listaProductos[1] = res.getString("nombre");
-                listaProductos[2] = res.getString("precio");
-                lregistros.add(listaProductos);
-
+                String[] listaProducto = new String[3];
+                listaProducto[0] = res.getInt("id_producto") + "";
+                listaProducto[1] = res.getString("nombre");
+                listaProducto[2] = res.getString("precio");
+                lregistros.add(listaProducto);
             }
-
-            ejecutar.close();
+             ejecutar.close();
             conectado.close();
             return lregistros;
         } catch (SQLException e) {
             System.out.println("------" + e);
         }
-        return lregistros;
+            return lregistros;
+    
     }
+
+//    public ArrayList<String[]> obtenerProductos() {
+//        ArrayList<String[]> lregistros = new ArrayList<>();
+//
+//        try {
+//            String sentenciaSQL = "select *from productos;";
+//            ejecutar = conectado.prepareCall(sentenciaSQL);
+//            ResultSet res = ejecutar.executeQuery();
+//
+//            while (res.next()) {
+//                String[] listaProductos = new String[3];
+//                listaProductos[0] = res.getInt("id_producto") + "";
+//                listaProductos[1] = res.getString("nombre");
+//                listaProductos[2] = res.getString("precio");
+//                lregistros.add(listaProductos);
+//
+//            }
+//
+//            ejecutar.close();
+//            conectado.close();
+//            return lregistros;
+//        } catch (SQLException e) {
+//            System.out.println("------" + e);
+//        }
+//        return lregistros;
+//    }
     
     
 }

@@ -19,8 +19,8 @@ public class ClienteVIP extends Cliente {
         this.porcentajeFidelidad = porcentajeFidelidad;
     }
 
-    public ClienteVIP(double porcentajeFidelidad, int id, String nombre, String email, String telefono) {
-        super(id, nombre, email, telefono);
+    public ClienteVIP(double porcentajeFidelidad, int id, String nombre, String email, String telefono, String cedula, String direccion) {
+        super(id, nombre, email, telefono, cedula, direccion);
         this.porcentajeFidelidad = porcentajeFidelidad;
     }
 
