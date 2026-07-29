@@ -15,7 +15,8 @@ import java.util.ArrayList;
  * @author Asus
  */
 public class ProductoControlador {
-     //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
+    //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
+
     ConexionBDD conectar = new ConexionBDD();
     //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
     Connection conectado = (Connection) conectar.conectar();
@@ -25,9 +26,6 @@ public class ProductoControlador {
     ResultSet resultado;
 
     //MÉTODOS DE TRANSACCIONABILIDAD
-    
- 
-
     public ArrayList<String[]> obtenerProductos() {
         ArrayList<String[]> lregistros = new ArrayList<>();
 
@@ -53,6 +51,8 @@ public class ProductoControlador {
         }
         return lregistros;
     }
+
     
+
     
 }
