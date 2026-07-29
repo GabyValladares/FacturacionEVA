@@ -8,6 +8,7 @@ package modelo;
  *
  * @author hp
  */
+
 public class ClienteVIP extends Cliente {
 
     private double porcentajeFidelidad;
@@ -19,8 +20,8 @@ public class ClienteVIP extends Cliente {
         this.porcentajeFidelidad = porcentajeFidelidad;
     }
 
-    public ClienteVIP(double porcentajeFidelidad, int id, String nombre, String email, String telefono) {
-        super(id, nombre, email, telefono);
+    public ClienteVIP(double porcentajeFidelidad, int id, String cedula, String nombre, String email, String telefono, String direccion) {
+        super(id, cedula, nombre, email, telefono, direccion);
         this.porcentajeFidelidad = porcentajeFidelidad;
     }
 
@@ -32,12 +33,9 @@ public class ClienteVIP extends Cliente {
         this.porcentajeFidelidad = porcentajeFidelidad;
     }
 
-    
     @Override
     public double calcularDescuento(double subtotal) {
-        //Posee el atributo extra porcentajeFidelidad (double). Aplica un descuento directo según este porcentaje sobre cualquier monto.
-        return subtotal*porcentajeFidelidad;
-    
+        return subtotal * porcentajeFidelidad;
     }
 
 }

@@ -12,8 +12,8 @@ public class Producto {
     //Contiene id, nombre y precio.
     private int id_prod;
     private String nombre;
-    private double precio;
-
+    public double precio;
+    private Marcas Marcas;
     public Producto() {
     }
 
