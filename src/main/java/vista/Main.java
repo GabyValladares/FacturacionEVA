@@ -24,24 +24,24 @@ public class Main {
         prueba.conectar();
         
         //Read productos
-        ProductoControlador pcd = new ProductoControlador();
-        ArrayList<String[]> lProductos = pcd.obtenerProductos();
-        Object[] prod = new Object[lProductos.size()];
-        int i = 0;//contador que empieza en 0
-            for(String[] Producto : lProductos){ //recorre la lista paises, caja por caja
-            prod[i] = Producto[1]; //guarda el nombre en la posición i
-                System.out.println("-----" + Producto[1] + " | Precio: " + Producto[2]);
-            i++; //avanza a la siguiente posición
-//             JOptionPane.showMessageDialog(null,producto[i]);
-        }  
-        String productoElegido = (String) JOptionPane.showInputDialog(null,
-        "Escoga un producto",
-        "Lista de producto",
-        JOptionPane.QUESTION_MESSAGE,
-        null,
-        prod,
-        prod[0]);
-        JOptionPane.showInternalMessageDialog(null, "El producto escogido es: " + productoElegido);    
+//        ProductoControlador pcd = new ProductoControlador();
+//        ArrayList<String[]> lProductos = pcd.obtenerProductos();
+//        Object[] prod = new Object[lProductos.size()];
+//        int i = 0;//contador que empieza en 0
+//            for(String[] Producto : lProductos){ //recorre la lista paises, caja por caja
+//            prod[i] = Producto[1]; //guarda el nombre en la posición i
+//                System.out.println("-----" + Producto[1] + " | Precio: " + Producto[2]);
+//            i++; //avanza a la siguiente posición
+////             JOptionPane.showMessageDialog(null,producto[i]);
+//        }  
+//        String productoElegido = (String) JOptionPane.showInputDialog(null,
+//        "Escoga un producto",
+//        "Lista de producto",
+//        JOptionPane.QUESTION_MESSAGE,
+//        null,
+//        prod,
+//        prod[0]);
+//        JOptionPane.showInternalMessageDialog(null, "El producto escogido es: " + productoElegido);    
 //            
 //       Read Clientes
 //        ClienteControlador c = new ClienteControlador();

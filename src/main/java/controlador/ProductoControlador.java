@@ -49,7 +49,35 @@ public class ProductoControlador {
         }
         return lregistros;
     }
-}         
+     public ArrayList<String[]> obtenerProductosPorMarca(int idMarca){
+        ArrayList<String[]> lregistros = new ArrayList<>();
+
+        try {
+            String sentenciaSQL = "select * from productos where id_marca = " +idMarca+ ";";
+            ejecutar = conectado.prepareCall(sentenciaSQL);
+            ResultSet res = ejecutar.executeQuery();
+
+            while (res.next()) {
+                String[] listaProductos = new String[4];
+                listaProductos[0] = res.getInt("id_prod") + "";
+                listaProductos[1] = res.getString("nombre");
+                listaProductos[2] = res.getDouble("precio") + "";
+                listaProductos[3] = res.getInt("id_marca") + "";
+                lregistros.add(listaProductos);
+
+            }
+
+            ejecutar.close();
+            conectado.close();
+            return lregistros;
+        } catch (SQLException e) {
+            System.out.println("------" + e);
+        }
+        return lregistros;
+     }
+}
+
+         
 
 
 

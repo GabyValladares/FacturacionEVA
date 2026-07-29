@@ -14,7 +14,9 @@ import javax.swing.DefaultComboBoxModel;
  * @author sebaa
  */
 public class ProductosVista extends javax.swing.JFrame {
+
     ArrayList<String[]> lM;
+    ArrayList<String[]> lP;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProductosVista.class.getName());
 
     /**
@@ -23,6 +25,7 @@ public class ProductosVista extends javax.swing.JFrame {
     public ProductosVista() {
         initComponents();
         seleccionarMarca();
+//        seleccionarProductos();
     }
 
     /**
@@ -34,7 +37,7 @@ public class ProductosVista extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbMarcas = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         lblProducto = new javax.swing.JLabel();
         lblTitulo = new javax.swing.JLabel();
@@ -43,8 +46,8 @@ public class ProductosVista extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
+        cmbMarcas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbMarcas.addActionListener(this::cmbMarcasActionPerformed);
 
         jLabel2.setText("MARCA");
 
@@ -84,7 +87,7 @@ public class ProductosVista extends javax.swing.JFrame {
                                 .addGap(165, 165, 165)
                                 .addComponent(lblProducto))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cmbMarcas, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(cmbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(166, 166, 166))))
@@ -103,47 +106,58 @@ public class ProductosVista extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbMarcas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(116, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void cmbMarcasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMarcasActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+        int indice = cmbMarcas.getSelectedIndex();
+        if (lM != null && !lM.isEmpty() && indice >= 0) {
+            int idMarca = Integer.parseInt(lM.get(indice)[0]);
+            seleccionarProductos(idMarca);
+        }
+    }//GEN-LAST:event_cmbMarcasActionPerformed
 
     private void cmbProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbProductosMouseClicked
         // TODO add your handling code here:
         //        if(lp != null || ! lp.isEmpty()){
-            //            int indice = cmbProductos.getSelectedIndex(); // index devuele la posicion y el item el nombre
-            //            if(indice >= 0) {
-                //                txtPrecio.setText(lp.get(indice)[2]);
-                //            }
-            //        }
+        //            int indice = cmbProductos.getSelectedIndex(); // index devuele la posicion y el item el nombre
+        //            if(indice >= 0) {
+        //                txtPrecio.setText(lp.get(indice)[2]);
+        //            }
+        //        }
     }//GEN-LAST:event_cmbProductosMouseClicked
 
     private void cmbProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductosActionPerformed
         // TODO add your handling code here:
-        //        if(lp != null || ! lp.isEmpty()){
-            //            int indice = cmbProductos.getSelectedIndex(); // index devuele la posicion y el item el nombre
-            //            if(indice >= 0) {
-//                int indice = this.productoSeleccionado();
-//                if(indice >= 0)
-//                txtPrecio.setText(lp.get(indice)[2]);
     }//GEN-LAST:event_cmbProductosActionPerformed
 
-    public void seleccionarMarca(){
-        MarcaControlador pdc = new MarcaControlador();
-        lM = pdc.obtenerMarcas();
+    public void seleccionarMarca() {
+        MarcaControlador marca = new MarcaControlador();
+        lM = marca.obtenerMarcas();
 
         DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>(); //modelo vacio
         for (String[] m : lM) {
-            modelo.addElement(m[1]); //solo saca el nombre del prod3
+            modelo.addElement(m[1]); //solo saca el nombre de la marca
+        }
+        cmbMarcas.setModel(modelo);
+    }
+
+    public void seleccionarProductos(int idMarca) {
+        ProductoControlador pdc = new ProductoControlador();
+        lP = pdc.obtenerProductosPorMarca(idMarca);
+
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>(); //modelo vacio
+        for (String[] m : lP) {
+            modelo.addElement(m[1]); //solo saca el nombre de la marca
         }
         cmbProductos.setModel(modelo);
     }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -167,8 +181,8 @@ public class ProductosVista extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cmbMarcas;
     private javax.swing.JComboBox<String> cmbProductos;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lblDetalle;
     private javax.swing.JLabel lblProducto;

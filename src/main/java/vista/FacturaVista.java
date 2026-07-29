@@ -22,7 +22,7 @@ public class FacturaVista extends javax.swing.JFrame {
     
     public FacturaVista() {
         initComponents();
-        cargarProductos();
+        //cargarProductos();
         cargarClientes();
     }
 //    public void cargarProductos(){
@@ -37,16 +37,16 @@ public class FacturaVista extends javax.swing.JFrame {
 //        }
 //        cmbProductos.setModel(pdc.obtenerProductos().get(0)[1]);
 //    }
-      public void cargarProductos() {
-        ProductoControlador pdc = new ProductoControlador();
-        lp = pdc.obtenerProductos();
-
-        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>(); //modelo vacio
-        for (String[] p : lp) {
-            modelo.addElement(p[1]); //solo saca el nombre del prod3
-        }
-        cmbProductos.setModel(modelo);
-      }
+//      public void cargarProductos() {
+//        ProductoControlador pdc = new ProductoControlador();
+//        lp = pdc.obtenerProductos();
+//
+//        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>(); //modelo vacio
+//        for (String[] p : lp) {
+//            modelo.addElement(p[1]); //solo saca el nombre del prod3
+//        }
+//        cmbProductos.setModel(modelo);
+//      }
          
         
              
