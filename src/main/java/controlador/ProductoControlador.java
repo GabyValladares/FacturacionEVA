@@ -20,17 +20,15 @@ public class ProductoControlador {
     //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
     
-    public ArrayList<String[]> obtenerProductos(int idMarca) {
+    public ArrayList<String[]> obtenerProductos() {
 
     ArrayList<String[]> lista = new ArrayList<>();
 
     try {
 
-        String sql = "SELECT id, nombre, precio, id_marca FROM producto WHERE id_marca = ?";
+        String sql = "SELECT id, nombre, precio, id_marca FROM producto ";
 
         ejecutar = conectado.prepareStatement(sql);
-        ejecutar.setInt(1, idMarca);
-
         ResultSet res = ejecutar.executeQuery();
 
         while (res.next()) {
