@@ -13,14 +13,16 @@ public class Producto {
     private int id;
     private String nombre;
     private double precio;
+    private Marca marca;
 
     public Producto() {
     }
 
-    public Producto(int id, String nombre, double precio) {
+    public Producto(int id, String nombre, double precio, Marca marca) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
+        this.marca = marca;
     }
 
     public int getId() {
@@ -45,6 +47,19 @@ public class Producto {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", marca=" + marca + '}';
     }
     
      
