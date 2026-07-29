@@ -37,7 +37,7 @@ public class ClienteControlador {
             ResultSet res = ejecutar.executeQuery();
 
             while (res.next()) {
-                String[] listaClientes = new String[6];
+                String[] listaClientes = new String[9];
                 listaClientes[0] = res.getInt("id_cliente") + "";
                 listaClientes[1] = res.getString("nombre");
                 listaClientes[2] = res.getString("email");
@@ -45,6 +45,9 @@ public class ClienteControlador {
                 listaClientes[4] = res.getString("tipo_cliente");
                 listaClientes[5] = res.getDouble("descuento_vip")+"";
                 lregistros.add(listaClientes);
+                listaClientes[6] = res.getString("cedula");
+                listaClientes[7] = res.getString("direccion");
+                listaClientes[8] = res.getString("ciudad");
 
             }
 
