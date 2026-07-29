@@ -1,105 +1,86 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package controlador;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList; 
-import java.util.List;      
-import javax.swing.JOptionPane;
+import java.util.ArrayList;
+import java.util.List;
 import modelo.Producto;
 
-public class ProductoControlador { 
+/**
+ *
+ * @author hp
+ */
+public class ProductoControlador {
 
-    public List<Producto> obtenerTodosProductos() {
-        List<Producto> listaProductos = new ArrayList<>();
-        String sentenciaSQL = "SELECT * FROM productos";
+    // Instanciamos la clase de conexión
+    ConexionBDD conectar = new ConexionBDD();
+
+    // MÉTODOS DE TRANSACCIONABILIDAD
+
+    public ArrayList<String[]> obtenerProductos() {
+        ArrayList<String[]> lregistros = new ArrayList<>();
 
         try {
-           
-            ConexionBDD conexionBDD = new ConexionBDD();
-            Connection conectado = conexionBDD.conectar();         
+            Connection conectado = conectar.conectar();
+            String sentenciaSQL = "select * from productos;";
             PreparedStatement ejecutar = conectado.prepareStatement(sentenciaSQL);
-            ResultSet rs = ejecutar.executeQuery();       
-            
-            while (rs.next()) {
-                int id = rs.getInt("id_producto");
-                String nombre = rs.getString("nombre");
-                double precio = rs.getDouble("precio");
-                Producto producto = new Producto(id, nombre, precio);
-                listaProductos.add(producto);
-            }
-            rs.close();
-            ejecutar.close();
-            if (conectado != null) {
-                conectado.close();
+            ResultSet res = ejecutar.executeQuery();
+
+            while (res.next()) {
+                String[] listaProductos = new String[3];
+                listaProductos[0] = res.getInt("id_producto") + "";
+                listaProductos[1] = res.getString("nombre");
+                listaProductos[2] = res.getString("precio");
+                lregistros.add(listaProductos);
             }
 
+            res.close();
+            ejecutar.close();
+            conectado.close();
+
         } catch (SQLException e) {
-            // Capturar error y notificar
-            JOptionPane.showMessageDialog(null, 
-                "Comuníquese con el Administrador para solicitar ayuda", 
-                "Error BDD", 
-                JOptionPane.ERROR_MESSAGE);
-            System.out.println("--------------- Error SQL: " + e.getMessage());
+            System.out.println("Error en obtenerProductos: " + e);
+        }
+        return lregistros;
+    }
+
+    // MÉTODO IMPLEMENTADO PARA RETORNAR LISTA DE OBJETOS PRODUCTO
+    public List<Producto> obtenerTodosProductos() {
+        List<Producto> listaProductos = new ArrayList<>();
+        String sentenciaSQL = "select * from productos;";
+
+        try {
+            // Abrimos la conexión localmente para evitar errores de conexión cerrada
+            Connection conectado = conectar.conectar();
+            PreparedStatement ejecutar = conectado.prepareStatement(sentenciaSQL);
+            ResultSet res = ejecutar.executeQuery();
+
+            while (res.next()) {
+                Producto prod = new Producto();
+                
+                // Mapeamos las columnas de la tabla 'productos' a las propiedades del objeto
+                prod.setId(res.getInt("id_producto"));
+                prod.setNombre(res.getString("nombre"));
+                prod.setPrecio(res.getDouble("precio"));
+
+                listaProductos.add(prod);
+            }
+
+            // Cerramos los recursos de esta consulta
+            res.close();
+            ejecutar.close();
+            conectado.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener la lista de productos: " + e);
         }
 
         return listaProductos;
     }
 }
-
-// public void insertarDetalleFactura(Pais p) {
-
-////        //1.- UTILIZAR EXCEPCIÓN
-
-////        try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
-
-////            String sentenciaSQL = "INSERT INTO Paises(nombre,capital)values "
-
-////                    + "('" + p.getNombre() + "','" + p.getCapital() + "');";
-
-////            ejecutar = conectado.prepareCall(sentenciaSQL);
-
-////            //TODA INSERCIÓN DEVUELVE UN ESTADO >0 CUANDO FUE FAVORABLE Y MENOR A O CUANDO NO SE REALIZÓ 
-
-////            int res = ejecutar.executeUpdate();
-
-////            if (res > 0) {
-
-////                JOptionPane.showMessageDialog(null,
-
-////                        "País Creado con éxito");
-
-////                ejecutar.close();
-
-////            } else {
-
-////                JOptionPane.showMessageDialog(null,
-
-////                        "El País no ha sido creado,"
-
-////                        + " revise que los datos ingresados sean correctos");
-
-////            }
-
-////            conectado.close();
-
-////
-
-////        } catch (SQLException e) {
-
-////            //CAPTURAR PARA DARLE UN TRATAMIENTO 
-
-////            JOptionPane.showMessageDialog(null,
-
-////                    "Comuniquese con el Administrador para solicitar ayuda");
-
-////            System.out.println("---------------" + e);
-
-////        }
-
-////
-
-////    }
-
-////
