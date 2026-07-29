@@ -1,6 +1,8 @@
 package vista;
 
 import controlador.ClienteControlador;
+import modelo.Marca;
+import controlador.MarcaControlador;
 import controlador.ProductoControlador;
 import java.util.ArrayList;
 import javax.swing.ComboBoxModel;
@@ -15,8 +17,10 @@ import modelo.Producto;
 public class FacturaVista extends javax.swing.JFrame {
 
     ArrayList<String[]> lProducto = new ArrayList<>();
-    ArrayList<DetalleFactura> lDF= new ArrayList<>();
+    ArrayList<DetalleFactura> lDF = new ArrayList<>();
     ArrayList<String[]> lCliente = new ArrayList<>();
+    ArrayList<String[]> lMarca = new ArrayList<>();
+
     /**
      * Creates new form FacturaVista
      */
@@ -24,6 +28,7 @@ public class FacturaVista extends javax.swing.JFrame {
         initComponents();
         listarProductos();
         mostrarClientes();
+        listarMarcas();
     }
 
     /**
@@ -67,7 +72,7 @@ public class FacturaVista extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        lblTitulo.setText("GESTIÓN DE FACTURAS");
+        lblTitulo.setText("GESTION DE FACTURAS");
 
         lblNombres.setText("Nombres:");
 
@@ -144,13 +149,13 @@ public class FacturaVista extends javax.swing.JFrame {
 
         btnPDF.setText("GENERAR PDF");
 
-        lblCedula.setText("CÉDULA");
+        lblCedula.setText("CEDULA");
 
-        lblDireccion.setText("DIRECCIÓN");
+        lblDireccion.setText("DIRECCION");
 
         lblEmail.setText("EMAIL");
 
-        lblTelefono.setText("TELÉFONO");
+        lblTelefono.setText("TELEFONO");
 
         txtCedula.setEditable(false);
         txtCedula.addActionListener(new java.awt.event.ActionListener() {
@@ -176,6 +181,14 @@ public class FacturaVista extends javax.swing.JFrame {
         txtTelefono.setEditable(false);
 
         cmbMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbMarca.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cmbMarcaMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                cmbMarcaMouseReleased(evt);
+            }
+        });
         cmbMarca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbMarcaActionPerformed(evt);
@@ -343,10 +356,10 @@ public class FacturaVista extends javax.swing.JFrame {
 
     private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
         // TODO add your handling code here:
-        if(!txtCantidad.getText().isEmpty()) {
-        double precio = Double.parseDouble(txtPrecio.getText());
-        int cantidad = Integer.parseInt(txtCantidad.getText());
-        txtSubTotal.setText((precio * cantidad) + "");
+        if (!txtCantidad.getText().isEmpty()) {
+            double precio = Double.parseDouble(txtPrecio.getText());
+            int cantidad = Integer.parseInt(txtCantidad.getText());
+            txtSubTotal.setText((precio * cantidad) + "");
         }
     }//GEN-LAST:event_txtCantidadKeyReleased
 
@@ -361,12 +374,12 @@ public class FacturaVista extends javax.swing.JFrame {
         dF.setProducto(p);
         dF.setCantidad(Integer.parseInt(txtCantidad.getText()));
         dF.setSubtotal(Double.parseDouble(txtSubTotal.getText()));
-        //Añado a la lista dinámica 
+        //AÃ±ado a la lista dinÃ¡mica 
         lDF.add(dF);
         //muestro en la vista en el TextArea
         txtADetalle.append(dF.toString());
         this.limpiarDetalle();
-        
+
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void txtSubTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSubTotalActionPerformed
@@ -384,7 +397,7 @@ public class FacturaVista extends javax.swing.JFrame {
     private void cmbClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClientesActionPerformed
         // TODO add your handling code here:
         int indice = cmbClientes.getSelectedIndex();
-        if(indice != -1) {
+        if (indice != -1) {
             txtEmail.setText(lCliente.get(indice)[2]);
             txtTelefono.setText(lCliente.get(indice)[3]);
             txtCedula.setText(lCliente.get(indice)[4]);
@@ -398,7 +411,30 @@ public class FacturaVista extends javax.swing.JFrame {
 
     private void cmbMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMarcaActionPerformed
         // TODO add your handling code here:
+        int m1 = this.marcaSeleccionada();
+        if (m1 > -1) {
+            int idm = Integer.parseInt(lMarca.get(m1)[0]);
+            ProductoControlador p1 = new ProductoControlador();
+            ArrayList<String[]> lm = p1.obtenerProductosMarca(idm);
+
+            cmbProductos.removeAllItems();
+
+            for (String[] producto : lm) {
+                cmbProductos.addItem(producto[1]);
+                System.out.println("----" + producto[1]);
+            }
+        }
     }//GEN-LAST:event_cmbMarcaActionPerformed
+
+    private void cmbMarcaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbMarcaMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_cmbMarcaMouseClicked
+
+    private void cmbMarcaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbMarcaMouseReleased
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_cmbMarcaMouseReleased
 //    public void cargarProductos() {
 //        ProductoControlador pc = new ProductoControlador();
 //        lP = pc.obtenerProductos();
@@ -413,7 +449,17 @@ public class FacturaVista extends javax.swing.JFrame {
 //
 //    }
 
-     private void listarProductos() {
+    private void listarMarcas() {
+        cmbMarca.removeAllItems();
+        MarcaControlador mc = new MarcaControlador();
+        lMarca = mc.obtenerMarcas();
+
+        for (String[] producto : lMarca) {
+            cmbMarca.addItem(producto[1]);
+        }
+    }
+
+    private void listarProductos() {
         cmbProductos.removeAllItems();
         ProductoControlador pc1 = new ProductoControlador();
         lProducto = pc1.obtenerProductos();
@@ -422,6 +468,7 @@ public class FacturaVista extends javax.swing.JFrame {
             cmbProductos.addItem(producto[1]);
         }
     }
+
     private void mostrarClientes() {
         cmbClientes.removeAllItems();
         ClienteControlador p = new ClienteControlador();
@@ -452,11 +499,21 @@ public class FacturaVista extends javax.swing.JFrame {
         return -1;
 
     }
-    public void limpiarDetalle(){
+
+    public int marcaSeleccionada() {
+        if (lMarca != null || !lMarca.isEmpty()) {
+            return cmbMarca.getSelectedIndex();
+        }
+        return -1;
+
+    }
+
+    public void limpiarDetalle() {
         txtPrecio.setText("");
         txtCantidad.setText("");
         txtSubTotal.setText("");
     }
+
     /**
      * @param args the command line arguments
      */

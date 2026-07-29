@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author hp
  */
 public class ProductoControlador {
-     //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
+     //INSTANCIAR LA CONEXIÃ“N A LA BASE DE DATOS
     ConexionBDD conectar = new ConexionBDD();
     //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
     Connection conectado = (Connection) conectar.conectar();
@@ -24,7 +24,7 @@ public class ProductoControlador {
     //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
 
-    //MÉTODOS DE TRANSACCIONABILIDAD
+    //METODOS DE TRANSACCIONABILIDAD
     
     public ArrayList<String[]> obtenerProductos() {
         ArrayList<String[]> lregistros = new ArrayList<>();
@@ -39,6 +39,30 @@ public class ProductoControlador {
                 listaProducto[1] = res.getString("nombre");
                 listaProducto[2] = res.getString("precio");
                 lregistros.add(listaProducto);
+            }
+             ejecutar.close();
+            conectado.close();
+            return lregistros;
+        } catch (SQLException e) {
+            System.out.println("------" + e);
+        }
+            return lregistros;
+    
+    }
+    
+    public ArrayList<String[]> obtenerProductosMarca(int m) {
+        ArrayList<String[]> lregistros = new ArrayList<>();
+        try {
+            String sentenciaSQL = "select id_producto, nombre, precio from productos where id_marca = '"+ m +"';";
+            ejecutar = conectado.prepareCall(sentenciaSQL);
+            ResultSet res = ejecutar.executeQuery();
+            
+            while (res.next()) {
+                String[] listaProductoMarca = new String[3];
+                listaProductoMarca[0] = res.getInt("id_producto") + "";
+                listaProductoMarca[1] = res.getString("nombre");
+                listaProductoMarca[2] = res.getString("precio");
+                lregistros.add(listaProductoMarca);
             }
              ejecutar.close();
             conectado.close();

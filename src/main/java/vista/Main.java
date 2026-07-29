@@ -6,6 +6,7 @@ package vista;
 
 import controlador.ClienteControlador;
 import controlador.ConexionBDD;
+import controlador.MarcaControlador;
 import controlador.ProductoControlador;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -22,24 +23,24 @@ public class Main {
         ConexionBDD conx = new ConexionBDD();
         conx.conectar();
     
-        ProductoControlador pc1= new ProductoControlador();
-        ArrayList<String[]> lProducto = pc1.obtenerProductos();
-        Object[] nombre = new Object[lProducto.size()];
-        
-        int i = 0;
-            for(String[] producto : lProducto){ 
-            nombre[i] = producto[1]; 
-            i++;
-        }    
-        
-        String productoElegido = (String) JOptionPane.showInputDialog(null,
-        "Ingrese su producto",
-        "Lista de Productos",
-        JOptionPane.QUESTION_MESSAGE,
-        null,
-        nombre,
-        nombre[0]);
-        JOptionPane.showInternalMessageDialog(null, "Producto seleccionado: " + productoElegido);
+//        ProductoControlador pc1= new ProductoControlador();
+//        ArrayList<String[]> lProducto = pc1.obtenerProductos();
+//        Object[] nombre = new Object[lProducto.size()];
+//        
+//        int i = 0;
+//            for(String[] producto : lProducto){ 
+//            nombre[i] = producto[1]; 
+//            i++;
+//        }    
+//        
+//        String productoElegido = (String) JOptionPane.showInputDialog(null,
+//        "Ingrese su producto",
+//        "Lista de Productos",
+//        JOptionPane.QUESTION_MESSAGE,
+//        null,
+//        nombre,
+//        nombre[0]);
+//        JOptionPane.showInternalMessageDialog(null, "Producto seleccionado: " + productoElegido);
     
     
         //PRODUCTO
@@ -65,25 +66,45 @@ public class Main {
        
        //CLIENTE
        
-        ClienteControlador cc=new ClienteControlador();
-         
-                
-         ArrayList<String[]>clientes= cc.obtenerClientes();
-        Object[] nombreClientes=new Object[clientes.size()];
+//        ClienteControlador cc=new ClienteControlador();
+//         
+//                
+//         ArrayList<String[]>clientes= cc.obtenerClientes();
+//        Object[] nombreClientes=new Object[clientes.size()];
+//        
+//            for (int j = 0; j <clientes.size(); j++) {
+//                nombreClientes[j]=clientes.get(j)[1];
+//              // System.out.println("-------"+clientes.get(1)[2]);
+//                          
+//        }
+//       JOptionPane.showInputDialog(
+//                null, 
+//                "Selecciona el cliente:", 
+//                "Lista Desplegable", 
+//                JOptionPane.QUESTION_MESSAGE, 
+//                null, 
+//                nombreClientes, 
+//                nombreClientes[0]); // El último valor es la opción seleccionada por defecto
+       
+       //MARCA
+       MarcaControlador mc1= new MarcaControlador();
+        ArrayList<String[]> lMarca = mc1.obtenerMarcas();
+        Object[] nombreMarcas = new Object[lMarca.size()];
         
-            for (int j = 0; j <clientes.size(); j++) {
-                nombreClientes[j]=clientes.get(j)[1];
-              // System.out.println("-------"+clientes.get(1)[2]);
-                          
-        }
-       JOptionPane.showInputDialog(
-                null, 
-                "Selecciona el cliente:", 
-                "Lista Desplegable", 
-                JOptionPane.QUESTION_MESSAGE, 
-                null, 
-                nombreClientes, 
-                nombreClientes[0]); // El último valor es la opción seleccionada por defecto
+        int m = 0;
+            for(String[] marca : lMarca){ 
+            nombreMarcas[m] = marca[1]; 
+            m++;
+        }    
+        
+        String marcaElegido = (String) JOptionPane.showInputDialog(null,
+        "Ingrese su marca",
+        "Lista de Marcas",
+        JOptionPane.QUESTION_MESSAGE,
+        null,
+        nombreMarcas,
+        nombreMarcas[0]);
+        JOptionPane.showInternalMessageDialog(null, "Marca seleccionado: " + marcaElegido);
 
     }
     
