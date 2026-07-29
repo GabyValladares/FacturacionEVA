@@ -20,66 +20,40 @@ public class ProductoControlador {
     //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
     
-    public ArrayList<String[]> obtenerProductos() {
-        ArrayList<String[]> lregistros = new ArrayList<>();
+    public ArrayList<String[]> obtenerProductos(int idMarca) {
 
-        try {
-            String sentenciaSQL = "select * from producto;";
-            ejecutar = conectado.prepareCall(sentenciaSQL);
-            ResultSet res = ejecutar.executeQuery();
+    ArrayList<String[]> lista = new ArrayList<>();
 
-            while (res.next()) {
-                String[] listaProductos = new String[3];
-                listaProductos[0] = res.getInt("id") + "";
-                listaProductos[1] = res.getString("nombre");
-                listaProductos[2] = res.getDouble("precio") + "";
-                lregistros.add(listaProductos);
+    try {
 
-            }
+        String sql = "SELECT id, nombre, precio, id_marca FROM producto WHERE id_marca = ?";
 
-            ejecutar.close();
-            conectado.close();
-            return lregistros;
-        } catch (SQLException e) {
-            System.out.println("------" + e);
+        ejecutar = conectado.prepareStatement(sql);
+        ejecutar.setInt(1, idMarca);
+
+        ResultSet res = ejecutar.executeQuery();
+
+        while (res.next()) {
+
+            String[] producto = new String[4];
+
+            producto[0] = res.getString("id");
+            producto[1] = res.getString("nombre");
+            producto[2] = res.getString("precio");
+            producto[3] = res.getString("id_marca");
+            
+                   lista.add(producto);
         }
-        return lregistros;
+
+    } catch (SQLException e) {
+        System.out.println(e);
     }
-    
-    
-    public void insertarProducto(Producto p1) {
-        //1.- UTILIZAR EXCEPCIÓN
-        try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
-            Connection conectado = conectar.conectar();
 
-        String sentenciaSQL = "INSERT INTO producto(nombre,precio)values "
-                + "('" + p1.getNombre() + "','" + p1.getPrecio() + "');";
-
-        ejecutar = conectado.prepareCall(sentenciaSQL);
-
-        int res = ejecutar.executeUpdate();
-
-        if (res > 0) {
-            JOptionPane.showMessageDialog(null,
-                    "Producto Creado con éxito");
-        }
-
-        ejecutar.close();
-        conectado.close();
-
-
-        } catch (SQLException e) {
-            //CAPTURAR PARA DARLE UN TRATAMIENTO 
-            JOptionPane.showMessageDialog(null,
-                    "ERROR:Comuniquese con el Administrador para solicitar ayuda");
-            System.out.println("---------------" + e);
-        }
-
-    
-
+    return lista;
+}
 
     }
-}         
+       
 
 
 

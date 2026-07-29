@@ -47,5 +47,9 @@ public class DetalleFactura {
         this.subtotal = subtotal;
     }
     
-    
+       @Override
+    public String toString() {
+        return producto.getNombre()+"-"+producto.getPrecio()+
+                "-"+cantidad+"-"+subtotal+"\n";
+    }
 }
