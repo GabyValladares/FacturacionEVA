@@ -49,7 +49,7 @@ public class DetalleFactura {
 
     @Override
     public String toString() {
-        return producto.getNombre()+ " - "+ producto.getPrecio()+ " - "+ cantidad+ " -"+ subtotal+"\n";
+        return producto.getNombre()+ "  |  "+ producto.getPrecio()+ "  |  "+ cantidad+ "  |  "+ subtotal+"\n";
     }
     
     

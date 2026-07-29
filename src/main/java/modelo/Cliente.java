@@ -10,20 +10,24 @@ package modelo;
  */
 public abstract class Cliente {
 
-    //cedual + direccion 
+    //cedula + direccion 
     private int id;
     private String nombre;
     private String email;
     private String telefono;
+    private String cedula;
+    private String direccion;
 
     public Cliente() {
     }
 
-    public Cliente(int id, String nombre, String email, String telefono) {
+    public Cliente(int id, String nombre, String email, String telefono, String cedula, String direccion) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.telefono = telefono;
+        this.cedula = cedula;
+        this.direccion = direccion;
     }
 
     public int getId() {
@@ -57,8 +61,27 @@ public abstract class Cliente {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
-    
-    
-    
+
+    public String getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    @Override
+    public String toString() {
+        return Cliente.this.getNombre()+"  |  "+Cliente.this.getCedula()+"  |  "+Cliente.this.getDireccion();
+    }
+
     public abstract double calcularDescuento(double subtotal);
 }

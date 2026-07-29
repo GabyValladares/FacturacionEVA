@@ -105,9 +105,9 @@ public class ClienteView extends javax.swing.JFrame {
                 cvip.setNombre(nombre);
                cmbCliente.addItem(cvip.getNombre()+"-"+tipoCliente);
             } else {
-                cl = new ClienteRegular(id, nombre, email, telefono);
-                ClienteRegular cr=(ClienteRegular)cl;
-                cmbCliente.addItem(cr.getNombre()+"-"+tipoCliente);
+                //cl = new ClienteRegular(id, nombre, email, telefono);
+                //ClienteRegular cr=(ClienteRegular)cl;
+                //cmbCliente.addItem(cr.getNombre()+"-"+tipoCliente);
             }
             
         }

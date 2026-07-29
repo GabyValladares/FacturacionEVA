@@ -13,8 +13,8 @@ public class ClienteRegular extends Cliente {
     public ClienteRegular() {
     }
 
-    public ClienteRegular(int id, String nombre, String email, String telefono) {
-        super(id, nombre, email, telefono);
+    public ClienteRegular(int id, String nombre, String email, String telefono, String cedula, String direccion) {
+        super(id, nombre, email, telefono, cedula, direccion);
     }
     
     @Override
@@ -26,8 +26,7 @@ public class ClienteRegular extends Cliente {
     public double calcularDescuento(double subtotal) {
         //Aplica 0% de descuento. Si el subtotal de la compra supera $1,000.00,aplica un 5% de descuento sobre el monto general.
             if(subtotal>1000){
-                return 0.05;
-                       
+                return 0.05;         
             }
             return 0; }
     
