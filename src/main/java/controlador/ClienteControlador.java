@@ -32,13 +32,15 @@ public class ClienteControlador {
             ejecutar = conectado.prepareCall(sql);
             ResultSet res = ejecutar.executeQuery();
             while (res.next()) {
-                String[] listaClientes = new String[6];
+                String[] listaClientes = new String[8];
                 listaClientes[0] = res.getInt("id") + "";
                 listaClientes[1] = res.getString("nombre");
                 listaClientes[2] = res.getString("email");
-                listaClientes[3] = res.getString("telefono");
-                listaClientes[4] = res.getString("tipo_cliente");
-                listaClientes[5] = res.getString("descuento_vip");
+                listaClientes[3] = res.getString("cedula");
+                listaClientes[4] = res.getString("direccion");
+                listaClientes[5] = res.getString("telefono");
+                listaClientes[6] = res.getString("tipo_cliente");
+                listaClientes[7] = res.getString("descuento_vip");
                 lregistros.add(listaClientes);
             }
             ejecutar.close();

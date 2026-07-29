@@ -46,14 +46,9 @@ public class Main {
             i++;
         }
 
-        String productoElegido = (String) JOptionPane.showInputDialog(null,
-                "Ingrese su producto",
-                "Lista de Productos",
+        String productoElegido = (String) JOptionPane.showInputDialog(null,"Ingrese su producto","Lista de Productos",
                 JOptionPane.QUESTION_MESSAGE,
-                null,
-                nombre,
-                nombre[0]);
+                null,nombre,nombre[0]);
         JOptionPane.showMessageDialog(null, "Producto seleccionado: " + productoElegido);
-
     }
 }

@@ -13,15 +13,19 @@ public abstract class Cliente {
     private int id;
     private String nombre;
     private String email;
+    private String cedula;
+    private String direccion;
     private String telefono;
 
     public Cliente() {
     }
 
-    public Cliente(int id, String nombre, String email, String telefono) {
+    public Cliente(int id, String nombre, String email, String cedula, String direccion, String telefono) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
+        this.cedula = cedula;
+        this.direccion = direccion;
         this.telefono = telefono;
     }
 
@@ -47,6 +51,22 @@ public abstract class Cliente {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     public String getTelefono() {
