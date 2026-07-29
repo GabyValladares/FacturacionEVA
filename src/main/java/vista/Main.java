@@ -23,41 +23,41 @@ public class Main {
         //PRODUCTO
         ProductoControlador pc = new ProductoControlador();
 
-        ArrayList<String[]> productos = pc.obtenerProductos();
-        Object[] nombreProductos = new Object[productos.size()];
-
-        for (int i = 0; i < productos.size(); i++) {
-            nombreProductos[i] = productos.get(i)[1];
-            System.out.println("-------" + productos.get(1)[2]);
-
-        }
-        JOptionPane.showInputDialog(
-                null,
-                "Selecciona el producto:",
-                "Lista Desplegable",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                nombreProductos,
-                nombreProductos[0]);
-
-        //CLiente
-        ClienteControlador cc = new ClienteControlador();
-
-        ArrayList<String[]> clientes = cc.obtenerCliente();
-        Object[] nombreClientes = new Object[clientes.size()];
-
-        for (int i = 0; i < clientes.size(); i++) {
-            nombreClientes[i] = clientes.get(i)[1];
-            System.out.println("-------" + clientes.get(1)[2]);
-
-        }
-        JOptionPane.showInputDialog(
-                null,
-                "Selecciona el producto:",
-                "Lista Desplegable",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                nombreClientes,
-                nombreClientes[0]);
+//        ArrayList<String[]> productos = pc.obtenerProductos();
+//        Object[] nombreProductos = new Object[productos.size()];
+//
+//        for (int i = 0; i < productos.size(); i++) {
+//            nombreProductos[i] = productos.get(i)[1];
+//            System.out.println("-------" + productos.get(1)[2]);
+//
+//        }
+//        JOptionPane.showInputDialog(
+//                null,
+//                "Selecciona el producto:",
+//                "Lista Desplegable",
+//                JOptionPane.QUESTION_MESSAGE,
+//                null,
+//                nombreProductos,
+//                nombreProductos[0]);
+//
+//        //CLiente
+//        ClienteControlador cc = new ClienteControlador();
+//
+//        ArrayList<String[]> clientes = cc.obtenerCliente();
+//        Object[] nombreClientes = new Object[clientes.size()];
+//
+//        for (int i = 0; i < clientes.size(); i++) {
+//            nombreClientes[i] = clientes.get(i)[1];
+//            System.out.println("-------" + clientes.get(1)[2]);
+//
+//        }
+//        JOptionPane.showInputDialog(
+//                null,
+//                "Selecciona el producto:",
+//                "Lista Desplegable",
+//                JOptionPane.QUESTION_MESSAGE,
+//                null,
+//                nombreClientes,
+//                nombreClientes[0]);
     }
 }

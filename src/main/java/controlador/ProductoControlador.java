@@ -26,11 +26,11 @@ public class ProductoControlador {
     ResultSet resultado;
 
     //MÉTODOS DE TRANSACCIONABILIDAD
-    public ArrayList<String[]> obtenerProductos() {
+    public ArrayList<String[]> obtenerProductos(String marca) {
         ArrayList<String[]> lregistros = new ArrayList<>();
 
         try {
-            String sentenciaSQL = "select *from productos;";
+            String sentenciaSQL = "call obtener_marcas('"+marca+"');";
             ejecutar = conectado.prepareCall(sentenciaSQL);
             ResultSet res = ejecutar.executeQuery();
 
@@ -52,7 +52,27 @@ public class ProductoControlador {
         return lregistros;
     }
 
-    
+   public ArrayList<String> obtenerMarcas() {
+    ArrayList<String> lregistros = new ArrayList<>();
 
-    
+    try {
+        String sentenciaSQL = "SELECT * from marcas;";
+        ejecutar = conectado.prepareStatement(sentenciaSQL);
+        ResultSet res = ejecutar.executeQuery();
+
+        while (res.next()) {
+            lregistros.add(res.getString("nombre_marca"));
+        }
+
+        res.close();
+        ejecutar.close();
+        conectado.close();
+
+    } catch (SQLException e) {
+        System.out.println("------" + e);
+    }
+
+    return lregistros;
+}
+
 }
