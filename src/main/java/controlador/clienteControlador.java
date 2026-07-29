@@ -1,30 +1,44 @@
+
 package controlador;
 
-import controlador.ConexionBDD; // Ahora sí lo encontrará al estar en su paquete
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 public class ClienteControlador {
-
     ConexionBDD conectar = new ConexionBDD();
+    //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQ
 
-    // Nombre exacto que llama Main.java (obtenerClientes)
+    Connection conectado = (Connection) conectar.conectar();
+
+    //CLASE QUE ME PERMITE EJECUTAR MI SENTENCIA SQL
+    PreparedStatement ejecutar;
+    //OBTENER RESULTADOS DE LA CONSULTA
+    ResultSet resultado;
+    
+
     public ArrayList<String[]> obtenerClientes() {
         ArrayList<String[]> listaClientes = new ArrayList<>();
         String sentenciaSQL = "SELECT * FROM clientes;";
 
         try {
-            Connection conectado = conectar.conectar();
-            PreparedStatement ejecutar = conectado.prepareStatement(sentenciaSQL);
-            ResultSet res = ejecutar.executeQuery();
+            java.sql.Connection conectado = conectar.conectar();
+            java.sql.PreparedStatement ejecutar = conectado.prepareStatement(sentenciaSQL);
+            java.sql.ResultSet res = ejecutar.executeQuery();
 
             while (res.next()) {
-                String[] cliente = new String[2];
-                cliente[0] = res.getString("id_cliente");
-                cliente[1] = res.getString("nombre");
+                // Guardamos los 6 datos para poder mostrarlos en la vista
+                String[] cliente = new String[6];
+                cliente[0] = res.getString("id_cliente"); // Cédula
+                cliente[1] = res.getString("nombre");     // Nombre
+                cliente[2] = res.getString("email");      // Correo
+                cliente[3] = res.getString("telefono");   // Teléfono
+                cliente[4] = res.getString("tipo_cliente");// Tipo Cliente
+                cliente[5] = res.getString("descuento_vip");
+                
                 listaClientes.add(cliente);
             }
 
@@ -32,10 +46,10 @@ public class ClienteControlador {
             ejecutar.close();
             conectado.close();
 
-        } catch (SQLException e) {
+        } catch (java.sql.SQLException e) {
             System.out.println("Error al obtener la lista de clientes: " + e.getMessage());
         }
 
         return listaClientes;
-    }
+        }
 }
