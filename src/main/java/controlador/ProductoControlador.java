@@ -50,7 +50,35 @@ public class ProductoControlador {
         return lregistros;
     }
 
-    // MÉTODO IMPLEMENTADO PARA RETORNAR LISTA DE OBJETOS PRODUCTO
+    
+    public java.util.List<modelo.Producto> obtenerProductosPorMarca(int idMarca) {
+        java.util.List<modelo.Producto> listaFiltrada = new java.util.ArrayList<>();
+        // Filtrar los productos donde el id_marca coincida
+        String sql = "SELECT * FROM productos WHERE id_marca = ?;";
+
+        try {
+            java.sql.Connection cn = conectar.conectar();
+            java.sql.PreparedStatement ps = cn.prepareStatement(sql);
+            ps.setInt(1, idMarca); 
+            java.sql.ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                modelo.Producto prod = new modelo.Producto();
+                // Asumiendo la estructura de tu modelo Producto
+                prod.setId(rs.getInt("id")); 
+                prod.setNombre(rs.getString("nombre"));
+                // (Agrega precio y otros campos que tengas en tu clase Producto)
+                
+                listaFiltrada.add(prod);
+            }
+            rs.close();
+            ps.close();
+            cn.close();
+        } catch (java.sql.SQLException e) {
+            System.out.println("Error al filtrar productos por marca: " + e.getMessage());
+        }
+        return listaFiltrada;
+      }  
     public List<Producto> obtenerTodosProductos() {
         List<Producto> listaProductos = new ArrayList<>();
         String sentenciaSQL = "select * from productos;";

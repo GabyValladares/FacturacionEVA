@@ -15,19 +15,25 @@ public abstract class Cliente {
     private String email;
     private String telefono;
     private String tipoCliente;
+    private String cedula;
+    private String direccion;
     private double descuentoVip;
 
     public Cliente() {
     }
 
-    public Cliente(int id, String nombre, String email, String telefono, String tipoCliente, double descuentoVip) {
+    public Cliente(int id, String nombre, String email, String telefono, String tipoCliente, String cedula, String direccion, double descuentoVip) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.telefono = telefono;
         this.tipoCliente = tipoCliente;
+        this.cedula = cedula;
+        this.direccion = direccion;
         this.descuentoVip = descuentoVip;
     }
+
+   
 
     public int getId() {
         return id;
@@ -67,6 +73,30 @@ public abstract class Cliente {
 
     public void setTipoCliente(String tipoCliente) {
         this.tipoCliente = tipoCliente;
+    }
+
+    public String getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public double getDescuentoVip() {
+        return descuentoVip;
+    }
+
+    public void setDescuentoVip(double descuentoVip) {
+        this.descuentoVip = descuentoVip;
     }
 
     

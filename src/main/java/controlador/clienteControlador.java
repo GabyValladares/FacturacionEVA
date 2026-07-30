@@ -30,14 +30,16 @@ public class ClienteControlador {
             java.sql.ResultSet res = ejecutar.executeQuery();
 
             while (res.next()) {
-                // Guardamos los 6 datos para poder mostrarlos en la vista
-                String[] cliente = new String[6];
-                cliente[0] = res.getString("id_cliente"); // Cédula
-                cliente[1] = res.getString("nombre");     // Nombre
-                cliente[2] = res.getString("email");      // Correo
-                cliente[3] = res.getString("telefono");   // Teléfono
-                cliente[4] = res.getString("tipo_cliente");// Tipo Cliente
+                // ¡AQUÍ ESTÁ LA CORRECCIÓN! Cambiamos de 6 a 7 espacios
+                String[] cliente = new String[7]; 
+                
+                cliente[0] = res.getString("cedula");       // Cédula
+                cliente[1] = res.getString("nombre");       // Nombre
+                cliente[2] = res.getString("email");        // Correo
+                cliente[3] = res.getString("telefono");     // Teléfono
+                cliente[4] = res.getString("tipo_cliente"); // Tipo Cliente
                 cliente[5] = res.getString("descuento_vip");
+                cliente[6] = res.getString("direccion");    
                 
                 listaClientes.add(cliente);
             }
@@ -51,5 +53,5 @@ public class ClienteControlador {
         }
 
         return listaClientes;
-        }
-}
+    }
+   }

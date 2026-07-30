@@ -4,6 +4,8 @@
  */
 package vista;
 
+import java.util.List;
+
 /**
  *
  * @author Usuario
@@ -11,14 +13,44 @@ package vista;
 public class ProductoVista extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProductoVista.class.getName());
+    private java.util.List<modelo.Producto> listaProductos;
 
-    /**
-     * Creates new form ProductoVista
-     */
-    public ProductoVista() {
+    private java.util.List<modelo.Marca> listaMarcas;
+    
+    
+    public ProductoVista() {   
         initComponents();
+        cargarMarcas();
     }
-
+    
+    
+    public void cargarMarcas() {
+        controlador.MarcaControlador mc = new controlador.MarcaControlador();
+        this.listaMarcas = mc.obtenerTodasMarcas();
+        
+        comboMarca.removeAllItems();
+        comboMarca.addItem("--- Seleccione una Marca ---");
+        
+        for (modelo.Marca mar : this.listaMarcas) {
+            comboMarca.addItem(mar.getNombre());
+        }
+    }
+  
+    
+    public void cargarProductosPorMarca(int idMarca) {
+        controlador.ProductoControlador pc = new controlador.ProductoControlador();
+        this.listaProductos = pc.obtenerProductosPorMarca(idMarca);
+        
+        // Limpiamos el ComboBox de productos antes de llenarlo con los nuevos
+        comboProductos.removeAllItems();
+        comboProductos.addItem("--- Seleccione un Producto ---");
+        
+        if (this.listaProductos != null) {
+            for (modelo.Producto prod : this.listaProductos) {
+                comboProductos.addItem(prod.getNombre());
+            }
+        }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -52,14 +84,16 @@ public class ProductoVista extends javax.swing.JFrame {
         lblMarca.setText("Marca");
 
         comboMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboMarca.addActionListener(this::comboMarcaActionPerformed);
 
         btnAgregar.setText("+");
+        btnAgregar.addActionListener(this::btnAgregarActionPerformed);
 
         txtAreaDetalle.setColumns(20);
         txtAreaDetalle.setRows(5);
         jScrollPane1.setViewportView(txtAreaDetalle);
 
-        btnAgregar1.setText("+");
+        btnAgregar1.setText("Generar PDF");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -72,31 +106,32 @@ public class ProductoVista extends javax.swing.JFrame {
                         .addComponent(lblProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(202, 202, 202)
                         .addComponent(lblMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(comboMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(comboMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(195, 195, 195)
+                        .addComponent(lblGestionFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
                 .addComponent(btnAgregar)
                 .addGap(115, 115, 115))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(262, 262, 262)
-                        .addComponent(lblGestionFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(120, 120, 120)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(148, 148, 148)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59)
+                        .addGap(287, 287, 287)
                         .addComponent(btnAgregar1)))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(21, 21, 21)
                 .addComponent(lblGestionFacturas)
-                .addGap(66, 66, 66)
+                .addGap(68, 68, 68)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProductos)
                     .addComponent(lblMarca))
@@ -105,15 +140,67 @@ public class ProductoVista extends javax.swing.JFrame {
                     .addComponent(comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAgregar))
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAgregar1))
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addGap(38, 38, 38)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(btnAgregar1)
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        if (comboProductos.getSelectedIndex() == 0 || comboMarca.getSelectedIndex() == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Por favor, seleccione un producto y una marca.", 
+                "Datos incompletos", 
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+            return; 
+        }
+
+        // 2. Capturar los textos seleccionados en los ComboBox
+        String nombreProducto = comboProductos.getSelectedItem().toString();
+        String nombreMarca = comboMarca.getSelectedItem().toString();
+
+        // 3. Crear el texto con formato para agregar a la lista
+        String linea = "Producto: " + nombreProducto + "  |  Marca: " + nombreMarca + "\n";
+
+        // 4. Agregar la línea al JTextArea 
+        // (Nota: Si no le cambiaste el nombre en NetBeans, por defecto se llama jTextArea1)
+        txtAreaDetalle.append(linea);
+
+        // 5. Opcional: Regresar los combos a su estado original
+        comboProductos.setSelectedIndex(0);
+        comboMarca.setSelectedIndex(0);
+        
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void comboMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboMarcaActionPerformed
+        // 1. Verificamos que se haya seleccionado una marca real (no el índice 0)
+        if (comboMarca.getSelectedIndex() > 0) {
+            
+            // 2. Obtenemos el nombre de la marca que el usuario eligió
+            String nombreMarcaSeleccionada = comboMarca.getSelectedItem().toString();
+            int idMarcaEncontrada = 0;
+            
+            // 3. Buscamos ese nombre en nuestra lista global de marcas para sacar su ID
+            for (modelo.Marca mar : listaMarcas) {
+                if (mar.getNombre().equals(nombreMarcaSeleccionada)) {
+                    idMarcaEncontrada = mar.getIdMarca();
+                    break; // Terminamos la búsqueda al encontrarla
+                }
+            }
+            
+            // 4. Cargamos los productos usando el ID que encontramos
+            cargarProductosPorMarca(idMarcaEncontrada);
+            
+        } else {
+            // Si elige "--- Seleccione una Marca ---", limpiamos los productos
+            comboProductos.removeAllItems();
+            comboProductos.addItem("--- Seleccione un Producto ---");
+        }
+    }//GEN-LAST:event_comboMarcaActionPerformed
 
     /**
      * @param args the command line arguments
