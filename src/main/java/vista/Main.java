@@ -21,7 +21,6 @@ public class Main {
         
         //PRODUCTO
         ProductoControlador pc=new ProductoControlador();
-         
                 
          ArrayList<String[]>productos= pc.obtenerProductos();
         Object[] nombreProductos=new Object[productos.size()];

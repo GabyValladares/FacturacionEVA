@@ -499,7 +499,7 @@ public class FacturaVista extends javax.swing.JFrame {
     //-----------------------------------------------
     public int clienteSeleccionado() {
    
-    if (lc != null && !lc.isEmpty()) {
+    if (lc != null || !lc.isEmpty()) {
         return cmbClientes.getSelectedIndex();
     }
     return -1;
