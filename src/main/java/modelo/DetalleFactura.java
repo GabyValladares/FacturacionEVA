@@ -44,7 +44,7 @@ public class DetalleFactura {
     }
 
     public void setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
+        this.subtotal = Math.round(subtotal* 100.0)/100.0;
     }
 
     @Override
