@@ -15,7 +15,6 @@ public class Factura {
 
     /*Contiene idFactura, fecha (LocalDate), referencia al objeto Cliente, y una lista
 dinámica List<DetalleFactura> con los artículos agregados. */
-
     private int idFactura;
     private LocalDate fecha;
     private Cliente cliente;
@@ -63,6 +62,7 @@ dinámica List<DetalleFactura> con los artículos agregados. */
         this.listaArticulos = listaArticulos;
     }
 
+    
     //Posee métodos para calcular el subtotal acumulado, el descuento otorgado por el cliente y el total neto.
     public double calcularSubTotal() {
         double subtotal = 0;
