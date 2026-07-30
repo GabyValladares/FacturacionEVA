@@ -9,6 +9,7 @@ package modelo;
  * @author hp
  */
 public class DetalleFactura {
+
     //Contiene un objeto Producto, cantidad (int) y subtotal (double).
     private Producto producto;
     private int cantidad;
@@ -46,6 +47,12 @@ public class DetalleFactura {
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return producto.getNombre() + " - "
+                + producto.getPrecio() + " - "
+                + cantidad + " - "
+                + subtotal + "\n";
+    }
 }

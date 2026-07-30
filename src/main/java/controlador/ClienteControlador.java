@@ -15,40 +15,46 @@ import java.util.ArrayList;
  * @author AMARU
  */
 public class ClienteControlador {
-    
-    
-       ConexionBDD conectar = new ConexionBDD();
-    //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
-    Connection conectado = (Connection) conectar.conectar();
-    //CLASE QUE ME PERMITE EJECUTAR MI SENTENCIA SQL
+
+    ConexionBDD conectar = new ConexionBDD();
+    Connection conectado = conectar.conectar();
     PreparedStatement ejecutar;
-    //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
 
     public ArrayList<String[]> obtenerClientes() {
+
         ArrayList<String[]> lista = new ArrayList<>();
+
         try {
-          
+
             String sql = "SELECT * FROM clientes;";
             ejecutar = conectado.prepareStatement(sql);
             resultado = ejecutar.executeQuery();
 
             while (resultado.next()) {
-                String[] cliente = new String[6];
+
+                String[] cliente = new String[8];
+
                 cliente[0] = resultado.getInt("id_cliente") + "";
-                cliente[1] = resultado.getString("nombre")+ " - " + resultado.getString("tipo_cliente");
-                cliente[2] = resultado.getString("email");
-                cliente[3] = resultado.getString("telefono");
-                cliente[4] = resultado.getString("tipo_cliente");
-                cliente[5] = resultado.getDouble("descuento_vip") + "";
-                lista.addLast(cliente);
+                cliente[1] = resultado.getString("nombre") + " - " + resultado.getString("tipo_cliente");
+                cliente[2] = resultado.getString("cedula");
+                cliente[3] = resultado.getString("email");
+                cliente[4] = resultado.getString("telefono");
+                cliente[5] = resultado.getString("direccion");
+                cliente[6] = resultado.getString("tipo_cliente");
+                cliente[7] = resultado.getDouble("descuento_vip") + "";
+
+                lista.add(cliente);
+
             }
-        } 
-        catch (SQLException e) {
+
+        } catch (SQLException e) {
+
             System.out.println("Error al obtener clientes: " + e);
+
         }
-        return lista ;
-        
+
+        return lista;
+
     }
-    
 }
