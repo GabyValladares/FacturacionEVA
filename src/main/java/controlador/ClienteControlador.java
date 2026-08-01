@@ -7,13 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ClienteControlador {
-     //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
     ConexionBDD conectar = new ConexionBDD();
-    //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
     Connection conectado = (Connection) conectar.conectar();
-    //CLASE QUE ME PERMITE EJECUTAR MI SENTENCIA SQL
     PreparedStatement ejecutar;
-    //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
     
     
