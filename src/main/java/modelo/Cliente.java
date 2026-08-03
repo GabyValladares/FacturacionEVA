@@ -14,13 +14,13 @@ public abstract class Cliente {
     private String nombre;
     private String email;
     private String telefono;
-    private int cedula;
+    private String cedula;
     private String direccion;
 
     public Cliente() {
     }
 
-    public Cliente(int id, String nombre, String email, String telefono, int cedula, String direccion) {
+    public Cliente(int id, String nombre, String email, String telefono,String cedula, String direccion) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
@@ -61,11 +61,11 @@ public abstract class Cliente {
         this.telefono = telefono;
     }
 
-    public int getCedula() {
+    public String getCedula() {
         return cedula;
     }
 
-    public void setCedula(int cedula) {
+    public void setCedula(String cedula) {
         this.cedula = cedula;
     }
 

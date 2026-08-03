@@ -67,7 +67,7 @@ public class DetalleFacturaControlador {
 
 
     public boolean guardarDetalle(int idFactura, DetalleFactura detalle) {
-        String sql = "INSERT INTO detalle_factura (id_factura, id_producto, cantidad, subtotal) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO detallefacturas (id_factura, id_prod, cantidad, subtotal) VALUES (?, ?, ?, ?)";
         Connection con = conexionBDD.conectar();
 
         if (con == null) {
@@ -75,7 +75,6 @@ public class DetalleFacturaControlador {
         }
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
-
             ps.setInt(1, idFactura);
             ps.setInt(2, detalle.getProducto().getId());
             ps.setInt(3, detalle.getCantidad());

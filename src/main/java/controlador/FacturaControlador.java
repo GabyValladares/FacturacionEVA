@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import modelo.DetalleFactura;
 import modelo.Exportable;
 import modelo.Factura;
-
+import java.sql.ResultSet;
 /**
  *
  * @author hp
@@ -28,24 +28,26 @@ public class FacturaControlador implements Exportable {
 
     // --- GUARDAR EN BASE DE DATOS ---
     public boolean guardarFactura(Factura factura) {
-        String sql = "INSERT INTO factura (id_factura, fecha, id_cliente, total) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO facturas (fecha, id_cliente, total) VALUES (?, ?, ?)";
         Connection con = conexionBDD.conectar();
 
         if (con == null) {
             return false;
         }
 
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-            ps.setInt(1, factura.getIdFactura());
-            ps.setDate(2, Date.valueOf(factura.getFecha()));
-            ps.setInt(3, factura.getCliente().getId());
-            ps.setDouble(4, factura.calcularTotalNeto());
+            ps.setDate(1, Date.valueOf(factura.getFecha()));
+            ps.setInt(2, factura.getCliente().getId());
+            ps.setDouble(3, factura.calcularTotalNeto());
 
             int filasAfectadas = ps.executeUpdate();
 
-         
             if (filasAfectadas > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    factura.setIdFactura(rs.getInt(1));
+                }
                 for (DetalleFactura detalle : factura.getListaArticulos()) {
                     detalleControlador.guardarDetalle(factura.getIdFactura(), detalle);
                 }
