@@ -44,9 +44,11 @@ public class FacturaControlador implements Exportable {
             int filasAfectadas = ps.executeUpdate();
 
             if (filasAfectadas > 0) {
-                ResultSet rs = ps.getGeneratedKeys();
+                ResultSet rs = ps.getGeneratedKeys(); //pide a MySQL una tabla con el id recien generado
                 if (rs.next()) {
-                    factura.setIdFactura(rs.getInt(1));
+                    factura.setIdFactura(rs.getInt(1)); 
+                //rs.getInt(1) lee el valor de la columna el "id_factura" nuevo
+                //factura.setIdFactura guarda ese id real en memoria
                 }
                 for (DetalleFactura detalle : factura.getListaArticulos()) {
                     detalleControlador.guardarDetalle(factura.getIdFactura(), detalle);

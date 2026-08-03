@@ -490,20 +490,26 @@ public class FacturaVista extends javax.swing.JFrame {
         if (c == null || lDetalleFac.isEmpty()){
             JOptionPane.showMessageDialog(this, "Selecciona un cliente y agrega productos.");
             return;
+            //valida que haya un cliente seleccionado y un producto. Si no selecciona
+            //muestra en pantalla un aviso
         }
         Factura fac = new Factura();
         fac.setFecha(LocalDate.now());
         fac.setCliente(c);
         fac.setListaArticulos(lDetalleFac);
+        //crea un objeto con la fecha actual, cliente seleccionado y toda la lista de productos acumulados
         
         FacturaControlador facCon = new FacturaControlador();
         boolean guardado = facCon.guardarFactura(fac);
+        //manda la factura completa a la facControlador
         
         if(guardado){
             JOptionPane.showMessageDialog(this, "Factura # " + fac.getIdFactura() + " guardad");
             lDetalleFac.clear();
             txtADetalle.setText("");
             txtTotalNeto.setText("");
+            //Si se guardó, muestra confirmación con el id real, 
+            //y limpia la pantalla para la siguiente venta. Si falló, avisa el error.
         } else {
             JOptionPane.showMessageDialog(this, "Error al guardar");
         }
@@ -541,20 +547,18 @@ public class FacturaVista extends javax.swing.JFrame {
     double subtotal = 0;
     for (DetalleFactura d : lDetalleFac) {
         subtotal += d.getCantidad() * d.getProducto().getPrecio();
+        //Exactamente la misma lógica que calcularSubTotal
+        //se va llenando con el botón "+"
     }
+    txtTotalNeto.setText(String.format("%.2f", subtotal));
+}   //String.format("%.2f", subtotal) convierte el número decimal a texto
+    //txtTotalNeto.setText() pone ese texto en el campo visual para que
+    //se actualize en pantalla cada vez que agregas un producto. el total neto 
 
-    double descuento = 0;
-    if (c != null) {
-        descuento = subtotal * c.calcularDescuento(subtotal);
-    }
-
-    double totalNeto = subtotal - descuento;
-    txtTotalNeto.setText(String.format("%.2f", totalNeto));
-    }
     
     
     public Cliente crearObjetoCliente(String tipo){
-        if(tipo.equals("VIP")){
+        if(tipo.equals("VIP")){ //equals compara el contenido del texto 
             c = new ClienteVIP();
             return c;
         } else if(tipo.equals("Regular")){

@@ -65,18 +65,21 @@ dinámica List<DetalleFactura> con los artículos agregados. */
     //Posee métodos para calcular el subtotal acumulado, el descuento otorgado por el cliente y el total neto.
     
     public double calcularSubTotal(){
-        double subtotal=0;
+        double subtotal=0; //empieza en 0 y va acumulando la suma
         for (DetalleFactura l : listaArticulos) {
-            subtotal+=l.getCantidad()*l.getProducto().getPrecio();            
+            subtotal+=l.getCantidad()*l.getProducto().getPrecio();  
+            //toma la cantidad, la multiplica por el precio del producto. se repite
+            //con todos los productos
         }
-      return subtotal;
+      return subtotal; //devuelse la suma total
     }
     public double calcularDescuento(){
         return this.calcularSubTotal()*(getCliente().calcularDescuento(this.calcularSubTotal()));
     }
     public double calcularTotalNeto(){
         
-        return this.calcularSubTotal()-calcularDescuento();
+        return this.calcularSubTotal();//-calcularDescuento();
+        //solo devuelve lo mismo que calcularSubTotal
     }
     
     
