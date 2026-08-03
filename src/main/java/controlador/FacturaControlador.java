@@ -22,20 +22,20 @@ public class FacturaControlador {
     PreparedStatement ejecutar;
     ResultSet resultado;
 
-    public void insertarFacruta(Factura f) {
+    public void insertarFactura(Factura ft, double total) {
 
         try {
-            String sentenciaSQL = "INSERT INTO factura(fecha,id_cliente, subtotal, desceunto, total)values "
-                    + "('" + f.getFecha() + "','" + f.getCliente()+ "','" + f.getListaArticulos()+ "',' );";
+            String sentenciaSQL = "INSERT INTO factura(fecha,id_cliente, subtotal, total)values "
+                    + "('" + ft.getFecha() + "','" + ft.getCliente().getId()+ "','" +total+ "',' );";
             ejecutar = conectado.prepareCall(sentenciaSQL);
             int res = ejecutar.executeUpdate();
             if (res > 0) {
                 JOptionPane.showMessageDialog(null,
-                        "Direccion Creado con éxito");
+                        "Factura creado con exito");
                 ejecutar.close();
             } else {
                 JOptionPane.showMessageDialog(null,
-                        "La direccion no ha sido creado,"
+                        "La Factura no ha sido creado,"
                         + " revise que los datos ingresados sean correctos");
             }
             conectado.close();
