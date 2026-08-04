@@ -18,7 +18,6 @@ import modelo.DetalleFactura;
 import modelo.Producto;
 import modelo.Factura;
 
-
 /**
  *
  * @author hp
@@ -393,21 +392,22 @@ public class FacturaVista extends javax.swing.JFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
+        if (!txtCantidad.getText().isEmpty()) {
+
         Producto p = new Producto();
-        p.setId(Integer.parseInt(lProducto.get(this.productoSeleccionado())[0]));
-        p.setNombre(lProducto.get(this.productoSeleccionado())[1]);
-        p.setPrecio(Double.parseDouble(lProducto.get(this.productoSeleccionado())[2]));
-        //OBJETO DETALLE FACTURA
+        p.setNombre(cmbProductos.getSelectedItem().toString());
+        p.setPrecio(Double.parseDouble(txtPrecio.getText()));
+
         DetalleFactura dF = new DetalleFactura();
         dF.setProducto(p);
         dF.setCantidad(Integer.parseInt(txtCantidad.getText()));
         dF.setSubtotal(Double.parseDouble(txtSubTotal.getText()));
-        //AÃ±ado a la lista dinÃ¡mica 
+
         lDF.add(dF);
-        //muestro en la vista en el TextArea
+
         txtADetalle.append(dF.toString());
         this.limpiarDetalle();
-
+    }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void txtSubTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSubTotalActionPerformed
@@ -426,9 +426,9 @@ public class FacturaVista extends javax.swing.JFrame {
         // TODO add your handling code here:
         int pos = this.clienteSeleccionado();
         if (pos > -1) {
-            txtCedula.setText(lCliente.get(pos)[5]);
+            txtCedula.setText(lCliente.get(pos)[4]);
             txtCedula.setEditable(false);
-            txtDireccion.setText(lCliente.get(pos)[6]);
+            txtDireccion.setText(lCliente.get(pos)[5]);
             txtDireccion.setEditable(false);
             txtTelefono.setText(lCliente.get(pos)[3]);
             txtTelefono.setEditable(false);
@@ -439,14 +439,14 @@ public class FacturaVista extends javax.swing.JFrame {
             String tipoCliente = lCliente.get(pos)[4];
             Cliente cli = this.crearObjetoCliente(tipoCliente);
             if (cli != null) {
-            cli.setNombre(lCliente.get(pos)[1]);
-            cli.setCedula(lCliente.get(pos)[5]);
-            cli.setDireccion(lCliente.get(pos)[6]);
-            cli.setEmail(lCliente.get(pos)[2]);
-            cli.setTelefono(lCliente.get(pos)[3]);
-            
-            this.clt = cli;
-            
+                cli.setNombre(lCliente.get(pos)[1]);
+                cli.setCedula(lCliente.get(pos)[4]);
+                cli.setDireccion(lCliente.get(pos)[5]);
+                cli.setEmail(lCliente.get(pos)[2]);
+                cli.setTelefono(lCliente.get(pos)[3]);
+
+                this.clt = cli;
+
 //            if (pos > -1) {
 //            txtCedula.setText(lCliente.get(pos)[6]);
 //            txtCedula.setEditable(false);
@@ -507,24 +507,33 @@ public class FacturaVista extends javax.swing.JFrame {
 
     private void btnGuardarBddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarBddActionPerformed
         // TODO add your handling code here:
+        int indexCliente = cmbClientes.getSelectedIndex();
+
+        ClienteControlador p = new ClienteControlador();
+        ArrayList<String[]> lCliente = p.obtenerClientes();
+
+        String[] datosCliente = lCliente.get(indexCliente);
+        this.clt = new ClienteRegular();
+        this.clt.setId(Integer.parseInt(datosCliente[0]));
+
         Factura f = new Factura();
         f.setFecha(ldate);
-        f.setCliente(clt);
+        f.setCliente(this.clt);
+        f.setListaArticulos(this.lDF);
+
         FacturaControlador fc = new FacturaControlador();
         int idFacGenerado = fc.insertarFactura(f);
-        
-        if(idFacGenerado > 0) {
+
+        if (idFacGenerado > 0) {
             DetalleFacturaControlador dfc1 = new DetalleFacturaControlador();
-            
-        for (DetalleFactura df : f.getListaArticulos()) {
-            dfc1.insertarDetalleFactura(idFacGenerado, df);
-        }
-        
-        JOptionPane.showMessageDialog(null, "¡Factura guardada con éxito!");
+
+            for (DetalleFactura df : this.lDF) {
+                dfc1.insertarDetalleFactura(idFacGenerado, df);
+            }
+
+            JOptionPane.showMessageDialog(null, "¡Factura guardada con éxito!");
         }
     }//GEN-LAST:event_btnGuardarBddActionPerformed
-
-
 
 //    public void cargarProductos() {
 //        ProductoControlador pc = new ProductoControlador();
@@ -539,7 +548,6 @@ public class FacturaVista extends javax.swing.JFrame {
 //        cmbProductos.setModel(modelo);
 //
 //    }
-
     private void listarMarcas() {
         cmbMarca.removeAllItems();
         MarcaControlador mc = new MarcaControlador();

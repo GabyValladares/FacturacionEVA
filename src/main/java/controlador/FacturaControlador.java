@@ -29,24 +29,20 @@ public class FacturaControlador {
     //METODOS DE TRANSACCIONABILIDAD
     public int insertarFactura(Factura f) {
         //1.- UTILIZAR EXCEPCIÓN
-        int idGenerado = 0;
+        int res = 0;
         try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
             String sentenciaSQL = "INSERT INTO facturas (fecha, id_cliente, total) VALUES (CURDATE(), "
                     + f.getCliente().getId() + ", " + f.calcularTotalNeto() + ");";
             ejecutar = conectado.prepareCall(sentenciaSQL);
             //TODA INSERCIÓN DEVUELVE UN ESTADO >0 CUANDO FUE FAVORABLE Y MENOR A O CUANDO NO SE REALIZÓ 
-            int res = ejecutar.executeUpdate();
+            res = ejecutar.executeUpdate();
             if (res > 0) {
-                ResultSet rsl = ejecutar.getGeneratedKeys();
-            if (rsl.next()) {
-                idGenerado = rsl.getInt(1);
-            }
                 JOptionPane.showMessageDialog(null,
-                        "Factura Creado con éxito");
+                        "Factura Creada con éxito");
                 ejecutar.close();
             } else {
                 JOptionPane.showMessageDialog(null,
-                        "La factura no ha sido creado,"
+                        "La factura no ha sido creada,"
                         + " revise que los datos ingresados sean correctos");
             }
             conectado.close();
@@ -57,6 +53,6 @@ public class FacturaControlador {
                     "Comuniquese con el Administrador para solicitar ayuda");
             System.out.println("---------------" + e);
         }
-        return idGenerado;
+        return res;
     }
 }
