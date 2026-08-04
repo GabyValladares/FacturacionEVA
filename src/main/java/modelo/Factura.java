@@ -78,8 +78,8 @@ dinámica List<DetalleFactura> con los artículos agregados. */
     }
     public double calcularTotalNeto(){
         
-        return this.calcularSubTotal();//-calcularDescuento();
-        //solo devuelve lo mismo que calcularSubTotal
+        return this.calcularSubTotal();//* 0.15 - calcularDescuento();
+       
     }
     
     

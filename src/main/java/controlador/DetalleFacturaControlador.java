@@ -28,69 +28,64 @@ public class DetalleFacturaControlador {
     ResultSet resultado;
 
     //MÉTODOS DE TRANSACCIONABILIDAD
+ 
 
-//    public void insertarDetalleFactura(Pais p) {
-//        //1.- UTILIZAR EXCEPCIÓN
-//        try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
-//            String sentenciaSQL = "INSERT INTO Paises(nombre,capital)values "
-//                    + "('" + p.getNombre() + "','" + p.getCapital() + "');";
-//            ejecutar = conectado.prepareCall(sentenciaSQL);
-//            //TODA INSERCIÓN DEVUELVE UN ESTADO >0 CUANDO FUE FAVORABLE Y MENOR A O CUANDO NO SE REALIZÓ 
-//            int res = ejecutar.executeUpdate();
-//            if (res > 0) {
-//                JOptionPane.showMessageDialog(null,
-//                        "País Creado con éxito");
-//                ejecutar.close();
-//            } else {
-//                JOptionPane.showMessageDialog(null,
-//                        "El País no ha sido creado,"
-//                        + " revise que los datos ingresados sean correctos");
-//            }
-//            conectado.close();
+//    private ConexionBDD conexionBDD;
+//
+//    public DetalleFacturaControlador() {
+//        this.conexionBDD = new ConexionBDD();
+//    }
+//
+//
+//    public boolean guardarDetalle(int idFactura, DetalleFactura detalle) {
+//        String sql = "INSERT INTO detallefacturas (id_factura, id_prod, cantidad, subtotal) VALUES (?, ?, ?, ?)";
+//        Connection con = conexionBDD.conectar();
+//
+//        try (PreparedStatement ps = con.prepareStatement(sql)) {
+//            ps.setInt(1, idFactura);
+//            ps.setInt(2, detalle.getProducto().getId());
+//            ps.setInt(3, detalle.getCantidad());
+//            ps.setDouble(4, detalle.getSubtotal());
+//
+//            return ps.executeUpdate() > 0;
 //
 //        } catch (SQLException e) {
-//            //CAPTURAR PARA DARLE UN TRATAMIENTO 
-//            JOptionPane.showMessageDialog(null,
-//                    "Comuniquese con el Administrador para solicitar ayuda");
-//            System.out.println("---------------" + e);
+//            System.err.println("Error al guardar detalle: " + e.getMessage());
+//            return false;
+//        } finally {
+//            try {
+//                if (con != null) con.close();
+//            } catch (SQLException ex) {
+//                System.err.println("Error al cerrar conexion: " + ex.getMessage());
+//            }
 //        }
-//
 //    }
-
-  
-
-    private ConexionBDD conexionBDD;
-
-    public DetalleFacturaControlador() {
-        this.conexionBDD = new ConexionBDD();
-    }
-
-
-    public boolean guardarDetalle(int idFactura, DetalleFactura detalle) {
-        String sql = "INSERT INTO detallefacturas (id_factura, id_prod, cantidad, subtotal) VALUES (?, ?, ?, ?)";
-        Connection con = conexionBDD.conectar();
-
-        if (con == null) {
-            return false;
-        }
-
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, idFactura);
-            ps.setInt(2, detalle.getProducto().getId());
-            ps.setInt(3, detalle.getCantidad());
-            ps.setDouble(4, detalle.getSubtotal());
-
-            return ps.executeUpdate() > 0;
+    
+    public void insertarDetalleFactura(DetalleFactura p, int id_factura) {
+        //1.- UTILIZAR EXCEPCIÓN
+        try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
+            String sentenciaSQL = "INSERT INTO detallefacturas(id_factura,id_prod,cantidad,subtotal)values "
+                    + "('" + id_factura+ "','" + p.getProducto().getId() + "','" + p.getCantidad()+ "','" + p.getSubtotal() + "');";
+            ejecutar = conectado.prepareCall(sentenciaSQL);
+            //TODA INSERCIÓN DEVUELVE UN ESTADO >0 CUANDO FUE FAVORABLE Y MENOR A O CUANDO NO SE REALIZÓ 
+            int res = ejecutar.executeUpdate();
+            if (res > 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Detalle Creado con éxito");
+                ejecutar.close();
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Detalle no ha sido creado,"
+                        + " revise que los datos ingresados sean correctos");
+            }
+           // conectado.close();
 
         } catch (SQLException e) {
-            System.err.println("Error al guardar detalle: " + e.getMessage());
-            return false;
-        } finally {
-            try {
-                if (con != null) con.close();
-            } catch (SQLException ex) {
-                System.err.println("Error al cerrar conexion: " + ex.getMessage());
-            }
+            //CAPTURAR PARA DARLE UN TRATAMIENTO 
+            JOptionPane.showMessageDialog(null,
+                    "Comuniquese con el Administrador para solicitar ayuda");
+            System.out.println("---------------" + e);
         }
+
     }
 }

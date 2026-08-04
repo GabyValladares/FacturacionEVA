@@ -57,10 +57,10 @@ public class Producto {
         this.marca = marca;
     }
 
-    @Override
-    public String toString() {
-        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", marca=" + marca + '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", marca=" + marca + '}';
+//    }
     
      
     

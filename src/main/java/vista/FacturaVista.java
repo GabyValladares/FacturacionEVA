@@ -5,6 +5,7 @@
 package vista;
 
 import controlador.ClienteControlador;
+import controlador.DetalleFacturaControlador;
 import controlador.FacturaControlador;
 import controlador.ProductoControlador;
 import java.time.LocalDate;
@@ -30,11 +31,15 @@ public class FacturaVista extends javax.swing.JFrame {
     ArrayList<String[]> lc;
     Cliente c;
     LocalDate ldate = LocalDate.now();
+    Factura fac = new Factura();
+    double total = 0;
+    
     
     public FacturaVista() {
         initComponents();
         cargarProductos();
         cargarClientes();
+
     }
 //    public void cargarProductos(){
 //        ProductoControlador pdc = new ProductoControlador();
@@ -230,6 +235,11 @@ public class FacturaVista extends javax.swing.JFrame {
         jLabel2.setText("Total Neto:");
 
         txtTotalNeto.setEditable(false);
+        txtTotalNeto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTotalNetoActionPerformed(evt);
+            }
+        });
 
         btnGuardarBDD.setText("Guardar en BDD");
         btnGuardarBDD.addActionListener(new java.awt.event.ActionListener() {
@@ -387,35 +397,23 @@ public class FacturaVista extends javax.swing.JFrame {
                 txtFecha.setText(ldate + "");
                 txtFecha.setEditable(false);
                 String tipoCliente = lc.get(indice)[4];
-                Cliente c = this.crearObjetoCliente(tipoCliente);
-                c.setId(Integer.parseInt(lc.get(indice)[0]));
-                c.setNombre(lc.get(indice)[1]);
-                c.setCedula(lc.get(indice)[6]);
-                c.setDireccion(lc.get(indice)[7]);
-                c.setEmail(lc.get(indice)[2]);
-                c.setTelefono(lc.get(indice)[3]);
-//            int indice = this.clienteSeleccionado();
-//            txtCedula.setText(lc[6]);
-//            txtCedula.setEditable(false);
-//            txtDireccion.setText(c[7]);
-//            txtDireccion.setEditable(false);
-//            txtTelefono.setText(c[3]);
-//            txtTelefono.setEditable(false);
-//            txtEmail.setText(c[2]);
-//            txtEmail.setEditable(false);
-//            txtFecha.setText(ldate + "");
-//            txtFecha.setEditable(false);
-//            System.out.println("------"+c[1]+"-"+c[6]+"-"+c[7]);        
+                this.crearObjetoCliente(tipoCliente);
+//                Cliente c = this.crearObjetoCliente(tipoCliente);
+//                c.setId(Integer.parseInt(lc.get(indice)[0]));
+//                c.setNombre(lc.get(indice)[1]);
+//                c.setCedula(lc.get(indice)[6]);
+//                c.setDireccion(lc.get(indice)[7]);
+//                c.setEmail(lc.get(indice)[2]);
+//                c.setTelefono(lc.get(indice)[3]);
+ 
     }//GEN-LAST:event_cmbClientesActionPerformed
 
     private void cmbProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductosActionPerformed
         // TODO add your handling code here:
-//        if(lp != null || ! lp.isEmpty()){
-//            int indice = cmbProductos.getSelectedIndex(); // index devuele la posicion y el item el nombre
-//            if(indice >= 0) {
-                int indice = this.productoSeleccionado();
-                if(indice >= 0)
-                txtPrecio.setText(lp.get(indice)[2]);
+        int indice = this.productoSeleccionado();
+        if (indice >= 0)
+            txtPrecio.setText(lp.get(indice)[2]);
+
     }//GEN-LAST:event_cmbProductosActionPerformed
 
     private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
@@ -430,20 +428,16 @@ public class FacturaVista extends javax.swing.JFrame {
 
     private void cmbProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbProductosMouseClicked
         // TODO add your handling code here:
-//        if(lp != null || ! lp.isEmpty()){
-//            int indice = cmbProductos.getSelectedIndex(); // index devuele la posicion y el item el nombre
-//            if(indice >= 0) {
-//                txtPrecio.setText(lp.get(indice)[2]);
-//            }
-//        }
+        
+
     }//GEN-LAST:event_cmbProductosMouseClicked
 
     private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
         // TODO add your handling code here:
         double precio = Double.parseDouble(txtPrecio.getText());
         int cantidad = Integer.parseInt(txtCantidad.getText());
-        if(!txtCantidad.getText().isEmpty())
-        txtSubTotal.setText((precio * cantidad)+ "");
+        if (!txtCantidad.getText().isEmpty())
+            txtSubTotal.setText((precio * cantidad) + "");
         
         
     }//GEN-LAST:event_txtCantidadKeyReleased
@@ -458,17 +452,23 @@ public class FacturaVista extends javax.swing.JFrame {
         p.setId(Integer.parseInt(lp.get(this.productoSeleccionado())[0]));
         p.setNombre(lp.get(this.productoSeleccionado())[1]);
         p.setPrecio(Double.parseDouble(lp.get(this.productoSeleccionado())[2]));
+        //OBJETO DETALLE FACTURA
         DetalleFactura dF = new DetalleFactura();
         dF.setProducto(p);
         dF.setCantidad(Integer.parseInt(txtCantidad.getText()));
         dF.setSubtotal(Double.parseDouble(txtSubTotal.getText()));
-        //Añado en la vista en el TextArea
+        //Añado a la lista dinámica 
         lDetalleFac.add(dF);
-        //muestro en la vista en el textArea
-        txtADetalle.append(dF.toString()); //con el append concatena
+        //muestro en la vista en el TextArea
+        txtADetalle.append(dF.toString());
         this.limpiarDetalle();
-        actualizarTotalNeto();
+        System.out.println("------++++++++++----------" + c.getId());
+        fac.setCliente(c);
+        fac.setListaArticulos(lDetalleFac);
         
+        txtSubTotal.setText(fac.calcularSubTotal()+ "");
+        total += dF.getSubtotal();
+        txtTotalNeto.setText(total + "");
         
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -487,32 +487,33 @@ public class FacturaVista extends javax.swing.JFrame {
 
     private void btnGuardarBDDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarBDDActionPerformed
         // TODO add your handling code here:
-        if (c == null || lDetalleFac.isEmpty()){
-            JOptionPane.showMessageDialog(this, "Selecciona un cliente y agrega productos.");
-            return;
-            //valida que haya un cliente seleccionado y un producto. Si no selecciona
-            //muestra en pantalla un aviso
-        }
-        Factura fac = new Factura();
-        fac.setFecha(LocalDate.now());
-        fac.setCliente(c);
-        fac.setListaArticulos(lDetalleFac);
-        //crea un objeto con la fecha actual, cliente seleccionado y toda la lista de productos acumulados
-        
-        FacturaControlador facCon = new FacturaControlador();
-        boolean guardado = facCon.guardarFactura(fac);
-        //manda la factura completa a la facControlador
-        
-        if(guardado){
-            JOptionPane.showMessageDialog(this, "Factura # " + fac.getIdFactura() + " guardad");
-            lDetalleFac.clear();
-            txtADetalle.setText("");
-            txtTotalNeto.setText("");
-            //Si se guardó, muestra confirmación con el id real, 
-            //y limpia la pantalla para la siguiente venta. Si falló, avisa el error.
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al guardar");
-        }
+//        if (c == null || lDetalleFac.isEmpty()){
+//            JOptionPane.showMessageDialog(this, "Selecciona un cliente y agrega productos.");
+//            return;
+//            //valida que haya un cliente seleccionado y un producto. Si no selecciona
+//            //muestra en pantalla un aviso
+//        }
+//        Factura fac = new Factura();
+//        fac.setFecha(LocalDate.now());
+//        fac.setCliente(c);
+//        fac.setListaArticulos(lDetalleFac);
+//        //crea un objeto con la fecha actual, cliente seleccionado y toda la lista de productos acumulados
+//        
+//        FacturaControlador facCon = new FacturaControlador();
+//        boolean guardado = facCon.insertarFacturaSp(fac);
+//        //manda la factura completa a la facControlador
+//        
+//        if(guardado){
+//            JOptionPane.showMessageDialog(this, "Factura # " + fac.getIdFactura() + " guardad");
+//            lDetalleFac.clear();
+//            txtADetalle.setText("");
+//            txtTotalNeto.setText("");
+//            //Si se guardó, muestra confirmación con el id real, 
+//            //y limpia la pantalla para la siguiente venta. Si falló, avisa el error.
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Error al guardar");
+//        }
+    this.crearFactura(c);
         
     }//GEN-LAST:event_btnGuardarBDDActionPerformed
 
@@ -520,6 +521,10 @@ public class FacturaVista extends javax.swing.JFrame {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_btnPDFActionPerformed
+
+    private void txtTotalNetoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalNetoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalNetoActionPerformed
     
     public int productoSeleccionado(){
         if(lp != null || ! lp.isEmpty()){
@@ -543,30 +548,42 @@ public class FacturaVista extends javax.swing.JFrame {
         txtSubTotal.setText("");
     }
     
-    public void actualizarTotalNeto() {
-    double subtotal = 0;
-    for (DetalleFactura d : lDetalleFac) {
-        subtotal += d.getCantidad() * d.getProducto().getPrecio();
-        //Exactamente la misma lógica que calcularSubTotal
-        //se va llenando con el botón "+"
+
+    public void crearFactura(Cliente c) {
+        fac.setCliente(c);
+        System.out.println("++++++++++"+c.getId());
+        fac.setFecha(ldate);
+        fac.setListaArticulos(lDetalleFac);
+        double total = fac.calcularTotalNeto();
+        FacturaControlador fC = new FacturaControlador();
+
+        int id = fC.insertarFacturaSp(fac, total);
+        DetalleFacturaControlador dfC=new DetalleFacturaControlador();
+        for (DetalleFactura p : lDetalleFac) {
+            dfC.insertarDetalleFactura(p, id);
+        }
+        
     }
-    txtTotalNeto.setText(String.format("%.2f", subtotal));
-}   //String.format("%.2f", subtotal) convierte el número decimal a texto
-    //txtTotalNeto.setText() pone ese texto en el campo visual para que
-    //se actualize en pantalla cada vez que agregas un producto. el total neto 
 
     
-    
-    public Cliente crearObjetoCliente(String tipo){
-        if(tipo.equals("VIP")){ //equals compara el contenido del texto 
+    public void crearObjetoCliente(String tipo) {
+        int pos = this.clienteSeleccionado();
+        String tipoCliente = lc.get(pos)[4];
+        if (tipoCliente.equals("VIP")) {
             c = new ClienteVIP();
-            return c;
-        } else if(tipo.equals("Regular")){
+
+        } else if (tipoCliente.equals("Regular")) {
             c = new ClienteRegular();
-            return c;
-        } 
-        return c;
+
+        }
+        c.setId(Integer.parseInt(lc.get(pos)[0]));
+        c.setNombre(lc.get(pos)[1]);
+        c.setCedula(lc.get(pos)[6]);
+        c.setDireccion(lc.get(pos)[7]);
+        c.setEmail(lc.get(pos)[2]);
+        c.setTelefono(lc.get(pos)[3]);
     }
+
     
     
     /**

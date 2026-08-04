@@ -43,13 +43,16 @@ public class DetalleFactura {
         return subtotal;
     }
 
-    public void setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
+     public void setSubtotal(double subtotal) {
+        this.subtotal = Math.round(subtotal* 100.0)/100.0;
     }
+    
+    
 
     @Override
-    public String toString() {
-        return producto.getNombre() + " - " + producto.getPrecio() + " - " + cantidad + " - " + subtotal + "\n"; 
+     public String toString() {
+        return producto.getNombre()+"-"+producto.getPrecio()+
+                "-"+cantidad+"-"+subtotal+"\n";
     }
     
     
