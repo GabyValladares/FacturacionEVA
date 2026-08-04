@@ -5,10 +5,16 @@
 package vista;
 
 import controlador.ClienteControlador;
+import controlador.FacturaControlador;
 import controlador.ProductoControlador;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import modelo.Cliente;
+import modelo.ClienteRegular;
+import modelo.ClienteVIP;
 import modelo.DetalleFactura;
+import modelo.Factura;
 import modelo.Producto;
 
 /**
@@ -21,7 +27,9 @@ public class FacturaVista extends javax.swing.JFrame {
     ArrayList<String[]> listaClientes = new ArrayList<>();
     ProductoControlador pc = new ProductoControlador();
     List<Producto> listaProductos = new ArrayList<>();
-   ArrayList<DetalleFactura> listaDF = new ArrayList<>();
+    ArrayList<DetalleFactura> listaDF = new ArrayList<>();
+    LocalDate ldate = LocalDate.now();
+    Cliente c;
 
     /**
      * Creates new form FacturaVista
@@ -68,8 +76,7 @@ public class FacturaVista extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        cmbMarca = new javax.swing.JComboBox<>();
-        cmbProducto2 = new javax.swing.JComboBox<>();
+        btnGuardarFac = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -177,14 +184,12 @@ public class FacturaVista extends javax.swing.JFrame {
 
         jLabel4.setText("Direccion");
 
-        cmbMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbMarca.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardarFac.setText("Guardar Factura");
+        btnGuardarFac.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbMarcaActionPerformed(evt);
+                btnGuardarFacActionPerformed(evt);
             }
         });
-
-        cmbProducto2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -219,8 +224,10 @@ public class FacturaVista extends javax.swing.JFrame {
                         .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(249, 249, 249)
-                                .addComponent(btnPDF))
+                                .addGap(100, 100, 100)
+                                .addComponent(btnPDF)
+                                .addGap(149, 149, 149)
+                                .addComponent(btnGuardarFac, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(49, 49, 49)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,11 +264,7 @@ public class FacturaVista extends javax.swing.JFrame {
                                                         .addComponent(btnAgregar))
                                                     .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))))))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbProducto2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(62, 62, 62))
+                .addGap(62, 219, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -271,8 +274,7 @@ public class FacturaVista extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNombres)
-                    .addComponent(cmbClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblFecha)
@@ -282,10 +284,11 @@ public class FacturaVista extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel4)
-                                .addComponent(cmbProducto2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(3, 3, 3)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -316,7 +319,9 @@ public class FacturaVista extends javax.swing.JFrame {
                 .addGap(41, 41, 41)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnPDF)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPDF)
+                    .addComponent(btnGuardarFac))
                 .addGap(55, 55, 55))
         );
 
@@ -324,11 +329,10 @@ public class FacturaVista extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 public void cargarClientesCombo() {
 
- cmbClientes.removeAllItems();
-    listaClientes = cc.obtenerClientes();
-
-    for (String[] cliente : listaClientes) {
-        cmbClientes.addItem(cliente[2] + " - " + cliente[6]);
+        cmbClientes.removeAllItems();
+        listaClientes = cc.obtenerClientes();
+        for (String[] cliente : listaClientes) {
+            cmbClientes.addItem(cliente[2] + " - " + cliente[6]);
         }
     }
 
@@ -337,37 +341,59 @@ public void cargarClientesCombo() {
         listaProductos = pc.obtenerProductos();
         for (Producto p : listaProductos) {
             cmbProductos.addItem(p.getNombre());
-            
-  
         }
-
     }
 
     public void calcularSubtotal() {
 
         if (listaProductos != null || !listaProductos.isEmpty()) {
-
             double precio = Double.parseDouble(txtPrecio.getText());
             int cantidad = Integer.parseInt(txtCantidad.getText());
-
             double subtotal = precio * cantidad;
-
             txtSubTotal.setText(String.valueOf(subtotal));
         }
     }
-    
+
     public void mostrarDatosCliente() {
-    int indice = cmbClientes.getSelectedIndex();  
-    if (indice >= 0) { String[] cliente = listaClientes.get(indice);
-        txtCedula.setText(cliente[1]);
-        txtCorreo.setText(cliente[3]);
-        txtTelefono.setText(cliente[4]);
-        txtDireccion.setText(cliente[5]);
+        int indice = cmbClientes.getSelectedIndex();
+        if (indice >= 0) {
+            String[] cliente = listaClientes.get(indice);
+            txtCedula.setText(cliente[1]);
+            txtCorreo.setText(cliente[3]);
+            txtTelefono.setText(cliente[4]);
+            txtDireccion.setText(cliente[5]);
+            txtFecha.setText(ldate + "");
+            txtFecha.setEditable(false);
+        }
     }
-}
+
+    public Cliente crearObjetoCliente(int indice) {
+        if (indice >= 0 && indice < listaClientes.size()) {
+            String[] datosCliente = listaClientes.get(indice);
+
+            int idReal = Integer.parseInt(datosCliente[0]);
+            String tipo = datosCliente[5];
+
+            if (tipo.equalsIgnoreCase("VIP")) {
+                ClienteVIP vip = new ClienteVIP();
+                vip.setId(idReal);
+                return vip;
+            } else {
+                ClienteRegular reg = new ClienteRegular();
+                reg.setId(idReal);
+                return reg;
+            }
+        }
+        return null;
+    }
     private void cmbClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClientesActionPerformed
         // TODO add your handling code here:
-     mostrarDatosCliente();
+        mostrarDatosCliente();
+
+        int indice = cmbClientes.getSelectedIndex();
+        if (indice >= 0) {
+            this.c = crearObjetoCliente(indice);
+        }
     }//GEN-LAST:event_cmbClientesActionPerformed
 
     private void cmbProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductosActionPerformed
@@ -397,15 +423,25 @@ public void cargarClientesCombo() {
         p.setId(listaProductos.get(this.productoSelecionado()).getId());
         p.setNombre(listaProductos.get(this.productoSelecionado()).getNombre());
         p.setPrecio(listaProductos.get(this.productoSelecionado()).getPrecio());
-        //OBJETO DETALLE FACTURA
+
         DetalleFactura dF = new DetalleFactura();
         dF.setProducto(p);
         dF.setCantidad(Integer.parseInt(txtCantidad.getText()));
         dF.setSubtotal(Double.parseDouble(txtSubTotal.getText()));
-        //Añado a la lista dinámica 
+
         listaDF.add(dF);
-        //muestro en la vista en el TextArea
-        txtADetalle.append(dF.toString());
+
+        txtADetalle.setText("");
+        double totalPagar = 0;
+
+        for (DetalleFactura df : listaDF) {
+            txtADetalle.append(df.getProducto().getNombre() + " | Cant: " + df.getCantidad() + " | Subtotal: $" + df.getSubtotal() + "\n");
+            totalPagar += df.getSubtotal();
+        }
+
+        txtADetalle.append("\n--------------------------------------------------\n");
+        txtADetalle.append("TOTAL A PAGAR: $" + totalPagar);
+
         this.limpiarDetalle();
 
     }//GEN-LAST:event_btnAgregarActionPerformed
@@ -432,14 +468,36 @@ public void cargarClientesCombo() {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDireccionActionPerformed
 
-    private void cmbMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMarcaActionPerformed
+    private void btnGuardarFacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarFacActionPerformed
         // TODO add your handling code here:
-        
-        
-    }//GEN-LAST:event_cmbMarcaActionPerformed
+
+        int indice = cmbClientes.getSelectedIndex();
+        if (indice >= 0) {
+            this.c = crearObjetoCliente(indice);
+        }
+
+        if (this.c == null || listaDF.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un cliente y agregue productos.");
+            return;
+        }
+        Factura factura = new Factura();
+        factura.setFecha(ldate);
+        factura.setCliente(this.c);
+        factura.setListaArticulos(listaDF);
+        FacturaControlador fc = new FacturaControlador();
+        boolean guardado = fc.guardarFactura(factura);
+        if (guardado) {
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Factura guardada con éxito!");
+            listaDF.clear();
+            txtADetalle.setText("");
+            this.c = null;
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos.");
+        }
+    }//GEN-LAST:event_btnGuardarFacActionPerformed
 
     public int productoSelecionado() {
-        if (listaProductos != null || !listaProductos.isEmpty()) {
+        if (listaProductos != null && !listaProductos.isEmpty()) {
             return cmbProductos.getSelectedIndex();
         }
         return -1;
@@ -488,10 +546,9 @@ public void cargarClientesCombo() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnGuardarFac;
     private javax.swing.JButton btnPDF;
     private javax.swing.JComboBox<String> cmbClientes;
-    private javax.swing.JComboBox<String> cmbMarca;
-    private javax.swing.JComboBox<String> cmbProducto2;
     private javax.swing.JComboBox<String> cmbProductos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

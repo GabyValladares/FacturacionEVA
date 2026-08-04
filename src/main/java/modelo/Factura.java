@@ -19,7 +19,7 @@ dinámica List<DetalleFactura> con los artículos agregados. */
     private LocalDate fecha;
     private Cliente cliente;
     private List<DetalleFactura> listaArticulos;
-
+  
     public Factura() {
     }
 
