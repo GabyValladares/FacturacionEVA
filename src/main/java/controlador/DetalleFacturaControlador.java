@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.DetalleFactura;
 
 /**
  *
@@ -27,31 +28,33 @@ public class DetalleFacturaControlador {
     ResultSet resultado;
 
     //MÉTODOS DE TRANSACCIONABILIDAD
-//    public void insertarDetalleFactura(Pais p) {
-//        //1.- UTILIZAR EXCEPCIÓN
-//        try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
-//            String sentenciaSQL = "INSERT INTO Paises(nombre,capital)values "
-//                    + "('" + p.getNombre() + "','" + p.getCapital() + "');";
-//            ejecutar = conectado.prepareCall(sentenciaSQL);
-//            //TODA INSERCIÓN DEVUELVE UN ESTADO >0 CUANDO FUE FAVORABLE Y MENOR A O CUANDO NO SE REALIZÓ 
-//            int res = ejecutar.executeUpdate();
-//            if (res > 0) {
-//                JOptionPane.showMessageDialog(null,
-//                        "País Creado con éxito");
-//                ejecutar.close();
-//            } else {
-//                JOptionPane.showMessageDialog(null,
-//                        "El País no ha sido creado,"
-//                        + " revise que los datos ingresados sean correctos");
-//            }
-//            conectado.close();
-//
-//        } catch (SQLException e) {
-//            //CAPTURAR PARA DARLE UN TRATAMIENTO 
-//            JOptionPane.showMessageDialog(null,
-//                    "Comuniquese con el Administrador para solicitar ayuda");
-//            System.out.println("---------------" + e);
-//        }
+    public void insertarDetalleFactura(int idFactura, DetalleFactura df) {
+        //1.- UTILIZAR EXCEPCIÓN
+        try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
+            String sentenciaSQL = "INSERT INTO detalles_factura(id_factura,id_producto,cantidad,subtotal)values "
+                    + "('" + idFactura + "','" + df.getProducto().getId() + "','" + df.getCantidad()+ "','" 
+                    + df.getSubtotal() + "');";
+            ejecutar = conectado.prepareCall(sentenciaSQL);
+            //TODA INSERCIÓN DEVUELVE UN ESTADO >0 CUANDO FUE FAVORABLE Y MENOR A O CUANDO NO SE REALIZÓ 
+            int res = ejecutar.executeUpdate();
+            if (res > 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Detalle de factura Creado con éxito");
+                ejecutar.close();
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "El detalle de la factura no ha sido creado,"
+                        + " revise que los datos ingresados sean correctos");
+            }
+            conectado.close();
+
+        } catch (SQLException e) {
+            //CAPTURAR PARA DARLE UN TRATAMIENTO 
+            JOptionPane.showMessageDialog(null,
+                    "Comuniquese con el Administrador para solicitar ayuda");
+            System.out.println("---------------" + e);
+        }
+    }
 //
 //    }
 //
