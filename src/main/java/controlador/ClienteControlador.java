@@ -25,13 +25,15 @@ public class ClienteControlador {
             ResultSet res = ejecutar.executeQuery();
 
             while (res.next()) {
-                String[] listaClien = new String[6];
+                String[] listaClien = new String[8];
                 listaClien[0] = res.getInt("id") + "";
                 listaClien[1] = res.getString("nombre");
                 listaClien[2] = res.getString("email");
                 listaClien[3] = res.getString("telefono");
                 listaClien[4] = res.getString("tipo_cliente");
                 listaClien[5] = res.getDouble("descuento_vip") + "";
+                listaClien[6] = res.getString("cedula");
+                listaClien[7] = res.getString("direccion");
                 lregistros.add(listaClien);
             }
             ejecutar.close();

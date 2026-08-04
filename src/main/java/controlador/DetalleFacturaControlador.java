@@ -18,8 +18,7 @@ import modelo.Producto;
  */
 public class DetalleFacturaControlador {
     //public static void main(String[] args) {
-        
-    
+
     //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
     ConexionBDD conectar = new ConexionBDD();
     //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
@@ -30,12 +29,8 @@ public class DetalleFacturaControlador {
     ResultSet resultado;
 
     //MÉTODOS DE TRANSACCIONABILIDAD
-
 //    public void insertarDetalleFactura(Pais p) {
-
-   // public void insertarDetalleFactura() {
-        
-
+    // public void insertarDetalleFactura() {
 //        try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
 //            String sentenciaSQL = "INSERT INTO Paises(nombre,capital)values "
 //                    + "('" + p.getNombre() + "','" + p.getCapital() + "');";
@@ -61,8 +56,6 @@ public class DetalleFacturaControlador {
 //        }
 //
 //    }
-
-
     public ArrayList<String[]> obtenerPaises() {
         ArrayList<String[]> lregistros = new ArrayList<>();
 
@@ -115,19 +108,17 @@ public class DetalleFacturaControlador {
 //        }
 //        return lregistros;
 //    }
-
 //    ConexionBDD cb = new ConexionBDD();
 //    cb.conectar();
 //    }
-    
-    public static void main(String[] args) {
-        ClienteControlador ct = new ClienteControlador();
-        
-        
+    public void guardarFactura(int id, double total) {
+        try {
+            String sql = "CALL insertar_detalle(" + id + "," + total + ")";
+            ejecutar = conectado.prepareStatement(sql);
+            ejecutar.execute();
+            ejecutar.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
-    
-
-   
-
 }
-

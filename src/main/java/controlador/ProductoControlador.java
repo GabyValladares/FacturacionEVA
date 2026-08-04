@@ -52,27 +52,6 @@ public class ProductoControlador {
         return lregistros;
     }
 
-   public ArrayList<String> obtenerMarcas() {
-    ArrayList<String> lregistros = new ArrayList<>();
-
-    try {
-        String sentenciaSQL = "SELECT * from marcas;";
-        ejecutar = conectado.prepareStatement(sentenciaSQL);
-        ResultSet res = ejecutar.executeQuery();
-
-        while (res.next()) {
-            lregistros.add(res.getString("nombre_marca"));
-        }
-
-        res.close();
-        ejecutar.close();
-        conectado.close();
-
-    } catch (SQLException e) {
-        System.out.println("------" + e);
-    }
-
-    return lregistros;
-}
+   
 
 }

@@ -8,19 +8,12 @@ package modelo;
  *
  * @author hp
  */
-public class ClienteRegular extends Cliente {
+public class ClienteRegular extends Cliente
+{
 
     public ClienteRegular() {
     }
-
-    public ClienteRegular(int id, String nombre, String email, String telefono) {
-        super(id, nombre, email, telefono);
-    }
     
-    @Override
-    public String toString() {
-        return getNombre() + " - Cliente Regular";
-    }
 
     @Override
     public double calcularDescuento(double subtotal) {
