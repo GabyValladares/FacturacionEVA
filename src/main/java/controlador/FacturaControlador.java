@@ -4,10 +4,12 @@
  */
 package controlador;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import javax.swing.JOptionPane;
 import modelo.Factura;
 
@@ -22,14 +24,24 @@ public class FacturaControlador {
     PreparedStatement ejecutar;
     ResultSet resultado;
 
-    public void insertarFactura(Factura ft, double total) {
-
-        try {
-            String sentenciaSQL = "INSERT INTO factura(fecha,id_cliente, subtotal, total)values "
-                    + "('" + ft.getFecha() + "','" + ft.getCliente().getId()+ "','" +total+ "',' );";
-            ejecutar = conectado.prepareCall(sentenciaSQL);
-            int res = ejecutar.executeUpdate();
-            if (res > 0) {
+    public int insertarFacturaSP(Factura f, double total) {
+        int idGenerado = -1;
+        String sentenciaSQL = "{call sp_insertarFactura(?,?,?,?)}";
+        try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)){
+            //parametros de entrada 
+            ejecutar.setDate(1, java.sql.Date.valueOf(f.getFecha()));
+            ejecutar.setInt(2, f.getCliente().getId());
+            ejecutar.setDouble(3, total);
+            
+            // parametro de salida id_Factura 
+            ejecutar.registerOutParameter(4, Types.INTEGER);
+            
+            ejecutar.execute();
+            
+            //Recuperar la Primary Key recién insertada
+            idGenerado = ejecutar.getInt(4);
+            
+            if (idGenerado > 0) {
                 JOptionPane.showMessageDialog(null,
                         "Factura creado con exito");
                 ejecutar.close();
@@ -38,13 +50,13 @@ public class FacturaControlador {
                         "La Factura no ha sido creado,"
                         + " revise que los datos ingresados sean correctos");
             }
-            conectado.close();
+            //conectado.close();
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Comuniquese con el Administrador para solicitar ayuda");
             System.out.println("---------------" + e);
         }
-
+        return idGenerado;
     }
 
 }

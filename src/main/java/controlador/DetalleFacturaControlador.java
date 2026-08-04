@@ -24,11 +24,11 @@ public class DetalleFacturaControlador {
     PreparedStatement ejecutar;
     ResultSet resultado;
 
-    public void insertarDetalleFactura(DetalleFactura p, int id_factura) {
+    public void insertarDetalleFactura(DetalleFactura dt, int id_factura) {
 
         try {
             String sentenciaSQL = "INSERT INTO detalle_factura(id_factura,id_producto,cantidad,subtotal)values "
-                    + "('" + id_factura + "','" + p.getProducto().getId() + "','" + p.getCantidad() + "','" + p.getSubtotal() + "');";
+                    + "('" + id_factura + "','" + dt.getProducto().getId() + "','" + dt.getCantidad() + "','" + dt.getSubtotal() + "');";
             ejecutar = conectado.prepareCall(sentenciaSQL);
             //TODA INSERCIÓN DEVUELVE UN ESTADO >0 CUANDO FUE FAVORABLE Y MENOR A O CUANDO NO SE REALIZÓ 
             int res = ejecutar.executeUpdate();
