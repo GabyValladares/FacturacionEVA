@@ -54,4 +54,45 @@ public class ClienteControlador {
 
         return listaClientes;
     }
-   }
+    public ArrayList<modelo.Cliente> listarClientesObjeto() {
+        ArrayList<modelo.Cliente> listaClientesObjeto = new ArrayList<>();
+        String sentenciaSQL = "SELECT * FROM clientes;";
+
+        try {
+            java.sql.Connection conectado = conectar.conectar();
+            java.sql.PreparedStatement ejecutar = conectado.prepareStatement(sentenciaSQL);
+            java.sql.ResultSet res = ejecutar.executeQuery();
+
+            while (res.next()) {
+                modelo.Cliente cliente = null;
+                
+                String tipoCliente = res.getString("tipo_cliente");
+                
+                if (tipoCliente != null && tipoCliente.equalsIgnoreCase("VIP")) {
+                    cliente = new modelo.ClienteVIP(); 
+                } else {
+                    cliente = new modelo.ClienteRegular(); 
+                }
+                
+                cliente.setId(res.getInt("id_cliente")); 
+                cliente.setCedula(res.getString("cedula"));
+                cliente.setNombre(res.getString("nombre"));
+                cliente.setEmail(res.getString("email"));
+                
+                listaClientesObjeto.add(cliente);
+            }
+
+            res.close();
+            ejecutar.close();
+            conectado.close();
+
+        } catch (java.sql.SQLException e) {
+            System.out.println("Error al obtener los objetos cliente: " + e.getMessage());
+        }
+
+        return listaClientesObjeto;
+    }
+
+}
+    
+         

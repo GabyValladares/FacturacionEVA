@@ -1,24 +1,30 @@
-
 package modelo;
 
 /**
- *
  * @author hp
  */
 public class DetalleFactura {
-    //Contiene un objeto Producto, cantidad (int) y subtotal (double).
     private Producto producto;
     private int cantidad;
     private double subtotal;
 
+    // 1. Constructor vacío
     public DetalleFactura() {
     }
 
+    // 2. Constructor de 2 parámetros (calcula el subtotal automáticamente)
     public DetalleFactura(Producto producto, int cantidad) {
-    this.producto = producto;
-    this.cantidad = cantidad;
-    this.subtotal = (producto != null) ? producto.getPrecio() * cantidad : 0.0;
-}
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.subtotal = (producto != null) ? producto.getPrecio() * cantidad : 0.0;
+    }
+
+    // 3. Constructor de 3 parámetros (requerido por FacturaVista.java)
+    public DetalleFactura(Producto producto, int cantidad, double subtotal) {
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.subtotal = subtotal;
+    }
 
     public Producto getProducto() {
         return producto;
@@ -44,7 +50,7 @@ public class DetalleFactura {
         this.subtotal = subtotal;
     }
     
-   @Override
+    @Override
     public String toString() {
         return producto.getNombre() + "  x" 
              + cantidad + "  |  Precio: $" 

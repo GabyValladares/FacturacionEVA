@@ -23,7 +23,7 @@ import modelo.Producto;
 public class FacturaVista extends javax.swing.JFrame {
 
     private List<Producto> listaProductos;
-   private java.util.List<Cliente> clientes;
+   private java.util.List<modelo.Cliente> clientes = new java.util.ArrayList<>();
     private double subtotalParcialAcumulado = 0.0;
     private modelo.Cliente clienteSeleccionado;
         private java.util.List<modelo.DetalleFactura> listaDetallesTemporales = new java.util.ArrayList<>();
@@ -54,22 +54,23 @@ public class FacturaVista extends javax.swing.JFrame {
         cmbProductos.setModel(modeloCombo);
     }
 
-    // Cargar clientes en el combo box
-    public void cargarClientes() {
-        ClienteControlador cc = new ClienteControlador();
-        ArrayList<String[]> clientes = cc.obtenerClientes();
-        
-        DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<>();
-        modeloCombo.addElement("--- Seleccione un Cliente ---");
-        
-        cmbClientes.removeAllItems();
-        cmbClientes.addItem("Seleccione un cliente...");
-
-        for (String[] cli : clientes) {
-            // cli[1] contiene el nombre del cliente
-            cmbClientes.addItem(cli[1]); 
+  private void cargarClientes() {
+    controlador.ClienteControlador clienteControlador = new controlador.ClienteControlador();
+    
+    // 1. Usamos el NUEVO método y guardamos el resultado en la lista global
+    this.clientes = clienteControlador.listarClientesObjeto(); 
+    
+    // 2. Limpiamos y llenamos el ComboBox
+    cmbClientes.removeAllItems();
+    cmbClientes.addItem("--- Seleccione un Cliente ---");
+    
+    if (this.clientes != null) {
+        for (modelo.Cliente c : this.clientes) {
+            // Mostramos solo el nombre en la interfaz gráfica
+            cmbClientes.addItem(c.getNombre()); 
         }
     }
+}
     
     public void calcularSubtotal() {
         try {
@@ -560,32 +561,43 @@ public class FacturaVista extends javax.swing.JFrame {
 //        limpiarDetalle();
 //        cmbProductos.setSelectedIndex(0);
 // 1. Validar que exista un subtotal calculado antes de agregar
-try {
-        modelo.Producto producto = (modelo.Producto) cmbProductos.getSelectedItem();
+int index = cmbProductos.getSelectedIndex();
+
+    // 1. Validar que no esté seleccionada la opción por defecto ("--- Seleccione un Producto ---")
+    if (index <= 0) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar un producto válido de la lista.", "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    try {
+        // 2. Obtener el producto desde tu lista global (resta 1 por la opción por defecto)
+        // Nota: Reemplaza 'listaProductos' por la variable donde cargas tus productos (ej. 'productos')
+        modelo.Producto producto = listaProductos.get(index - 1);
+
         int cantidad = Integer.parseInt(txtCantidad.getText().trim());
 
-        if (producto == null || cantidad <= 0) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un producto y cantidad válida.");
+        if (cantidad <= 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Ingrese una cantidad mayor a 0.", "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // 1. Crear la instancia del detalle
-        modelo.DetalleFactura detalle = new modelo.DetalleFactura(producto, cantidad);
+        double subtotalItem = producto.getPrecio() * cantidad;
 
-        // 2. LÍNEA CLAVE: Guardar en la lista interna que se enviará a la BD
+        // 3. Crear el detalle y agregarlo a la lista de persistencia
+        modelo.DetalleFactura detalle = new modelo.DetalleFactura(producto, cantidad, subtotalItem);
         this.listaDetallesTemporales.add(detalle);
 
-        // 3. Reflejar en el Area de Texto / Lista visual
+        // 4. Mostrar en el área de texto
         txtADetalle.append(cantidad + "x " + producto.getNombre() + 
             " | P.Unit: $" + producto.getPrecio() + 
-            " | Subtotal: $" + String.format("%.2f", detalle.getSubtotal()) + "\n");
+            " | Subtotal: $" + String.format("%.2f", subtotalItem) + "\n");
 
-        // 4. Limpiar campos de selección de producto
+        // 5. Limpiar controles
         txtCantidad.setText("");
         cmbProductos.setSelectedIndex(0);
 
     } catch (NumberFormatException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Ingrese una cantidad numérica válida.");
+        javax.swing.JOptionPane.showMessageDialog(this, "La cantidad debe ser un número entero válido.", "Error de Formato", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -602,27 +614,33 @@ try {
     }//GEN-LAST:event_txtDireccionActionPerformed
 
     private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
-        if (cmbClientes.getSelectedItem() == null) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un cliente válido.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        int indexCliente = cmbClientes.getSelectedIndex();
+
+    // 1. Validar que se haya seleccionado un cliente (si la posición 0 es "--- Seleccione ---")
+    if (indexCliente <= 0) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente válido.", "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
         return;
     }
+
     if (listaDetallesTemporales == null || listaDetallesTemporales.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Debe agregar al menos un producto al detalle.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        javax.swing.JOptionPane.showMessageDialog(this, "Debe agregar al menos un producto al detalle.", "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
         return;
     }
 
     try {
         java.time.LocalDate fechaLocalDate = java.time.LocalDate.parse(txtFecha.getText().trim());
-        modelo.Cliente clienteSeleccionado = (modelo.Cliente) cmbClientes.getSelectedItem();
 
-        // Pasamos 0 como ID dummy; MySQL lo reemplazará con el AUTO_INCREMENT real
+        // 2. Obtener el objeto Cliente desde tu lista usando el índice (resta 1 si tienes placeholder)
+        modelo.Cliente clienteSeleccionado = clientes.get(indexCliente - 1); 
+
+        // 3. Crear e insertar la factura
         Factura nuevaFactura = new Factura(0, fechaLocalDate, clienteSeleccionado, listaDetallesTemporales);
 
         FacturaControlador facturaControlador = new FacturaControlador();
         boolean guardadoExitoso = facturaControlador.guardarFactura(nuevaFactura);
 
         if (guardadoExitoso) {
-            javax.swing.JOptionPane.showMessageDialog(this, "¡Factura registrada con éxito en la BD!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Factura guardada con éxito en MySQL!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
             limpiarFormularioCompleto();
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos.", "Error BD", javax.swing.JOptionPane.ERROR_MESSAGE);

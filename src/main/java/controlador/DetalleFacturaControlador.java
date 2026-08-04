@@ -8,31 +8,22 @@ import modelo.DetalleFactura;
 public class DetalleFacturaControlador {
     private ConexionBDD conexionBDD = new ConexionBDD();
 
-    public boolean guardarDetalle(int idFactura, DetalleFactura detalle) {
-        String sql = "INSERT INTO detalle_factura (id_factura, id_producto, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?)";
-        
-        // La línea 30 ya podrá acceder a la variable sin errores
-        Connection con = conexionBDD.conectar();
+   public boolean guardarDetalle(int idFactura, modelo.DetalleFactura detalle) {
+    String sql = "INSERT INTO detalles_facturas (id_factura, id_producto, cantidad, subtotal) VALUES (?, ?, ?, ?)";
+    
+    try (Connection con = conexionBDD.conectar();
+         PreparedStatement ps = con.prepareStatement(sql)) {
 
-        if (con == null) {
-            return false;
-        }
+        ps.setInt(1, idFactura);
+        ps.setInt(2, detalle.getProducto().getId()); // ID numérico de Producto
+        ps.setInt(3, detalle.getCantidad());
+        ps.setDouble(4, detalle.getSubtotal());
 
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, idFactura);
-            ps.setInt(2, detalle.getProducto().getId());
-            ps.setInt(3, detalle.getCantidad());
-            ps.setDouble(4, detalle.getProducto().getPrecio());
-            ps.setDouble(5, detalle.getSubtotal());
+        return ps.executeUpdate() > 0;
 
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Error al guardar detalle: " + e.getMessage());
-            return false;
-        } finally {
-            try {
-                if (con != null) con.close();
-            } catch (SQLException ex) { }
-        }
+    } catch (SQLException e) {
+        System.err.println("Error al guardar en detalles_facturas: " + e.getMessage());
+        return false;
     }
+}
 }
