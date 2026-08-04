@@ -1,28 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package modelo;
 
-/**
- *
- * @author hp
- */
 public class ClienteVIP extends Cliente {
 
     private double porcentajeFidelidad;
 
+    // 1. Constructor vacío
     public ClienteVIP() {
+        super();
     }
 
-    public ClienteVIP(double porcentajeFidelidad) {
+    public ClienteVIP(double porcentajeFidelidad, int id, String nombre, String email, String telefono, String cedula, String direccion) {
+        super(id, nombre, email, telefono, cedula, direccion); 
         this.porcentajeFidelidad = porcentajeFidelidad;
     }
 
-    public ClienteVIP(double porcentajeFidelidad, int id, String nombre, String email, String telefono) {
-        this.porcentajeFidelidad = porcentajeFidelidad;
-    }
-
+    // Getters y Setters
     public double getPorcentajeFidelidad() {
         return porcentajeFidelidad;
     }
@@ -31,12 +23,9 @@ public class ClienteVIP extends Cliente {
         this.porcentajeFidelidad = porcentajeFidelidad;
     }
 
-    
     @Override
     public double calcularDescuento(double subtotal) {
-        //Posee el atributo extra porcentajeFidelidad (double). Aplica un descuento directo según este porcentaje sobre cualquier monto.
-        return subtotal*porcentajeFidelidad;
-    
+        // Aplica el porcentaje de fidelidad sobre el subtotal
+        return subtotal * porcentajeFidelidad;
     }
-
 }

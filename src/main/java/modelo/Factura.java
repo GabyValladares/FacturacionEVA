@@ -62,6 +62,13 @@ dinámica List<DetalleFactura> con los artículos agregados. */
         this.listaArticulos = listaArticulos;
     }
     
+    public void agregarDetalle(DetalleFactura detalle) {
+    if (this.listaArticulos == null) {
+        this.listaArticulos = new java.util.ArrayList<>();
+    }
+    this.listaArticulos.add(detalle);
+}
+    
     //Posee métodos para calcular el subtotal acumulado, el descuento otorgado por el cliente y el total neto.
     
     public double calcularSubTotal(){
@@ -79,5 +86,10 @@ dinámica List<DetalleFactura> con los artículos agregados. */
         return this.calcularSubTotal()*0.15-calcularDescuento();
     }
     
-    
+    public double calcularIVA() {
+        // Calcula el IVA sobre la base imponible (Subtotal - Descuento)
+        double baseImponible = calcularSubTotal() - calcularDescuento();
+        return baseImponible * 0.15;
+    }
+
 }

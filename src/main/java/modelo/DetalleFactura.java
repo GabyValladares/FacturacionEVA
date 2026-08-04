@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package modelo;
 
 /**
@@ -17,11 +14,11 @@ public class DetalleFactura {
     public DetalleFactura() {
     }
 
-    public DetalleFactura(Producto producto, int cantidad, double subtotal) {
-        this.producto = producto;
-        this.cantidad = cantidad;
-        this.subtotal = subtotal;
-    }
+    public DetalleFactura(Producto producto, int cantidad) {
+    this.producto = producto;
+    this.cantidad = cantidad;
+    this.subtotal = (producto != null) ? producto.getPrecio() * cantidad : 0.0;
+}
 
     public Producto getProducto() {
         return producto;
