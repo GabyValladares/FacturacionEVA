@@ -65,13 +65,15 @@ dinámica List<DetalleFactura> con los artículos agregados. */
         }
       return subtotal;
     }
-    public double calcularDescuento(){
-        return this.calcularSubTotal()*(getCliente().calcularDescuento(this.calcularSubTotal()));
-    }
-    public double calcularTotalNeto(){
-        
-        return this.calcularSubTotal()*0.15-calcularDescuento();
-    }
-    
-    
+    public double calcularDescuento() {
+    return getCliente().calcularDescuento(calcularSubTotal());
 }
+
+    
+    public double calcularTotalNeto() {
+    return calcularSubTotal() - calcularDescuento();
+}
+
+    }
+    
+    

@@ -17,11 +17,10 @@ public class ClienteRegular extends Cliente
 
     @Override
     public double calcularDescuento(double subtotal) {
-        //Aplica 0% de descuento. Si el subtotal de la compra supera $1,000.00,aplica un 5% de descuento sobre el monto general.
-            if(subtotal>1000){
-                return 0.05;
-                       
-            }
-            return 0; }
-    
+        if (subtotal > 1000) {
+            return subtotal * 0.05;
+        }
+        return 0;
+    }
 }
+

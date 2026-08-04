@@ -1,16 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package modelo;
 
-/**
- *
- * @author hp
- */
 public class ClienteVIP extends Cliente {
 
-    private double porcentajeFidelidad;
+    private double porcentajeFidelidad; //  * 15 %
 
     public ClienteVIP() {
     }
@@ -32,11 +25,10 @@ public class ClienteVIP extends Cliente {
     }
 
     
-    @Override
+     @Override
     public double calcularDescuento(double subtotal) {
-        //Posee el atributo extra porcentajeFidelidad (double). Aplica un descuento directo según este porcentaje sobre cualquier monto.
-        return subtotal*porcentajeFidelidad;
-    
+        return subtotal * 0.10; // 10%
     }
+
 
 }
