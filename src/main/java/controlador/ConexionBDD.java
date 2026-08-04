@@ -12,27 +12,27 @@ import java.sql.SQLException;
  * @author Justin
  */
 public class ConexionBDD {
+
     // ATRIBUTO
     java.sql.Connection conexion;
-    
+
     public java.sql.Connection conectar() {
         // LANZAR CÓDIGO DE PRUEBA 
         try {
             // Manera de Conexión a la Base de Datos
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
             // Parámetros de conexión url/usuario/clave en mysql
             conexion = DriverManager.getConnection("jdbc:mysql://localhost/ecoinvoice?autoReconnect=true&useSSL=false", "root", "sdlc");
 
             //Parámetros de conexión url/usuario/clave en mysql
             //conexion=DriverManager.getConnection("jdbc:mysql://localhost/examenpoo?autoReconnect=true&useSSL=false","root","Amaru233");
-
-            System.out.println("CONECTADO"); 
+            System.out.println("CONECTADO");
         } catch (ClassNotFoundException | SQLException e) { // CAPTURAR ERRORES 
             System.out.println("ERROR DE CONEXION A LA BASE DE DATOS: " + e.getMessage());
         }
         return conexion;
-        
+
     }
-    
+
 }

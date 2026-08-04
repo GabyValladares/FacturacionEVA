@@ -9,6 +9,15 @@ import modelo.Producto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.Timer;
+import controlador.FacturaControlador;
+import controlador.DetalleFacturaControlador;
+import java.awt.HeadlessException;
+import modelo.Cliente;
+import modelo.ClienteRegular;
+import modelo.ClienteVIP;
+import modelo.Factura;
+import javax.swing.JOptionPane;
+import java.time.LocalDate;
 
 /**
  *
@@ -40,6 +49,12 @@ public class FacturaVista extends javax.swing.JFrame {
         txtFecha.setEditable(false);
         txtHora.setEditable(false);
 
+        // Al iniciar no se puede escribir cantidad
+        txtCantidad.setEditable(false);
+
+        // Al iniciar no se puede seleccionar productos
+        cmbProductos.setEnabled(false);
+
         limpiarDatosCliente();
         cargarFecha();
         iniciarReloj();
@@ -47,7 +62,6 @@ public class FacturaVista extends javax.swing.JFrame {
         cargarProductos();
         cargarClientes();
 
-        // Dejar combos vacíos al iniciar
         cmbClientes.setSelectedIndex(-1);
         cmbProductos.setSelectedIndex(-1);
     }
@@ -89,6 +103,7 @@ public class FacturaVista extends javax.swing.JFrame {
         txtDireccion = new javax.swing.JTextField();
         txtHora = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        btnGFactura = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -128,6 +143,9 @@ public class FacturaVista extends javax.swing.JFrame {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtCantidadKeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyTyped(evt);
+            }
         });
 
         lblSubTotal.setText("SUBTOTAL");
@@ -157,6 +175,13 @@ public class FacturaVista extends javax.swing.JFrame {
         jLabel4.setText("CORREO");
 
         jLabel5.setText("HORA:");
+
+        btnGFactura.setText("GUARDAR FACTURA");
+        btnGFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGFacturaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -215,7 +240,9 @@ public class FacturaVista extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(266, 266, 266)
+                                .addGap(152, 152, 152)
+                                .addComponent(btnGFactura)
+                                .addGap(35, 35, 35)
                                 .addComponent(btnPDF))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(68, 68, 68)
@@ -278,7 +305,9 @@ public class FacturaVista extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
-                .addComponent(btnPDF)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPDF)
+                    .addComponent(btnGFactura))
                 .addGap(23, 23, 23))
         );
 
@@ -289,13 +318,26 @@ public class FacturaVista extends javax.swing.JFrame {
         int indice = productoSeleccionado();
 
         if (indice >= 0) {
+            // Mostrar el precio del producto seleccionado
             txtPrecio.setText(lP.get(indice)[2]);
+
+            // Limpiar cantidad y subtotal al cambiar de producto
+            txtCantidad.setText("");
+            txtSubTotal.setText("");
+
+            txtCantidad.setEditable(true); // Ahora sí puede escribir
         }
     }//GEN-LAST:event_cmbProductosActionPerformed
 
     private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
-        if (!txtCantidad.getText().isEmpty()
-                && !txtPrecio.getText().isEmpty()) {
+        // Si la cantidad está vacía, limpiar el subtotal
+        if (txtCantidad.getText().trim().isEmpty()) {
+            txtSubTotal.setText("");
+            return;
+        }
+
+        // Calcular el subtotal
+        if (!txtPrecio.getText().trim().isEmpty()) {
 
             double precio = Double.parseDouble(txtPrecio.getText());
             int cantidad = Integer.parseInt(txtCantidad.getText());
@@ -307,9 +349,23 @@ public class FacturaVista extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         int indice = productoSeleccionado();
 
+        // Validar que exista un producto seleccionado
         if (indice == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Seleccione un producto");
+            cmbProductos.requestFocus();
             return;
         }
+
+        // Validar que se haya ingresado una cantidad
+        if (txtCantidad.getText().trim().isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Ingrese la cantidad");
+            txtCantidad.requestFocus();
+            return;
+        }
+
+        int cantidad = Integer.parseInt(txtCantidad.getText());
 
         Producto p = new Producto();
 
@@ -320,7 +376,7 @@ public class FacturaVista extends javax.swing.JFrame {
         DetalleFactura dF = new DetalleFactura();
 
         dF.setProducto(p);
-        dF.setCantidad(Integer.parseInt(txtCantidad.getText()));
+        dF.setCantidad(cantidad);
         dF.setSubtotal(Double.parseDouble(txtSubTotal.getText()));
 
         boolean existe = false;
@@ -329,24 +385,18 @@ public class FacturaVista extends javax.swing.JFrame {
 
             if (detalle.getProducto().getId() == p.getId()) {
 
-                detalle.setCantidad(
-                        detalle.getCantidad() + dF.getCantidad()
-                );
+                detalle.setCantidad(detalle.getCantidad() + dF.getCantidad());
 
                 detalle.setSubtotal(
-                        detalle.getCantidad() * p.getPrecio()
-                );
+                        detalle.getCantidad() * p.getPrecio());
 
                 existe = true;
                 break;
             }
-
         }
 
         if (!existe) {
-
             lDF.add(dF);
-
         }
 
         actualizarDetalleFactura();
@@ -355,6 +405,7 @@ public class FacturaVista extends javax.swing.JFrame {
 
         cmbProductos.setSelectedIndex(-1);
 
+        txtCantidad.setEditable(false);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void cmbClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClientesActionPerformed
@@ -362,23 +413,53 @@ public class FacturaVista extends javax.swing.JFrame {
             return;
         }
 
-        // Cargar datos del cliente
+        // Mostrar datos del cliente
         mostrarDatosCliente();
 
-        // Limpiar selección de producto
+        // Habilitar productos
+        cmbProductos.setEnabled(true);
+
+        // Reiniciar selección de producto
         cmbProductos.setSelectedIndex(-1);
 
         // Limpiar campos del producto
-        txtCantidad.setText("");
         txtPrecio.setText("");
+        txtCantidad.setText("");
         txtSubTotal.setText("");
+
+        txtCantidad.setEditable(false);
 
         // Limpiar factura anterior
         txtADetalle.setText("");
 
-        // Vaciar productos anteriores
+        // Vaciar lista de detalles
         lDF.clear();
     }//GEN-LAST:event_cmbClientesActionPerformed
+
+    private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
+        char c = evt.getKeyChar();
+
+        // Permitir Backspace y Delete
+        if (c == java.awt.event.KeyEvent.VK_BACK_SPACE
+                || c == java.awt.event.KeyEvent.VK_DELETE) {
+            return;
+        }
+
+        // Solo permitir números
+        if (!Character.isDigit(c)) {
+            evt.consume();
+            return;
+        }
+
+        // No permitir que el primer número sea 0
+        if (txtCantidad.getText().isEmpty() && c == '0') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCantidadKeyTyped
+
+    private void btnGFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGFacturaActionPerformed
+        guardarFactura();
+    }//GEN-LAST:event_btnGFacturaActionPerformed
 
     //METODOS DE CARGA 
     public void cargarClientes() {
@@ -580,6 +661,87 @@ public class FacturaVista extends javax.swing.JFrame {
         return total;
     }
 
+    private void guardarFactura() {
+
+        // Validar cliente
+        if (cmbClientes.getSelectedIndex() == -1) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Seleccione un cliente.");
+
+            return;
+        }
+
+        // Validar productos
+        if (lDF.isEmpty()) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Agregue al menos un producto");
+
+            return;
+        }
+
+        try {
+
+            int indiceCliente = cmbClientes.getSelectedIndex();
+
+            Cliente cliente;
+
+            String tipo = lC.get(indiceCliente)[6];
+
+            if (tipo.equalsIgnoreCase("VIP")) {
+
+                ClienteVIP vip = new ClienteVIP();
+
+                vip.setPorcentajeFidelidad(
+                        Double.parseDouble(lC.get(indiceCliente)[7]));
+
+                cliente = vip;
+
+            } else {
+
+                cliente = new ClienteRegular();
+
+            }
+
+            cliente.setId(Integer.parseInt(lC.get(indiceCliente)[0]));
+            cliente.setCedula(lC.get(indiceCliente)[2]);
+            cliente.setNombre(lC.get(indiceCliente)[1]);
+            cliente.setEmail(lC.get(indiceCliente)[3]);
+            cliente.setTelefono(lC.get(indiceCliente)[4]);
+            cliente.setDireccion(lC.get(indiceCliente)[5]);
+
+            Factura factura = new Factura();
+
+            factura.setFecha(LocalDate.now());
+            factura.setCliente(cliente);
+            factura.setListaArticulos(lDF);
+
+            FacturaControlador fc = new FacturaControlador();
+
+            int idFactura = fc.guardarFactura(factura);
+
+            if (idFactura == -1) {
+
+                JOptionPane.showMessageDialog(this,
+                        "No se pudo guardar la factura.");
+
+                return;
+
+            }
+
+            JOptionPane.showMessageDialog(this,
+                    "Factura guardada correctamente.\nCódigo: " + idFactura);
+
+        } catch (HeadlessException | NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Error: " + e.getMessage());
+
+        }
+
+    }
+
     //METODOS CLIENTE 
     public void mostrarDatosCliente() {
 
@@ -691,6 +853,7 @@ public class FacturaVista extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnGFactura;
     private javax.swing.JButton btnPDF;
     private javax.swing.JComboBox<String> cmbClientes;
     private javax.swing.JComboBox<String> cmbProductos;
