@@ -4,9 +4,11 @@
  */
 package vista;
 
+import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.languages.ArabicLigaturizer;
 import controlador.ClienteControlador;
 import controlador.DetalleFacturaControlador;
+import controlador.FacturaControlador;
 import controlador.MarcaControlador;
 import controlador.ProductoControlador;
 import java.time.LocalDate;
@@ -14,6 +16,7 @@ import static java.time.LocalDate.now;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashSet;
 import javax.swing.DefaultComboBoxModel;
 import modelo.Cliente;
 import modelo.ClienteRegular;
@@ -30,8 +33,11 @@ public class FacturaVista extends javax.swing.JFrame {
     double total = 0;
     ArrayList<String[]> lP;
     ArrayList<String[]> lC;
+    ArrayList<String[]> lPC;
     ArrayList<DetalleFactura> lDF = new ArrayList<>();
     LocalDate ldate = LocalDate.now();
+    FacturaControlador fc = new FacturaControlador();
+    int facturaNumero = fc.obtenerUltimaFactura() + 1;
     Cliente c;
 
     /**
@@ -50,6 +56,10 @@ public class FacturaVista extends javax.swing.JFrame {
         cargarClientes();
 
         System.out.println("4");
+
+        txtFacturaNumero.setText(facturaNumero + "");
+
+        lPC = new ArrayList<>();
     }
 
     /**
@@ -91,6 +101,8 @@ public class FacturaVista extends javax.swing.JFrame {
         txtTelefono = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtFacturaNumero = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -156,6 +168,11 @@ public class FacturaVista extends javax.swing.JFrame {
         lblSubTotal.setText("SUBTOTAL");
 
         txtSubTotal.setEditable(false);
+        txtSubTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSubTotalActionPerformed(evt);
+            }
+        });
 
         lblPrecio.setText("PRECIO");
 
@@ -223,25 +240,24 @@ public class FacturaVista extends javax.swing.JFrame {
         jLabel6.setText("TOTAL:");
         jLabel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        txtTotal.setText("0.00");
+
+        jLabel7.setText("FACTURA N°");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblTitulo)
-                .addGap(241, 241, 241))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(260, 260, 260)
-                        .addComponent(btnPDF)
-                        .addGap(59, 59, 59)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblTitulo)
+                        .addGap(120, 120, 120)
+                        .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(txtFacturaNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -284,6 +300,13 @@ public class FacturaVista extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(260, 260, 260)
+                                .addComponent(btnPDF)
+                                .addGap(59, 59, 59)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(94, 94, 94)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
@@ -318,7 +341,11 @@ public class FacturaVista extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTitulo)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel7)
+                        .addComponent(txtFacturaNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNombres)
@@ -435,9 +462,31 @@ public class FacturaVista extends javax.swing.JFrame {
         total += dF.getSubtotal();
         txtTotal.setText(total + "");
         //Añado a la lista dinámica 
+        txtADetalle.append(dF.toString());
         lDF.add(dF);
         //muestro en la vista en el TextArea
-        txtADetalle.append(dF.toString());
+        String[] dFL = new String[4];
+        String idCliente = "";
+        String idProducto = "";
+        int pos = this.clienteSeleccionado();
+        if (pos > -1) {
+            int id = Integer.parseInt(lC.get(pos)[0]);
+            idCliente = id + "";
+        }
+
+        int pos1 = this.productoSeleccionado();
+        if (pos1 > -1) {
+            int id = Integer.parseInt(lP.get(pos1)[0]);
+            idProducto = id + "";
+        }
+
+        dFL[0] = txtFacturaNumero.getText();
+        dFL[1] = idProducto;
+        dFL[2] = txtCantidad.getText();
+        dFL[3] = txtSubTotal.getText();
+        lPC.add(dFL);
+        System.out.println(lPC);
+
         this.limpiarDetalle();
 
     }//GEN-LAST:event_btnAgregarActionPerformed
@@ -480,29 +529,45 @@ public class FacturaVista extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTelefonoActionPerformed
 
     private void btnPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPDFActionPerformed
-        DetalleFacturaControlador dfc = new DetalleFacturaControlador();
+        FacturaControlador fc = new FacturaControlador();
         int pos = this.clienteSeleccionado();
         if (pos > -1) {
             int id = Integer.parseInt(lC.get(pos)[0]);
             double totalPagar = Double.parseDouble(txtTotal.getText());
+            fc.guardarFactura(Integer.parseInt(txtFacturaNumero.getText()),id, totalPagar);
 
-            dfc.guardarFactura(id, totalPagar);
-            
         }
+
+        DetalleFacturaControlador dfc = new DetalleFacturaControlador();
+        for (int i = 0; i < lPC.size(); i++) {
+            String[] detalle = lPC.get(i);
+
+            dfc.guardarFactura(
+                    Integer.parseInt(detalle[0]), // id_factura
+                    Integer.parseInt(detalle[1]), // id_producto
+                    Integer.parseInt(detalle[2]), // cantidad
+                    Double.parseDouble(detalle[3]) // subtotal
+            );
+        }
+
     }//GEN-LAST:event_btnPDFActionPerformed
 
-    public int productoSeleccionado() {
-        if (lP != null && !lP.isEmpty()) {
-            return cmbProductos.getSelectedIndex();
-        }
-        return -1;
-    }
+    private void txtSubTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSubTotalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSubTotalActionPerformed
 
-    public void limpiarDetalle() {
-        txtPrecio.setText("");
-        txtCantidad.setText("");
-        txtSubTotal.setText("");
-    }
+        public int productoSeleccionado() {
+            if (lP != null && !lP.isEmpty()) {
+                return cmbProductos.getSelectedIndex();
+            }
+            return -1;
+        }
+
+        public void limpiarDetalle() {
+            txtPrecio.setText("");
+            txtCantidad.setText("");
+            txtSubTotal.setText("");
+        }
 
 //    public void insertarDatos() {
 //        LocalDate fecha = LocalDate.now();
@@ -514,94 +579,94 @@ public class FacturaVista extends javax.swing.JFrame {
 //
 //        txtADetalle.setText(encabezadoFactura);
 //    }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+        /**
+         * @param args the command line arguments
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+        public static void main(String args[]) {
+            /* Set the Nimbus look and feel */
+            //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+            /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+             */
+            try {
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
                 }
+            } catch (ClassNotFoundException ex) {
+                java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+                java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+            //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FacturaVista().setVisible(true);
+            /* Create and display the form */
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    new FacturaVista().setVisible(true);
+                }
+            });
+        }
+
+        public Cliente crearObjetoCliente(String tipo) {
+
+            if ("VIP".equalsIgnoreCase(tipo)) {
+                return new ClienteVIP();
+            } else if ("Regular".equalsIgnoreCase(tipo)) {
+                return new ClienteRegular();
             }
-        });
-    }
 
-    public Cliente crearObjetoCliente(String tipo) {
-
-        if ("VIP".equalsIgnoreCase(tipo)) {
-            return new ClienteVIP();
-        } else if ("Regular".equalsIgnoreCase(tipo)) {
-            return new ClienteRegular();
+            return null;
         }
 
-        return null;
-    }
-
-    public int clienteSeleccionado() {
-        if (lC != null && !lC.isEmpty()) {
-            return cmbClientes.getSelectedIndex();
+        public int clienteSeleccionado() {
+            if (lC != null && !lC.isEmpty()) {
+                return cmbClientes.getSelectedIndex();
+            }
+            return -1;
         }
-        return -1;
-    }
 
-    public void cargarProductos() {
-        ProductoControlador pc = new ProductoControlador();
+        public void cargarProductos() {
+            ProductoControlador pc = new ProductoControlador();
 
-        String marca = cmbMarca.getSelectedItem().toString();
-        System.out.println("hola:" + marca);
-        lP = pc.obtenerProductos(marca);
+            String marca = cmbMarca.getSelectedItem().toString();
+            System.out.println("hola:" + marca);
+            lP = pc.obtenerProductos(marca);
 
-        cmbProductos.removeAllItems();
+            cmbProductos.removeAllItems();
 
-        for (String[] producto : lP) {
-            cmbProductos.addItem(producto[1]);
+            for (String[] producto : lP) {
+                cmbProductos.addItem(producto[1]);
+            }
         }
-    }
 
-    public void cargarMarcas() {
-        MarcaControlador mc = new MarcaControlador();
-        ArrayList<String> listaMarcas = mc.obtenerMarcas();
+        public void cargarMarcas() {
+            MarcaControlador mc = new MarcaControlador();
+            ArrayList<String> listaMarcas = mc.obtenerMarcas();
 
-        cmbMarca.removeAllItems();
+            cmbMarca.removeAllItems();
 
-        for (String marca : listaMarcas) {
-            cmbMarca.addItem(marca);
+            for (String marca : listaMarcas) {
+                cmbMarca.addItem(marca);
+            }
         }
-    }
 
-    public void cargarClientes() {
-        ClienteControlador cc = new ClienteControlador();
-        lC = cc.obtenerCliente();
+        public void cargarClientes() {
+            ClienteControlador cc = new ClienteControlador();
+            lC = cc.obtenerCliente();
 
-        cmbClientes.removeAllItems();
+            cmbClientes.removeAllItems();
 
-        for (String[] cliente : lC) {
-            cmbClientes.addItem(cliente[1]);
+            for (String[] cliente : lC) {
+                cmbClientes.addItem(cliente[1]);
+            }
         }
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -615,6 +680,7 @@ public class FacturaVista extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCantidad;
     private javax.swing.JLabel lblDetalle;
@@ -629,6 +695,7 @@ public class FacturaVista extends javax.swing.JFrame {
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtDireccion;
+    private javax.swing.JLabel txtFacturaNumero;
     private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtSubTotal;

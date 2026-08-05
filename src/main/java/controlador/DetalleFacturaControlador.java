@@ -111,9 +111,13 @@ public class DetalleFacturaControlador {
 //    ConexionBDD cb = new ConexionBDD();
 //    cb.conectar();
 //    }
-    public void guardarFactura(int id, double total) {
+    public void guardarFactura(int idFactura, int idProducto, int cantidad, double subtotal) {
         try {
-            String sql = "CALL insertar_detalle(" + id + "," + total + ")";
+            String sql = "CALL insertar_detalle("
+        + idFactura + ","
+        + idProducto + ","
+        + cantidad + ","
+        + subtotal + ")";
             ejecutar = conectado.prepareStatement(sql);
             ejecutar.execute();
             ejecutar.close();
