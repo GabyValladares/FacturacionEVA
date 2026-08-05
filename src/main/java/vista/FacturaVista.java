@@ -79,6 +79,8 @@ public class FacturaVista extends javax.swing.JFrame {
         cmbMarca = new javax.swing.JComboBox<>();
         lblMarca = new javax.swing.JLabel();
         btnGuardarBdd = new javax.swing.JButton();
+        lblTotal = new javax.swing.JLabel();
+        txtTotal = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -220,6 +222,10 @@ public class FacturaVista extends javax.swing.JFrame {
             }
         });
 
+        lblTotal.setText("TOTAL:");
+
+        txtTotal.setEditable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -262,14 +268,17 @@ public class FacturaVista extends javax.swing.JFrame {
                             .addComponent(lblSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 95, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnGuardarBdd)
                                 .addGap(82, 82, 82)
-                                .addComponent(btnPDF))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(50, 50, 50)))))
+                                .addComponent(btnPDF)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblTotal)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(50, 50, 50)))
                 .addGap(46, 46, 46))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -351,7 +360,9 @@ public class FacturaVista extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPDF)
-                    .addComponent(btnGuardarBdd))
+                    .addComponent(btnGuardarBdd)
+                    .addComponent(lblTotal)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32))
         );
 
@@ -408,6 +419,7 @@ public class FacturaVista extends javax.swing.JFrame {
 
         txtADetalle.append(dF.toString());
         this.limpiarDetalle();
+        sumarSubtotal();
     }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -631,6 +643,18 @@ public class FacturaVista extends javax.swing.JFrame {
 
     }
 
+    
+    private void sumarSubtotal() {
+    double suma = 0.0;
+    // Recorremos la lista de detalles que ya tienes (lDetalleFac)
+    for (DetalleFactura df : lDF) {
+        suma += df.getSubtotal();
+    }
+    // Mostramos el resultado en el TextField que creaste
+    txtTotal.setText(suma + "");
+}
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -687,6 +711,7 @@ public class FacturaVista extends javax.swing.JFrame {
     private javax.swing.JLabel lblSubTotal;
     private javax.swing.JLabel lblTelefono;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblTotal;
     private javax.swing.JTextArea txtADetalle;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtCedula;
@@ -696,5 +721,6 @@ public class FacturaVista extends javax.swing.JFrame {
     private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtSubTotal;
     private javax.swing.JTextField txtTelefono;
+    private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }
