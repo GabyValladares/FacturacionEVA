@@ -11,13 +11,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.DetalleFactura;
 
 /**
  *
  * @author hp
  */
 //public class DetalleFacturaControlador {
-    
+
 //    //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
 //    ConexionBDD conectar = new ConexionBDD();
 //    //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
@@ -167,4 +168,32 @@ import javax.swing.JOptionPane;
 ////    }
 ////}
 
+public class DetalleFacturaControlador {
 
+    ConexionBDD conectar = new ConexionBDD();
+    Connection conectado = (Connection) conectar.conectar();
+    PreparedStatement ejecutar;
+
+    public void insertarDetalleFactura(DetalleFactura p, int id_factura) {
+        try {
+            String sentenciaSQL = "INSERT INTO detallefacturas(id_factura, id_prod, cantidad, subtotal) VALUES "
+                    + "('" + id_factura + "','" 
+                    + p.getProducto().getId() + 
+                    "','" + p.getCantidad() + 
+                    "','" + p.getSubtotal() + "');";
+
+            ejecutar = conectado.prepareStatement(sentenciaSQL);
+            int res = ejecutar.executeUpdate();
+
+            if (res > 0) {
+                System.out.println("Detalle registrado correctamente para la Factura ID: " + id_factura);
+                ejecutar.close();
+            } else {
+                JOptionPane.showMessageDialog(null, "Detalle no ha sido creado, busque que los datos ingresados sean correctos.");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Comuníquese con el Administrador para solicitar ayuda");
+            System.out.println("Error en DetalleFacturaControlador: " + e);
+        }
+    }
+}

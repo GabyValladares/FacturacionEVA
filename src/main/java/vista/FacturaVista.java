@@ -5,6 +5,7 @@
 package vista;
 
 import controlador.ClienteControlador;
+import controlador.DetalleFacturaControlador;
 import controlador.FacturaControlador;
 import controlador.ProductoControlador;
 import java.time.LocalDate;
@@ -439,7 +440,6 @@ public void cargarClientesCombo() {
             totalPagar += df.getSubtotal();
         }
 
-        txtADetalle.append("\n--------------------------------------------------\n");
         txtADetalle.append("TOTAL A PAGAR: $" + totalPagar);
 
         this.limpiarDetalle();
@@ -470,30 +470,35 @@ public void cargarClientesCombo() {
 
     private void btnGuardarFacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarFacActionPerformed
         // TODO add your handling code here:
+    int indice = cmbClientes.getSelectedIndex();
+    if (indice >= 0) {
+        this.c = crearObjetoCliente(indice);
+    }
 
-        int indice = cmbClientes.getSelectedIndex();
-        if (indice >= 0) {
-            this.c = crearObjetoCliente(indice);
+    if (this.c == null || listaDF.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un cliente y agregue productos.");
+        return;
+    }
+
+    Factura factura = new Factura();
+    factura.setFecha(ldate);
+    factura.setCliente(this.c);
+    factura.setListaArticulos(listaDF);
+    FacturaControlador fc = new FacturaControlador();
+    int idFacturaGenerado = fc.insertarFacturaSp(factura, factura.calcularSubTotal());
+
+    if (idFacturaGenerado > 0) {
+        DetalleFacturaControlador dfc = new DetalleFacturaControlador();
+        for (DetalleFactura item : listaDF) {
+            dfc.insertarDetalleFactura(item, idFacturaGenerado);
         }
 
-        if (this.c == null || listaDF.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un cliente y agregue productos.");
-            return;
-        }
-        Factura factura = new Factura();
-        factura.setFecha(ldate);
-        factura.setCliente(this.c);
-        factura.setListaArticulos(listaDF);
-        FacturaControlador fc = new FacturaControlador();
-        boolean guardado = fc.guardarFactura(factura);
-        if (guardado) {
-            javax.swing.JOptionPane.showMessageDialog(this, "¡Factura guardada con éxito!");
-            listaDF.clear();
-            txtADetalle.setText("");
-            this.c = null;
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos.");
-        }
+        javax.swing.JOptionPane.showMessageDialog(this, "¡Factura y detalles guardados con éxito!");
+        listaDF.clear();
+        txtADetalle.setText("");
+        this.c = null;
+    }
+
     }//GEN-LAST:event_btnGuardarFacActionPerformed
 
     public int productoSelecionado() {
