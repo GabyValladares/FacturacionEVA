@@ -395,6 +395,7 @@ public class FacturaVista extends javax.swing.JFrame {
         if (!txtCantidad.getText().isEmpty()) {
 
         Producto p = new Producto();
+        p.setId(cmbProductos.getSelectedIndex() + 1);
         p.setNombre(cmbProductos.getSelectedItem().toString());
         p.setPrecio(Double.parseDouble(txtPrecio.getText()));
 
@@ -508,14 +509,9 @@ public class FacturaVista extends javax.swing.JFrame {
     private void btnGuardarBddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarBddActionPerformed
         // TODO add your handling code here:
         int indexCliente = cmbClientes.getSelectedIndex();
-
-        ClienteControlador p = new ClienteControlador();
-        ArrayList<String[]> lCliente = p.obtenerClientes();
-
-        String[] datosCliente = lCliente.get(indexCliente);
         this.clt = new ClienteRegular();
-        this.clt.setId(Integer.parseInt(datosCliente[0]));
-
+        this.clt.setId(indexCliente + 1);
+        
         Factura f = new Factura();
         f.setFecha(ldate);
         f.setCliente(this.clt);
@@ -531,7 +527,7 @@ public class FacturaVista extends javax.swing.JFrame {
                 dfc1.insertarDetalleFactura(idFacGenerado, df);
             }
 
-            JOptionPane.showMessageDialog(null, "¡Factura guardada con éxito!");
+            JOptionPane.showMessageDialog(null, "Factura guardada con exito");
         }
     }//GEN-LAST:event_btnGuardarBddActionPerformed
 

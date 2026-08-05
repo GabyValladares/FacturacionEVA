@@ -28,15 +28,22 @@ public class FacturaControlador {
 
     //METODOS DE TRANSACCIONABILIDAD
     public int insertarFactura(Factura f) {
-        //1.- UTILIZAR EXCEPCIÓN
-        int res = 0;
-        try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
+
+        int idFac = 0;
+        try {
             String sentenciaSQL = "INSERT INTO facturas (fecha, id_cliente, total) VALUES (CURDATE(), "
                     + f.getCliente().getId() + ", " + f.calcularTotalNeto() + ");";
             ejecutar = conectado.prepareCall(sentenciaSQL);
-            //TODA INSERCIÓN DEVUELVE UN ESTADO >0 CUANDO FUE FAVORABLE Y MENOR A O CUANDO NO SE REALIZÓ 
-            res = ejecutar.executeUpdate();
+
+            int res = ejecutar.executeUpdate();
             if (res > 0) {
+                String sentenciaSQL2 = "SELECT MAX(id_factura) AS ultimoId FROM facturas;";
+                ejecutar = conectado.prepareCall(sentenciaSQL2);
+                resultado = ejecutar.executeQuery();
+
+                if (resultado.next()) {
+                    idFac = resultado.getInt("ultimoId");
+                }
                 JOptionPane.showMessageDialog(null,
                         "Factura Creada con éxito");
                 ejecutar.close();
@@ -53,6 +60,6 @@ public class FacturaControlador {
                     "Comuniquese con el Administrador para solicitar ayuda");
             System.out.println("---------------" + e);
         }
-        return res;
+        return idFac;
     }
 }

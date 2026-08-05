@@ -17,7 +17,7 @@ import modelo.DetalleFactura;
  * @author hp
  */
 public class DetalleFacturaControlador {
-    
+
     //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
     ConexionBDD conectar = new ConexionBDD();
     //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
@@ -32,8 +32,8 @@ public class DetalleFacturaControlador {
         //1.- UTILIZAR EXCEPCIÓN
         try {//LANZAR TESTEAR UN CONJUNTO DE CÓDIGO 
             String sentenciaSQL = "INSERT INTO detalles_facturas(id_factura,id_producto,cantidad,subtotal)values "
-                    + "('" + idFactura + "','" + df.getProducto().getId() + "','" + df.getCantidad()+ "','" 
-                    + df.getSubtotal() + "');";
+                    + "(" + idFactura + "," + df.getProducto().getId() + "," + df.getCantidad() + ","
+                    + df.getSubtotal() + ");";
             ejecutar = conectado.prepareCall(sentenciaSQL);
             //TODA INSERCIÓN DEVUELVE UN ESTADO >0 CUANDO FUE FAVORABLE Y MENOR A O CUANDO NO SE REALIZÓ 
             int res = ejecutar.executeUpdate();
