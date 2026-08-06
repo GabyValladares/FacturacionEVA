@@ -12,9 +12,10 @@ import java.util.List;
  * @author hp
  */
 public class Factura {
+
     /*Contiene idFactura, fecha (LocalDate), referencia al objeto Cliente, y una lista
 dinámica List<DetalleFactura> con los artículos agregados. */
-    
+
     private int idFactura;
     private LocalDate fecha;
     private Cliente cliente;
@@ -61,26 +62,32 @@ dinámica List<DetalleFactura> con los artículos agregados. */
     public void setListaArticulos(List<DetalleFactura> listaArticulos) {
         this.listaArticulos = listaArticulos;
     }
-    
+
     //Posee métodos para calcular el subtotal acumulado, el descuento otorgado por el cliente y el total neto.
-    
-    public double calcularSubTotal(){
-        double subtotal=0; //empieza en 0 y va acumulando la suma
+    public double calcularSubTotal() {
+        double subtotal = 0; //empieza en 0 y va acumulando la suma
         for (DetalleFactura l : listaArticulos) {
-            subtotal+=l.getCantidad()*l.getProducto().getPrecio();  
+            subtotal += l.getCantidad() * l.getProducto().getPrecio();
             //toma la cantidad, la multiplica por el precio del producto. se repite
             //con todos los productos
         }
-      return subtotal; //devuelse la suma total
+        return subtotal; //devuelse la suma total
     }
-    public double calcularDescuento(){
-        return this.calcularSubTotal()*(getCliente().calcularDescuento(this.calcularSubTotal()));
+
+    public double calcularDescuento() {
+        return this.calcularSubTotal() * (getCliente().calcularDescuento(this.calcularSubTotal()));
     }
-    public double calcularTotalNeto(){
-        
-        return this.calcularSubTotal();//* 0.15 - calcularDescuento();
-       
+
+    public double calcularTotalNeto() {
+
+        return this.calcularSubTotal();//* 0.15; //- calcularDescuento();
+
     }
-    
-    
+
+    public double calcularIVA(boolean pagaIVA) {
+        if (pagaIVA) {
+            return this.calcularSubTotal() * 0.15;
+        }
+        return 0;
+    }
 }
