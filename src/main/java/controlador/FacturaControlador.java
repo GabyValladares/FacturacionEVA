@@ -27,12 +27,12 @@ public class FacturaControlador {
     ResultSet resultado;
 
     //METODOS DE TRANSACCIONABILIDAD
-    public int insertarFactura(Factura f) {
+    public int insertarFactura(Factura f, double txtTotal) {
 
         int idFac = 0;
         try {
             String sentenciaSQL = "INSERT INTO facturas (fecha, id_cliente, total) VALUES (CURDATE(), "
-                    + f.getCliente().getId() + ", " + f.calcularTotalNeto() + ");";
+                    + f.getCliente().getId() + ", " + txtTotal + ");";
             ejecutar = conectado.prepareCall(sentenciaSQL);
 
             int res = ejecutar.executeUpdate();
