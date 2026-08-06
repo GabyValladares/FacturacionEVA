@@ -19,12 +19,12 @@ import javax.swing.JOptionPane;
  */
 public class Pdf {
 
-    // Cambiamos el parámetro para que reciba el objeto Factura y los totales
+    
     public void btnPDFActionPerformed(Factura f, double subtotal, double descuento, double total) {
         Document document = new Document();
 
         try {
-            // Genera el nombre del archivo dinámicamente con la cédula del cliente
+           
           String nombreArchivo = "Factura_" + String.valueOf(f.getCliente().getCedula()).trim() + ".pdf";
             
             PdfWriter.getInstance(document, new FileOutputStream(nombreArchivo));
@@ -33,7 +33,7 @@ public class Pdf {
             document.setMargins(50, 50, 50, 50);
             document.setPageSize(PageSize.A4);
             
-            // Fuentes (Mismas de tu código original)
+
             Font fontTitulo = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.BLUE);
             Font fontTexto = FontFactory.getFont(FontFactory.HELVETICA, 12, BaseColor.DARK_GRAY);
 

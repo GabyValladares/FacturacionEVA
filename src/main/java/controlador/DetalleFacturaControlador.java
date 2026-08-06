@@ -9,7 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
+import modelo.DetalleFactura;
 
 /**
  *
@@ -25,6 +27,29 @@ public class DetalleFacturaControlador {
     PreparedStatement ejecutar;
     //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
+    
+     private ConexionBDD conexionBDD;
+
+    public DetalleFacturaControlador() {
+        this.conexionBDD = new ConexionBDD();
+    }
+
+    public boolean guardarDetalles(Connection con, int idFactura, List<DetalleFactura> listaDetalles) throws SQLException {
+        String sql = "INSERT INTO detalles_facturas (id_factura, id_producto, cantidad, subtotal) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            for (DetalleFactura detalle : listaDetalles) {
+                ps.setInt(1, idFactura);
+                ps.setInt(2, detalle.getProducto().getId());
+                ps.setInt(3, detalle.getCantidad());
+                ps.setDouble(4, detalle.getSubtotal());
+                ps.addBatch();
+            }
+            ps.executeBatch();
+            return true;
+        }
+    }
+}
 
     //MÉTODOS DE TRANSACCIONABILIDAD
 //    public void insertarDetalleFactura(Pais p) {
@@ -80,4 +105,7 @@ public class DetalleFacturaControlador {
 //        }
 //        return lregistros;
 //    }
-}
+
+
+
+   
