@@ -28,4 +28,8 @@ public class ClienteVIP extends Cliente {
         // Aplica el porcentaje de fidelidad sobre el subtotal
         return subtotal * porcentajeFidelidad;
     }
+    @Override
+    public String getTipoCliente() {
+    return "VIP"; 
+}
 }

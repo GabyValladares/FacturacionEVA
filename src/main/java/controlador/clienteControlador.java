@@ -30,7 +30,7 @@ public class ClienteControlador {
             java.sql.ResultSet res = ejecutar.executeQuery();
 
             while (res.next()) {
-                // ¡AQUÍ ESTÁ LA CORRECCIÓN! Cambiamos de 6 a 7 espacios
+              
                 String[] cliente = new String[7]; 
                 
                 cliente[0] = res.getString("cedula");       // Cédula
@@ -69,15 +69,19 @@ public class ClienteControlador {
                 String tipoCliente = res.getString("tipo_cliente");
                 
                 if (tipoCliente != null && tipoCliente.equalsIgnoreCase("VIP")) {
-                    cliente = new modelo.ClienteVIP(); 
+                    cliente = new modelo.ClienteVIP();
                 } else {
                     cliente = new modelo.ClienteRegular(); 
-                }
-                
+}
                 cliente.setId(res.getInt("id_cliente")); 
                 cliente.setCedula(res.getString("cedula"));
                 cliente.setNombre(res.getString("nombre"));
                 cliente.setEmail(res.getString("email"));
+                
+                // --- AGREGA ESTAS DOS LÍNEAS NUEVAS ---
+                cliente.setTelefono(res.getString("telefono"));
+                cliente.setDireccion(res.getString("direccion"));
+                // --------------------------------------
                 
                 listaClientesObjeto.add(cliente);
             }
