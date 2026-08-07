@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import modelo.Cliente;
+import modelo.Grupo;
+import vista.ClientesVista;
 
 
 public class ClienteControlador {
@@ -54,49 +57,52 @@ public class ClienteControlador {
 
         return listaClientes;
     }
-    public ArrayList<modelo.Cliente> listarClientesObjeto() {
-        ArrayList<modelo.Cliente> listaClientesObjeto = new ArrayList<>();
-        String sentenciaSQL = "SELECT * FROM clientes;";
+    public ArrayList<Cliente> listarClientesObjeto() {
+    ArrayList<Cliente> listaClientesObjeto = new ArrayList<>();
+    String sentenciaSQL = "SELECT * FROM clientes;";
 
-        try {
-            java.sql.Connection conectado = conectar.conectar();
-            java.sql.PreparedStatement ejecutar = conectado.prepareStatement(sentenciaSQL);
-            java.sql.ResultSet res = ejecutar.executeQuery();
+    try {
+        Connection conectado = conectar.conectar();
+        PreparedStatement ejecutar = conectado.prepareStatement(sentenciaSQL);
+        ResultSet res = ejecutar.executeQuery();
 
-            while (res.next()) {
-                modelo.Cliente cliente = null;
-                
-                String tipoCliente = res.getString("tipo_cliente");
-                
-                if (tipoCliente != null && tipoCliente.equalsIgnoreCase("VIP")) {
-                    cliente = new modelo.ClienteVIP();
-                } else {
-                    cliente = new modelo.ClienteRegular(); 
-}
-                cliente.setId(res.getInt("id_cliente")); 
-                cliente.setCedula(res.getString("cedula"));
-                cliente.setNombre(res.getString("nombre"));
-                cliente.setEmail(res.getString("email"));
-                
-                // --- AGREGA ESTAS DOS LÍNEAS NUEVAS ---
-                cliente.setTelefono(res.getString("telefono"));
-                cliente.setDireccion(res.getString("direccion"));
-                // --------------------------------------
-                
-                listaClientesObjeto.add(cliente);
+        while (res.next()) {
+            Cliente cliente;
+            String tipoCliente = res.getString("tipo_cliente");
+            
+            if (tipoCliente != null && tipoCliente.equalsIgnoreCase("VIP")) {
+                cliente = new modelo.ClienteVIP();
+            } else {
+                cliente = new modelo.ClienteRegular(); 
             }
-
-            res.close();
-            ejecutar.close();
-            conectado.close();
-
-        } catch (java.sql.SQLException e) {
-            System.out.println("Error al obtener los objetos cliente: " + e.getMessage());
+            
+            cliente.setId(res.getInt("id_cliente")); 
+            cliente.setCedula(res.getString("cedula"));
+            cliente.setNombre(res.getString("nombre"));
+            cliente.setEmail(res.getString("email"));
+            cliente.setTelefono(res.getString("telefono"));
+            cliente.setDireccion(res.getString("direccion"));
+            
+            
+            cliente.setId(res.getInt("id_grupo")); // o cliente.setGrupo(res.getInt("id_grupo"));
+            
+            listaClientesObjeto.add(cliente);
         }
-
-        return listaClientesObjeto;
+        res.close();
+        ejecutar.close();
+        conectado.close();
+    } catch (SQLException e) {
+        System.out.println("Error al obtener objetos cliente: " + e.getMessage());
     }
-
+    return listaClientesObjeto;
 }
+    }
     
-         
+ 
+
+
+
+
+
+
+

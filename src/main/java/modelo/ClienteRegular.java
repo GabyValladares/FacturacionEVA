@@ -13,8 +13,11 @@ public class ClienteRegular extends Cliente
 
     public ClienteRegular() {
     }
-    
 
+   
+  
+// Constructor con parámetros (ESTE ES EL QUE FALTA)
+    
 //    @Override
 //    public double calcularDescuento(double subtotal) {
 //        //Aplica 0% de descuento. Si el subtotal de la compra supera $1,000.00,aplica un 5% de descuento sobre el monto general.

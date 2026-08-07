@@ -18,18 +18,25 @@ public abstract class Cliente {
     private String cedula;
     private String direccion;
     private double descuentoVip;
+    private Grupo grupo;//string de cambio a tipo grupo
+    ;
 
     public Cliente() {
     }
 
- public Cliente(int id, String nombre, String email, String telefono, String cedula, String direccion) {
-    this.id = id;
-    this.nombre = nombre;
-    this.email = email;
-    this.telefono = telefono;
-    this.cedula = cedula;
-    this.direccion = direccion;
-}
+    public Cliente(int id, String nombre, String email, String telefono, String tipoCliente, String cedula, String direccion, double descuentoVip, Grupo grupo) {
+        this.id = id;
+        this.nombre = nombre;
+        this.email = email;
+        this.telefono = telefono;
+        this.tipoCliente = tipoCliente;
+        this.cedula = cedula;
+        this.direccion = direccion;
+        this.descuentoVip = descuentoVip;
+        this.grupo = grupo;
+    }
+
+ 
 
     public int getId() {
         return id;
@@ -95,10 +102,21 @@ public abstract class Cliente {
         this.descuentoVip = descuentoVip;
     }
 
-   
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
 
   
-    
+   
+@Override
+public String toString() {
+    return this.nombre; // Retorna el atributo donde guardas el nombre del cliente
+}
+   
     
     public abstract double calcularDescuento(double subtotal);
 }

@@ -9,10 +9,20 @@ public class ClienteVIP extends Cliente {
         super();
     }
 
-    public ClienteVIP(double porcentajeFidelidad, int id, String nombre, String email, String telefono, String cedula, String direccion) {
-        super(id, nombre, email, telefono, cedula, direccion); 
+    public ClienteVIP(double porcentajeFidelidad, int id, String nombre, String email, String telefono, String tipoCliente, String cedula, String direccion, double descuentoVip, Grupo grupo) {
+        super(id, nombre, email, telefono, tipoCliente, cedula, direccion, descuentoVip, grupo);
         this.porcentajeFidelidad = porcentajeFidelidad;
     }
+
+//    public ClienteVIP(double porcentajeFidelidad, int id, String nombre, String email, String telefono, String cedula, String direccion) {
+//        super(id, nombre, email, telefono, cedula, direccion); 
+//        this.porcentajeFidelidad = porcentajeFidelidad;
+//    }
+
+    public ClienteVIP(double porcentajeFidelidad) {
+        this.porcentajeFidelidad = porcentajeFidelidad;
+    }
+    
 
     // Getters y Setters
     public double getPorcentajeFidelidad() {

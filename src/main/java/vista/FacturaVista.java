@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package vista;
 
-import controlador.ClienteControlador;
 import controlador.FacturaControlador;
 import controlador.ProductoControlador;
 import java.time.LocalDate;
@@ -14,6 +10,10 @@ import javax.swing.DefaultComboBoxModel;
 import modelo.Cliente;
 import modelo.DetalleFactura;
 import modelo.Factura;
+import modelo.Producto;
+
+import modelo.Producto;
+
 import modelo.Producto;
 
 /**
@@ -753,7 +753,7 @@ try {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
-        calcularSubtotal();
+//        calcularSubtotal();
     }//GEN-LAST:event_txtCantidadKeyReleased
 
     private void txtCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCedulaActionPerformed
@@ -875,7 +875,7 @@ try {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FacturaVista().setVisible(true);
+                new ClientesVista().setVisible(true);
             }
         });
     }
