@@ -605,7 +605,7 @@ public class FacturaVista extends javax.swing.JFrame {
         // 2. Llenamos las cajas de texto básicas
         txtCedula.setText(cliente.getCedula());
         txtCorreo.setText(cliente.getEmail());
-        txtNumeroTelefono.setText(cliente.getTelefono()); // Verifica el nombre exacto de tu variable
+        txtNumeroTelefono.setText(cliente.getTelefono()); 
         txtDireccion.setText(cliente.getDireccion());
         
         // 3. POLIMORFISMO: Obtenemos el tipo y llenamos el Descuento
@@ -618,13 +618,12 @@ public class FacturaVista extends javax.swing.JFrame {
             rbtnRegular.setSelected(true);
             txtDescuento.setText("0");  
         } else if ("Frecuente".equals(tipo)) {
-            // rbtnFrecuente.setSelected(true); // Descomenta si usas este botón
+            // rbtnFrecuente.setSelected(true); 
             txtDescuento.setText("5");  
         }
 
-        // ========================================================
+        
         // 4. ACTUALIZACIÓN DE LA BARRA DE PROGRESO (50%)
-        // ========================================================
         barraProgreso.setVisible(true);
         barraProgreso.setIndeterminate(false); // Apagamos la animación de lado a lado
         barraProgreso.setStringPainted(true);  // Permitimos que se vea el texto en la barra
@@ -792,9 +791,9 @@ try {
         boolean guardadoExitoso = facturaControlador.guardarFactura(nuevaFactura);
 
         if (guardadoExitoso) {
-            // ========================================================
+            
             // 4. ACTUALIZACIÓN DE LA BARRA DE PROGRESO AL GUARDAR (100%)
-            // ========================================================
+          
             barraProgreso.setValue(100);
             barraProgreso.setString("100% - Factura Procesada");
             

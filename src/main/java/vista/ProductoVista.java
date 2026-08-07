@@ -28,11 +28,11 @@ public class ProductoVista extends javax.swing.JFrame {
         controlador.MarcaControlador mc = new controlador.MarcaControlador();
         this.listaMarcas = mc.obtenerTodasMarcas();
         
-        comboMarca.removeAllItems();
-        comboMarca.addItem("--- Seleccione una Marca ---");
+        comboClientes.removeAllItems();
+        comboClientes.addItem("--- Seleccione una Marca ---");
         
         for (modelo.Marca mar : this.listaMarcas) {
-            comboMarca.addItem(mar.getNombre());
+            comboClientes.addItem(mar.getNombre());
         }
     }
   
@@ -42,12 +42,12 @@ public class ProductoVista extends javax.swing.JFrame {
         this.listaProductos = pc.obtenerProductosPorMarca(idMarca);
         
         // Limpiamos el ComboBox de productos antes de llenarlo con los nuevos
-        comboProductos.removeAllItems();
-        comboProductos.addItem("--- Seleccione un Producto ---");
+        comboGrupos.removeAllItems();
+        comboGrupos.addItem("--- Seleccione un Producto ---");
         
         if (this.listaProductos != null) {
             for (modelo.Producto prod : this.listaProductos) {
-                comboProductos.addItem(prod.getNombre());
+                comboGrupos.addItem(prod.getNombre());
             }
         }
 }
@@ -60,40 +60,33 @@ public class ProductoVista extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblProductos = new javax.swing.JLabel();
+        lblGrupos = new javax.swing.JLabel();
         lblGestionFacturas = new javax.swing.JLabel();
-        comboProductos = new javax.swing.JComboBox<>();
-        lblMarca = new javax.swing.JLabel();
-        comboMarca = new javax.swing.JComboBox<>();
-        btnAgregar = new javax.swing.JButton();
+        comboGrupos = new javax.swing.JComboBox<>();
+        lblClientes = new javax.swing.JLabel();
+        comboClientes = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtAreaDetalle = new javax.swing.JTextArea();
-        btnAgregar1 = new javax.swing.JButton();
+        txtMostrar = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lblProductos.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblProductos.setText("Productos");
+        lblGrupos.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblGrupos.setText("Grupos:");
 
         lblGestionFacturas.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblGestionFacturas.setText("Gestión Fcturas");
+        lblGestionFacturas.setText("Clientes ");
 
-        comboProductos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboGrupos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        lblMarca.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblMarca.setText("Marca");
+        lblClientes.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblClientes.setText("Clientes");
 
-        comboMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        comboMarca.addActionListener(this::comboMarcaActionPerformed);
+        comboClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboClientes.addActionListener(this::comboClientesActionPerformed);
 
-        btnAgregar.setText("+");
-        btnAgregar.addActionListener(this::btnAgregarActionPerformed);
-
-        txtAreaDetalle.setColumns(20);
-        txtAreaDetalle.setRows(5);
-        jScrollPane1.setViewportView(txtAreaDetalle);
-
-        btnAgregar1.setText("Generar PDF");
+        txtMostrar.setColumns(20);
+        txtMostrar.setRows(5);
+        jScrollPane1.setViewportView(txtMostrar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,30 +94,21 @@ public class ProductoVista extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(54, 54, 54)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(202, 202, 202)
-                        .addComponent(lblMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(comboMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(195, 195, 195)
-                        .addComponent(lblGestionFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
-                .addComponent(btnAgregar)
-                .addGap(115, 115, 115))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(120, 120, 120)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(287, 287, 287)
-                        .addComponent(btnAgregar1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(lblGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(202, 202, 202)
+                            .addComponent(lblClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(comboGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(195, 195, 195)
+                            .addComponent(lblGestionFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,55 +117,26 @@ public class ProductoVista extends javax.swing.JFrame {
                 .addComponent(lblGestionFacturas)
                 .addGap(68, 68, 68)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblProductos)
-                    .addComponent(lblMarca))
+                    .addComponent(lblGrupos)
+                    .addComponent(lblClientes))
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAgregar))
-                .addGap(38, 38, 38)
+                    .addComponent(comboGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(44, 44, 44)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addComponent(btnAgregar1)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        if (comboProductos.getSelectedIndex() == 0 || comboMarca.getSelectedIndex() == 0) {
-            javax.swing.JOptionPane.showMessageDialog(this, 
-                "Por favor, seleccione un producto y una marca.", 
-                "Datos incompletos", 
-                javax.swing.JOptionPane.WARNING_MESSAGE);
-            return; 
-        }
-
-        // 2. Capturar los textos seleccionados en los ComboBox
-        String nombreProducto = comboProductos.getSelectedItem().toString();
-        String nombreMarca = comboMarca.getSelectedItem().toString();
-
-        // 3. Crear el texto con formato para agregar a la lista
-        String linea = "Producto: " + nombreProducto + "  |  Marca: " + nombreMarca + "\n";
-
-        // 4. Agregar la línea al JTextArea 
-        // (Nota: Si no le cambiaste el nombre en NetBeans, por defecto se llama jTextArea1)
-        txtAreaDetalle.append(linea);
-
-        // 5. Opcional: Regresar los combos a su estado original
-        comboProductos.setSelectedIndex(0);
-        comboMarca.setSelectedIndex(0);
-        
-    }//GEN-LAST:event_btnAgregarActionPerformed
-
-    private void comboMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboMarcaActionPerformed
+    private void comboClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesActionPerformed
         // 1. Verificamos que se haya seleccionado una marca real (no el índice 0)
-        if (comboMarca.getSelectedIndex() > 0) {
+        if (comboClientes.getSelectedIndex() > 0) {
             
             // 2. Obtenemos el nombre de la marca que el usuario eligió
-            String nombreMarcaSeleccionada = comboMarca.getSelectedItem().toString();
+            String nombreMarcaSeleccionada = comboClientes.getSelectedItem().toString();
             int idMarcaEncontrada = 0;
             
             // 3. Buscamos ese nombre en nuestra lista global de marcas para sacar su ID
@@ -197,10 +152,10 @@ public class ProductoVista extends javax.swing.JFrame {
             
         } else {
             // Si elige "--- Seleccione una Marca ---", limpiamos los productos
-            comboProductos.removeAllItems();
-            comboProductos.addItem("--- Seleccione un Producto ---");
+            comboGrupos.removeAllItems();
+            comboGrupos.addItem("--- Seleccione un Producto ---");
         }
-    }//GEN-LAST:event_comboMarcaActionPerformed
+    }//GEN-LAST:event_comboClientesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -228,14 +183,12 @@ public class ProductoVista extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnAgregar1;
-    private javax.swing.JComboBox<String> comboMarca;
-    private javax.swing.JComboBox<String> comboProductos;
+    private javax.swing.JComboBox<String> comboClientes;
+    private javax.swing.JComboBox<String> comboGrupos;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblClientes;
     private javax.swing.JLabel lblGestionFacturas;
-    private javax.swing.JLabel lblMarca;
-    private javax.swing.JLabel lblProductos;
-    private javax.swing.JTextArea txtAreaDetalle;
+    private javax.swing.JLabel lblGrupos;
+    private javax.swing.JTextArea txtMostrar;
     // End of variables declaration//GEN-END:variables
 }
