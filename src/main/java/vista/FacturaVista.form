@@ -30,61 +30,65 @@
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="lblDetalle" min="-2" pref="181" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="lblDetalle" min="-2" pref="181" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="lblMarca" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="lblProducto" min="-2" pref="77" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Component id="lblPrecio" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="lblMarca" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="lblProducto" min="-2" pref="77" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+                              <Component id="cmbProductos" min="-2" pref="130" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="txtPrecio" min="-2" pref="84" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Component id="lblPrecio" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                      <Component id="lblCantidad" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblCantidad" min="-2" max="-2" attributes="0"/>
+                          <Component id="spinCantidad" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
+                              <Component id="txtSubTotal" min="-2" pref="84" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnAgregar" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="lblSubTotal" alignment="0" min="-2" pref="84" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="95" max="32767" attributes="0"/>
-                              <Component id="jScrollPane1" min="-2" pref="509" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="ProgresoFactura" alignment="0" min="-2" pref="167" max="-2" attributes="0"/>
+                          <Component id="lblProgreso" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="btnGuardarBdd" max="32767" attributes="0"/>
+                          <Component id="btnPDF" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="lblTotal" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtTotal" min="-2" pref="71" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="ProgresoFactura" alignment="0" min="-2" pref="167" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="lblProgreso" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="116" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="btnGuardarBdd" max="32767" attributes="0"/>
-                                  <Component id="btnPDF" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="lblTotal" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtTotal" min="-2" pref="71" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="cbxIva" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
+                          <Component id="cbxIva" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
                   </Group>
@@ -128,19 +132,9 @@
               <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="50" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="cmbMarca" min="-2" pref="113" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="cmbProductos" min="-2" pref="130" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="txtPrecio" min="-2" pref="84" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="txtCantidad" min="-2" pref="76" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="txtSubTotal" min="-2" pref="84" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="cmbMarca" min="-2" pref="113" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="txtCedula" min="-2" pref="109" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -149,6 +143,10 @@
                       <Component id="txtEmail" min="-2" pref="156" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       <Component id="txtTelefono" min="-2" pref="81" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="579" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
@@ -160,7 +158,7 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="21" max="32767" attributes="0"/>
+              <EmptySpace pref="12" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblNombres" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmbClientes" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -200,14 +198,14 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cmbProductos" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtPrecio" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtCantidad" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtSubTotal" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnAgregar" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                   <Component id="cmbMarca" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="spinCantidad" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="17" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="123" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -215,12 +213,12 @@
                           <Component id="cbxIva" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnPDF" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                               <Component id="lblTotal" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtTotal" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="btnPDF" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -303,22 +301,6 @@
         <Property name="text" type="java.lang.String" value="DETALLE DE LOS PRODUCTOS"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
-      <AuxValues>
-        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-      </AuxValues>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-      <SubComponents>
-        <Component class="javax.swing.JTextArea" name="txtADetalle">
-          <Properties>
-            <Property name="editable" type="boolean" value="false"/>
-            <Property name="columns" type="int" value="20"/>
-            <Property name="rows" type="int" value="5"/>
-          </Properties>
-        </Component>
-      </SubComponents>
-    </Container>
     <Component class="javax.swing.JLabel" name="lblProducto">
       <Properties>
         <Property name="text" type="java.lang.String" value="PRODUCTO"/>
@@ -328,11 +310,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="CANTIDAD"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtCantidad">
-      <Events>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCantidadKeyReleased"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblSubTotal">
       <Properties>
@@ -505,5 +482,58 @@
         <Property name="text" type="java.lang.String" value="REGULAR"/>
       </Properties>
     </Component>
+    <Component class="javax.swing.JSpinner" name="spinCantidad">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spinCantidadStateChanged"/>
+      </Events>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="tblADetalle">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="4" rowCount="4">
+                <Column editable="false" title="Title 1" type="java.lang.Object"/>
+                <Column editable="false" title="Title 2" type="java.lang.Object"/>
+                <Column editable="false" title="Title 3" type="java.lang.Object"/>
+                <Column editable="false" title="Title 4" type="java.lang.Object"/>
+              </Table>
+            </Property>
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+              <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+              </TableColumnModel>
+            </Property>
+            <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>
