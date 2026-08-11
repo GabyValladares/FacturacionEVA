@@ -4,11 +4,11 @@ package vista;
 import controlador.ClienteControlador;
 import controlador.DetalleFacturaControlador;
 import controlador.FacturaControlador;
-import controlador.MarcaControlador;
 import controlador.ProductoControlador;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import modelo.DetalleFactura;
 import modelo.Producto;
 import modelo.Cliente;
@@ -23,24 +23,53 @@ import modelo.Factura;
 
 public class FacturaVista extends javax.swing.JFrame {
     
-    private ArrayList<String[]> productos;
-    private ArrayList<String[]> clientes;
-    private ArrayList<DetalleFactura> lDF = new ArrayList<>();
-    private Cliente c;
-    
+   private ArrayList<String[]> productos;
+private ArrayList<String[]> clientes;
+private ArrayList<DetalleFactura> lDF = new ArrayList<>();
+private Cliente c;
+private DefaultTableModel modelo;
+private double subtotalFactura = 0;
+private double descuentoFactura = 0;
+private double ivaFactura = 0;
+private double totalFactura = 0;
+
+
 
    
-    public FacturaVista() {
-        initComponents();
-        txtFecha.setText(LocalDate.now().toString());
-        txtFecha.setEditable(false);
-        cargarProductos();
-        cargarClientes();
+    public FacturaVista() {    
+    initComponents();
 
-  
-        
-        
+    modelo = new DefaultTableModel();
 
+    modelo.addColumn("Producto");
+    modelo.addColumn("Precio");
+    modelo.addColumn("Cantidad");
+    modelo.addColumn("Subtotal");
+
+    tblProductos.setModel(modelo);
+
+    // Progress Bar
+    progressFactura.setMinimum(0);
+    progressFactura.setMaximum(100);
+    progressFactura.setValue(0);
+    progressFactura.setStringPainted(true);
+
+    // Radio Buttons
+        buttonGroup1.add(rbtnVIP);
+    buttonGroup1.add(rbtnRegular);
+
+    rbtnVIP.setEnabled(false);
+    rbtnRegular.setEnabled(false);
+
+    // IVA
+    rbtnVIP.setSelected(false);
+    txtIVA.setEditable(false);
+
+    txtFecha.setText(LocalDate.now().toString());
+    txtFecha.setEditable(false);
+
+    cargarProductos();
+    cargarClientes();
     }
 
  
@@ -49,6 +78,7 @@ public class FacturaVista extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel6 = new javax.swing.JLabel();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         lblTitulo = new javax.swing.JLabel();
         lblNombres = new javax.swing.JLabel();
         cmbClientes = new javax.swing.JComboBox<>();
@@ -56,11 +86,8 @@ public class FacturaVista extends javax.swing.JFrame {
         txtFecha = new javax.swing.JTextField();
         cmbProductos = new javax.swing.JComboBox<>();
         lblDetalle = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtADetalle = new javax.swing.JTextArea();
         lblProducto = new javax.swing.JLabel();
         lblCantidad = new javax.swing.JLabel();
-        txtCantidad = new javax.swing.JTextField();
         lblSubTotal = new javax.swing.JLabel();
         txtSubTotal = new javax.swing.JTextField();
         lblPrecio = new javax.swing.JLabel();
@@ -74,7 +101,6 @@ public class FacturaVista extends javax.swing.JFrame {
         textCedula = new javax.swing.JTextField();
         TextTelefono = new javax.swing.JTextField();
         TextDireccion = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
@@ -82,6 +108,15 @@ public class FacturaVista extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblProductos = new javax.swing.JTable();
+        spCantidad = new javax.swing.JSpinner();
+        progressFactura = new javax.swing.JProgressBar();
+        chkIVA = new javax.swing.JCheckBox();
+        rbtnVIP = new javax.swing.JRadioButton();
+        rbtnRegular = new javax.swing.JRadioButton();
+        txtIVA = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
 
         jLabel6.setText("jLabel6");
 
@@ -132,11 +167,6 @@ public class FacturaVista extends javax.swing.JFrame {
         lblDetalle.setForeground(new java.awt.Color(255, 255, 255));
         lblDetalle.setText("   DETALLE DE LOS PRODUCTOS");
 
-        txtADetalle.setEditable(false);
-        txtADetalle.setColumns(20);
-        txtADetalle.setRows(5);
-        jScrollPane1.setViewportView(txtADetalle);
-
         lblProducto.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         lblProducto.setForeground(new java.awt.Color(0, 0, 0));
         lblProducto.setText(" PRODUCTO");
@@ -144,18 +174,6 @@ public class FacturaVista extends javax.swing.JFrame {
         lblCantidad.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         lblCantidad.setForeground(new java.awt.Color(0, 0, 0));
         lblCantidad.setText("  CANTIDAD");
-
-        txtCantidad.setForeground(new java.awt.Color(0, 0, 0));
-        txtCantidad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCantidadActionPerformed(evt);
-            }
-        });
-        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtCantidadKeyReleased(evt);
-            }
-        });
 
         lblSubTotal.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         lblSubTotal.setForeground(new java.awt.Color(0, 0, 0));
@@ -224,16 +242,12 @@ public class FacturaVista extends javax.swing.JFrame {
         TextDireccion.setEditable(false);
         TextDireccion.setForeground(new java.awt.Color(153, 153, 153));
 
-        jTextField4.setEditable(false);
-        jTextField4.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jTextField4.setForeground(new java.awt.Color(153, 153, 153));
-
         jTextField5.setEditable(false);
         jTextField5.setForeground(new java.awt.Color(153, 153, 153));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel7.setText("      TOTAL");
+        jLabel7.setText("TOTAL");
 
         txtTotal.setEditable(false);
         txtTotal.addActionListener(new java.awt.event.ActionListener() {
@@ -242,6 +256,7 @@ public class FacturaVista extends javax.swing.JFrame {
             }
         });
 
+        txtDescuento.setEditable(false);
         txtDescuento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDescuentoActionPerformed(evt);
@@ -265,21 +280,75 @@ public class FacturaVista extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText(" SUBTOTAL");
 
+        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tblProductos);
+
+        spCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, 300, 1));
+        spCantidad.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spCantidadStateChanged(evt);
+            }
+        });
+
+        chkIVA.setForeground(new java.awt.Color(0, 0, 0));
+        chkIVA.setText("¿Paga IVA?");
+        chkIVA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkIVAActionPerformed(evt);
+            }
+        });
+
+        rbtnVIP.setBackground(new java.awt.Color(153, 153, 153));
+        buttonGroup1.add(rbtnVIP);
+        rbtnVIP.setForeground(new java.awt.Color(0, 0, 0));
+        rbtnVIP.setText("VIP");
+        rbtnVIP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtnVIPActionPerformed(evt);
+            }
+        });
+
+        rbtnRegular.setBackground(new java.awt.Color(153, 153, 153));
+        buttonGroup1.add(rbtnRegular);
+        rbtnRegular.setForeground(new java.awt.Color(0, 0, 0));
+        rbtnRegular.setText("Regular");
+        rbtnRegular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtnRegularActionPerformed(evt);
+            }
+        });
+
+        txtIVA.setEditable(false);
+        txtIVA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIVAActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel10.setText("IVA 15% ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -307,63 +376,80 @@ public class FacturaVista extends javax.swing.JFrame {
                                     .addComponent(TextDireccion)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(textCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(textCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(rbtnVIP, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(54, 54, 54)
+                                                .addComponent(rbtnRegular, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGap(0, 0, Short.MAX_VALUE))))
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(lblNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cmbClientes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(cmbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtPrecio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(lblPrecio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(28, 28, 28)
-                                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lblCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(26, 26, 26)
+                                    .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(37, 37, 37)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                                    .addComponent(spCantidad))
+                                .addGap(43, 43, 43)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblSubTotal)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblSubTotal)
+                                        .addGap(81, 81, 81))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnAgregar)))))
-                        .addGap(25, 25, 25))))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnAgregar)
+                                        .addGap(12, 12, 12)))
+                                .addGap(6, 6, 6))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(chkIVA, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(txtIVA, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(progressFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(37, 37, 37)
+                                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addGap(19, 19, 19))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(159, 159, 159)
-                        .addComponent(lblTitulo))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(256, 256, 256))
+                        .addComponent(lblDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblTitulo)
+                        .addGap(106, 106, 106))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(22, 22, 22)
                 .addComponent(lblTitulo)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNombres)
                     .addComponent(cmbClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -385,127 +471,250 @@ public class FacturaVista extends javax.swing.JFrame {
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rbtnVIP)
+                    .addComponent(rbtnRegular))
+                .addGap(27, 27, 27)
                 .addComponent(lblDetalle)
-                .addGap(18, 18, 18)
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblCantidad)
+                    .addComponent(lblSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblPrecio)
                         .addComponent(lblProducto)
-                        .addComponent(lblSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel9)
-                        .addComponent(jLabel7))
-                    .addComponent(lblPrecio, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(lblCantidad)
+                        .addComponent(jLabel9)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAgregar)
-                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                    .addComponent(btnAgregar))
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(21, 21, 21))
+                    .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chkIVA))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(txtIVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)
+                            .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(jButton1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(progressFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmbClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClientesActionPerformed
+                                         
 
-    int indice1 = this.clienteSeleccionado();
+    int indice = clienteSeleccionado();
 
-    if (indice1 >= 0) {
+    if (indice < 0) {
+        return;
+    }
 
-        textCedula.setText(clientes.get(indice1)[2]);
-        TextTelefono.setText(clientes.get(indice1)[4]);
-        jTextField5.setText(clientes.get(indice1)[3]);
-        TextDireccion.setText(clientes.get(indice1)[5]);
-        jTextField4.setText(clientes.get(indice1)[6]);
+    try {
 
-        String tipo = clientes.get(indice1)[6];
+        String[] cliente = clientes.get(indice);
+
+        textCedula.setText(cliente[2]);
+        jTextField5.setText(cliente[3]);
+        TextTelefono.setText(cliente[4]);
+        TextDireccion.setText(cliente[5]);
+
+
+        String tipo = cliente[6];
 
         c = crearObjetoCliente(tipo);
-        
-        c.setId(Integer.parseInt(clientes.get(indice1)[0])); 
-        c.setNombre(clientes.get(indice1)[1]);
-        c.setCedula(clientes.get(indice1)[2]);
-        c.setEmail(clientes.get(indice1)[3]);
-        c.setTelefono(clientes.get(indice1)[4]);
-        c.setDireccion(clientes.get(indice1)[5]);
-}
+
+        if (c != null) {
+
+            c.setId(Integer.parseInt(cliente[0]));
+            c.setNombre(cliente[1]);
+            c.setCedula(cliente[2]);
+            c.setEmail(cliente[3]);
+            c.setTelefono(cliente[4]);
+            c.setDireccion(cliente[5]);
+        }
+
+        // RADIO BUTTON SEGÚN LA BASE DE DATOS
+      
+
+        if (tipo.equalsIgnoreCase("VIP")) {
+
+            rbtnVIP.setSelected(true);
+            rbtnRegular.setSelected(false);
+
+        } else if (tipo.equalsIgnoreCase("Regular")) {
+
+            rbtnVIP.setSelected(false);
+            rbtnRegular.setSelected(true);
+        }
+
+
+        // ENCABEZADO COMPLETADO
+     
+        actualizarProgressBar();
+
+        // Si ya existen productos, actualizar descuento
+        if (!lDF.isEmpty()) {
+            actualizarTotales();
+        }
+
+    } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Error al cargar el cliente: " + e.getMessage()
+        );
+    }
+
     }//GEN-LAST:event_cmbClientesActionPerformed
 
     private void cmbProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductosActionPerformed
-    int indice = this.productoSeleccionado();
-    if(indice>=0){
-    txtPrecio.setText(productos.get(indice)[2]);
-    }
+     
+    int indice = productoSeleccionado();
 
+    if (indice >= 0) {
+        txtPrecio.setText(productos.get(indice)[2]);
+        calcularSubtotal();
+    }                              
     }//GEN-LAST:event_cmbProductosActionPerformed
 
     private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
             // TODO add your handling code here:
     }//GEN-LAST:event_txtPrecioActionPerformed
 
-    private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
-
-        calcularSubtotal();           // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadActionPerformed
-
     private void txtSubTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSubTotalActionPerformed
     calcularSubtotal();         // TODO add your handling code here:
     }//GEN-LAST:event_txtSubTotalActionPerformed
 
-    private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
-     double precio = Double.parseDouble(txtPrecio.getText());
-        int cantidad = Integer.parseInt(txtCantidad.getText());
-        if(!txtCantidad.getText().isEmpty())
-        txtSubTotal.setText((precio * cantidad) + "");     // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadKeyReleased
-
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        Producto p = new Producto();
 
-    p.setId(Integer.parseInt(productos.get(this.productoSeleccionado())[0]));
-    p.setNombre(productos.get(this.productoSeleccionado())[1]);
-    p.setPrecio(Double.parseDouble(productos.get(this.productoSeleccionado())[2]));
+    int indice = productoSeleccionado();
 
-    DetalleFactura dF = new DetalleFactura();
-    dF.setProducto(p);
-    dF.setCantidad(Integer.parseInt(txtCantidad.getText()));
-    dF.setSubtotal(Double.parseDouble(txtSubTotal.getText()));
-
-    // Agregar a la lista
-    lDF.add(dF);
-
-    // Calcular el total
-    double subtotal = calcularTotal();
-
-    double descuento = 0;
-
-    if (c != null) {
-        descuento = c.calcularDescuento(subtotal);
+    if (indice < 0) {
+        JOptionPane.showMessageDialog(
+                this,
+                "Seleccione un producto."
+        );
+        return;
     }
 
-    double total = subtotal - descuento;
+    if (txtPrecio.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(
+                this,
+                "El producto no tiene un precio válido."
+        );
+        return;
+    }
 
-    txtDescuento.setText(String.format("%.2f", descuento));
-    txtTotal.setText(String.format("%.2f", total));
+    try {
 
-    // Mostrar el detalle
-    txtADetalle.append(dF.toString());
+        String producto = productos.get(indice)[1];
+        double precio = Double.parseDouble(productos.get(indice)[2]);
+        int cantidad = (Integer) spCantidad.getValue();
 
-    this.limpiarDetalle();
+        if (cantidad <= 0) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La cantidad debe ser mayor a cero."
+            );
+            return;
+        }
+
+        double subtotal = precio * cantidad;
+
+
+        // AGREGAR PRODUCTO A LA TABLA
+ 
+
+        modelo.addRow(new Object[]{
+            producto,
+            String.format("%.2f", precio),
+            cantidad,
+            String.format("%.2f", subtotal)
+        });
+
+
+        // CREAR PRODUCTO
+
+
+        Producto p = new Producto();
+
+        p.setId(Integer.parseInt(productos.get(indice)[0]));
+        p.setNombre(productos.get(indice)[1]);
+        p.setPrecio(precio);
+
+        // CREAR DETALLE DE FACTURA
+
+
+        DetalleFactura dF = new DetalleFactura();
+
+        dF.setProducto(p);
+        dF.setCantidad(cantidad);
+        dF.setSubtotal(subtotal);
+
+        lDF.add(dF);
+        
+        actualizarProgressBar();
+        actualizarTotales();
+
+
+        // CALCULAR SUBTOTAL GENERAL
+  
+
+        double subtotalGeneral = calcularTotal();
+
+
+        // CALCULAR DESCUENTO
+
+
+        double descuento = 0;
+
+        if (c != null) {
+            descuento = c.calcularDescuento(subtotalGeneral);
+        }
+
+        // CALCULAR TOTAL FINAL
+
+
+        double total = subtotalGeneral - descuento;
+
+        txtDescuento.setText(
+                String.format("%.2f", descuento)
+        );
+
+        txtTotal.setText(
+                String.format("%.2f", total)
+        );
+
+        // LIMPIAR CAMPOS
+
+        txtPrecio.setText("");
+        txtSubTotal.setText("");
+        spCantidad.setValue(1);
+
+    } catch (NumberFormatException e) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Error: los datos del producto no son válidos."
+        );
+    }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void textCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textCedulaActionPerformed
@@ -525,49 +734,117 @@ public class FacturaVista extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDescuentoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    FacturaControlador fc = new FacturaControlador();
-    DetalleFacturaControlador dc = new DetalleFacturaControlador();
-    // Crear factura
-    Factura factura = new Factura();
-    // Fecha del formulario
-    factura.setFecha(LocalDate.parse(txtFecha.getText()));
-    // Cliente seleccionado
-    factura.setCliente(c);
-    // Lista de productos agregados
-    factura.setListaArticulos(lDF);
-    // Guardar factura y obtener id_factura
-    int idFactura = fc.insertarFactura(factura);
-    if(idFactura > 0){
-        // Guardar detalles
-        for(DetalleFactura detalle : lDF){
+                                      
 
-            dc.insertarDetalle(detalle, idFactura);
+    // VALIDAR CLIENTE
 
-        }
-
+    if (c == null) {
 
         JOptionPane.showMessageDialog(
                 this,
-                "Factura guardada correctamente"
+                "Seleccione un cliente."
         );
 
-
-    }else{
-
-
-        JOptionPane.showMessageDialog(
-                this,
-                "No se pudo guardar la factura"
-        );
-
+        return;
     }
 
-             // TODO add your handling code here:
+     // VALIDAR PRODUCTOS
+
+
+    if (lDF.isEmpty()) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Agregue al menos un producto a la factura."
+        );
+
+        return;
+    }
+
+    try {
+
+        FacturaControlador fc = new FacturaControlador();
+        DetalleFacturaControlador dc = new DetalleFacturaControlador();
+
+
+        // CREAR FACTURA
+    
+
+        Factura factura = new Factura();
+
+        factura.setFecha(
+                LocalDate.parse(txtFecha.getText())
+        );
+
+        factura.setCliente(c);
+
+        factura.setListaArticulos(lDF);
+
+        // INSERTAR FACTURA
+
+        int idFactura = fc.insertarFactura(factura);
+
+        if (idFactura > 0) {
+
+            // INSERTAR DETALLES
+     
+
+            for (DetalleFactura detalle : lDF) {
+
+                dc.insertarDetalle(
+                        detalle,
+                        idFactura
+                );
+            }
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Factura guardada correctamente."
+            );
+
+            // Limpiar formulario
+            limpiarFactura();
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo guardar la factura."
+            );
+        }
+
+    } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Error al guardar la factura: "
+                + e.getMessage()
+        );
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void spCantidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spCantidadStateChanged
+    calcularSubtotal();
+    }//GEN-LAST:event_spCantidadStateChanged
+
+    private void chkIVAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkIVAActionPerformed
+    actualizarTotales();        // TODO add your handling code here:
+    }//GEN-LAST:event_chkIVAActionPerformed
+
+    private void txtIVAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIVAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIVAActionPerformed
+
+    private void rbtnRegularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnRegularActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbtnRegularActionPerformed
+
+    private void rbtnVIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnVIPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbtnVIPActionPerformed
    
     public void cargarProductos() {
-
-     ProductoControlador pc = new ProductoControlador();
+         ProductoControlador pc = new ProductoControlador();
 
     productos = pc.obtenerProductos();
 
@@ -576,6 +853,7 @@ public class FacturaVista extends javax.swing.JFrame {
     for (String[] producto : productos) {
         cmbProductos.addItem(producto[1]);
     }
+     
 }
     public void cargarClientes() {
 
@@ -590,17 +868,16 @@ public class FacturaVista extends javax.swing.JFrame {
     }
 }
     public void calcularSubtotal() {
-
-    if (productos != null || !productos.isEmpty()) {
-    
+        if (txtPrecio.getText().isEmpty()) {
+        return;
+    }
 
     double precio = Double.parseDouble(txtPrecio.getText());
-    int cantidad = Integer.parseInt(txtCantidad.getText());
+    int cantidad = (Integer) spCantidad.getValue();
 
     double subtotal = precio * cantidad;
 
     txtSubTotal.setText(String.valueOf(subtotal));
-    }
 }
     
     public int productoSeleccionado(){
@@ -611,9 +888,9 @@ public class FacturaVista extends javax.swing.JFrame {
     return -1;
 
     }
-     public void limpiarDetalle(){
+    public void limpiarDetalle() {
         txtPrecio.setText("");
-        txtCantidad.setText("");
+        spCantidad.setValue(1);
         txtSubTotal.setText("");
     }
      public int clienteSeleccionado(){
@@ -622,17 +899,26 @@ public class FacturaVista extends javax.swing.JFrame {
     }
     return -1;
      }
+
      
     public Cliente crearObjetoCliente(String tipo) {
 
-        if (tipo.equals("VIP")) {
-            c = new ClienteVIP();
-        } else if (tipo.equals("Regular")) {
-            c = new ClienteRegular();
-        }
-
-        return c;
+    if (tipo == null) {
+        return null;
     }
+
+    if (tipo.equalsIgnoreCase("VIP")) {
+
+        return new ClienteVIP();
+
+    } else if (tipo.equalsIgnoreCase("Regular")) {
+
+        return new ClienteRegular();
+    }
+
+    return null;
+}
+
     
         public double calcularTotal() {
 
@@ -644,6 +930,119 @@ public class FacturaVista extends javax.swing.JFrame {
 
           return total;
       }
+
+        public void limpiarFactura() {
+
+    // Limpiar lista de detalles
+    lDF.clear();
+
+    // Limpiar tabla
+    modelo.setRowCount(0);
+
+    // Limpiar campos del cliente
+    textCedula.setText("");
+    jTextField5.setText("");
+    TextTelefono.setText("");
+    TextDireccion.setText("");
+
+
+    // Limpiar datos del producto
+    txtPrecio.setText("");
+    txtSubTotal.setText("");
+
+    // Reiniciar cantidad
+    spCantidad.setValue(1);
+
+    // Limpiar totales
+    txtDescuento.setText("");
+    txtTotal.setText("");
+
+    // Cliente actual
+    c = null;
+
+    // Volver a seleccionar
+    if (cmbClientes.getItemCount() > 0) {
+        cmbClientes.setSelectedIndex(0);
+    }
+
+    if (cmbProductos.getItemCount() > 0) {
+        cmbProductos.setSelectedIndex(0);
+    }
+}
+        
+        public void actualizarProgressBar() {
+
+    int progreso = 0;
+
+    // 50% encabezado
+    if (c != null) {
+        progreso += 50;
+    }
+
+    // 50% detalle
+    if (!lDF.isEmpty()) {
+        progreso += 50;
+    }
+    
+    
+
+    progressFactura.setValue(progreso);
+    progressFactura.setString(progreso + "%");
+}
+public void actualizarTotales() {
+
+    subtotalFactura = calcularTotal();
+
+ 
+    // DESCUENTO
+ 
+
+    descuentoFactura = 0;
+
+    if (c != null) {
+        descuentoFactura =
+                c.calcularDescuento(subtotalFactura);
+    }
+
+
+    // BASE PARA IVA
+
+
+    double baseIVA =
+            subtotalFactura - descuentoFactura;
+
+    // IVA
+
+
+    ivaFactura = 0;
+
+    if (chkIVA.isSelected()) {
+        ivaFactura = baseIVA * 0.15;
+    }
+
+
+    // TOTAL
+
+
+    totalFactura =
+            baseIVA + ivaFactura;
+
+    // MOSTRAR
+  
+
+    txtDescuento.setText(
+            String.format("%.2f", descuentoFactura)
+    );
+
+    txtIVA.setText(
+            String.format("%.2f", ivaFactura)
+    );
+
+    txtTotal.setText(
+            String.format("%.2f", totalFactura)
+    );
+}
+
 
 
 
@@ -683,10 +1082,13 @@ public class FacturaVista extends javax.swing.JFrame {
     private javax.swing.JTextField TextDireccion;
     private javax.swing.JTextField TextTelefono;
     private javax.swing.JButton btnAgregar;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JCheckBox chkIVA;
     private javax.swing.JComboBox<String> cmbClientes;
     private javax.swing.JComboBox<String> cmbProductos;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -695,8 +1097,7 @@ public class FacturaVista extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JLabel lblCantidad;
     private javax.swing.JLabel lblDetalle;
@@ -706,11 +1107,15 @@ public class FacturaVista extends javax.swing.JFrame {
     private javax.swing.JLabel lblProducto;
     private javax.swing.JLabel lblSubTotal;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JProgressBar progressFactura;
+    private javax.swing.JRadioButton rbtnRegular;
+    private javax.swing.JRadioButton rbtnVIP;
+    private javax.swing.JSpinner spCantidad;
+    private javax.swing.JTable tblProductos;
     private javax.swing.JTextField textCedula;
-    private javax.swing.JTextArea txtADetalle;
-    private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtDescuento;
     private javax.swing.JTextField txtFecha;
+    private javax.swing.JTextField txtIVA;
     private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtSubTotal;
     private javax.swing.JTextField txtTotal;
