@@ -70,13 +70,10 @@ public class DetalleFacturaControlador {
             //TODA INSERCIÓN DEVUELVE UN ESTADO >0 CUANDO FUE FAVORABLE Y MENOR A O CUANDO NO SE REALIZÓ 
             int res = ejecutar.executeUpdate();
             if (res > 0) {
-                JOptionPane.showMessageDialog(null,
-                        "Detalle Creado con éxito");
+                System.out.println("Detalle Creado con éxito");
                 ejecutar.close();
             } else {
-                JOptionPane.showMessageDialog(null,
-                        "Detalle no ha sido creado,"
-                        + " revise que los datos ingresados sean correctos");
+                System.out.println("Detalle no ha sido creado," + " revise que los datos ingresados sean correctos");
             }
            // conectado.close();
 
