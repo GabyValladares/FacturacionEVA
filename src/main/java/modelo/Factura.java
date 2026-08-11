@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class Factura {
 
+    // variable estatica 
+    private static final double IVA = 0.15;
     /*Contiene idFactura, fecha (LocalDate), referencia al objeto Cliente, y una lista
 dinámica List<DetalleFactura> con los artículos agregados. */
     private int idFactura;
@@ -62,7 +64,6 @@ dinámica List<DetalleFactura> con los artículos agregados. */
         this.listaArticulos = listaArticulos;
     }
 
-    
     //Posee métodos para calcular el subtotal acumulado, el descuento otorgado por el cliente y el total neto.
     public double calcularSubTotal() {
         double subtotal = 0;
@@ -78,7 +79,17 @@ dinámica List<DetalleFactura> con los artículos agregados. */
 
     public double calcularTotalNeto() {
 
-        return this.calcularSubTotal() * 0.15 - calcularDescuento();
+        return this.calcularSubTotal() - this.calcularDescuento();
+    }
+
+    public double PagarIva() {
+        double totalIva = 0;
+        if (listaArticulos != null) {
+            for (DetalleFactura l : listaArticulos) {
+                totalIva += (l.getCantidad() * l.getProducto().getPrecio()) * IVA;
+            }
+        }
+        return totalIva;
     }
 
 }
