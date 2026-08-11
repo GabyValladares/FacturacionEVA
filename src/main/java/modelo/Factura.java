@@ -19,15 +19,16 @@ dinámica List<DetalleFactura> con los artículos agregados. */
     private LocalDate fecha;
     private Cliente cliente;
     private List<DetalleFactura> listaArticulos;
-  
+    private String tipoCliente;
     public Factura() {
     }
 
-    public Factura(int idFactura, LocalDate fecha, Cliente cliente, List<DetalleFactura> listaArticulos) {
-        this.idFactura = idFactura;
-        this.fecha = fecha;
-        this.cliente = cliente;
-        this.listaArticulos = listaArticulos;
+  public Factura(int idFactura, LocalDate fecha, Cliente cliente, List<DetalleFactura> listaArticulos, String tipoCliente) {
+    this.idFactura = idFactura;
+    this.fecha = fecha;
+    this.cliente = cliente;
+    this.listaArticulos = listaArticulos;
+    this.tipoCliente = tipoCliente;
     }
 
     public int getIdFactura() {
@@ -61,8 +62,14 @@ dinámica List<DetalleFactura> con los artículos agregados. */
     public void setListaArticulos(List<DetalleFactura> listaArticulos) {
         this.listaArticulos = listaArticulos;
     }
-    
-    //Posee métodos para calcular el subtotal acumulado, el descuento otorgado por el cliente y el total neto.
+    public String gettipoCliente() {
+    return tipoCliente;
+}
+
+public void settipoCliente(String tipoCliente) {
+    this.tipoCliente = tipoCliente;
+}
+
     
     public double calcularSubTotal(){
         double subtotal=0;
@@ -77,7 +84,5 @@ dinámica List<DetalleFactura> con los artículos agregados. */
     public double calcularTotalNeto(){
         
         return this.calcularSubTotal()*0.15-calcularDescuento();
-    }
-    
-    
+    }    
 }

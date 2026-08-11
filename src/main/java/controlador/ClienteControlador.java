@@ -16,7 +16,7 @@ import controlador.ConexionBDD;
  * @author AMARU
  */
 public class ClienteControlador {
-
+///////
     ConexionBDD conectar = new ConexionBDD();
     //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
     Connection conectado = (Connection) conectar.conectar();

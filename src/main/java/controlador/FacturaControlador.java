@@ -16,32 +16,34 @@ public class FacturaControlador {
     ConexionBDD conectar = new ConexionBDD();
     Connection conectado = (Connection) conectar.conectar();
 
-    public int insertarFacturaSp(Factura p, double total) {
-        int idGenerado = -1;
-        String sentenciaSQL = "{call sp_insertar_factura(?, ?, ?, ?)}";
+ public int insertarFacturaSp(Factura p, double total) {
+    int idGenerado = -1;
+    String sentenciasSQL = "{call sp_insertar_factura(?, ?, ?, ?, ?)}";
 
-        try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)) {
-            ejecutar.setDate(1, java.sql.Date.valueOf(p.getFecha().toString()));
-            ejecutar.setInt(2, p.getCliente().getId());
-            ejecutar.setDouble(3, total);
-            ejecutar.registerOutParameter(4, Types.INTEGER);
+    try (CallableStatement ejecutar = conectado.prepareCall(sentenciasSQL)) {
+        ejecutar.setDate(1, java.sql.Date.valueOf(p.getFecha().toString()));
+        ejecutar.setInt(2, p.getCliente().getId());
+        ejecutar.setDouble(3, total);
+        
+ 
+        ejecutar.setString(4, p.gettipoCliente()); 
+        
+        ejecutar.registerOutParameter(5, Types.INTEGER);
 
-            ejecutar.execute();
-            
-            idGenerado = ejecutar.getInt(4);
+        ejecutar.execute();
+        idGenerado = ejecutar.getInt(5);
 
-            if (idGenerado > 0) {
-                JOptionPane.showMessageDialog(null, "Factura creada con éxito.");
-            } else {
-                JOptionPane.showMessageDialog(null, "La factura no se pudo crear. Verifique los datos.");
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Comuníquese con el Administrador para solicitar ayuda.");
-            System.err.println("Error en FacturaControlador (SP): " + e.getMessage());
+        if (idGenerado > 0) {
+            JOptionPane.showMessageDialog(null, "Factura creada con éxito.");
+        } else {
+            JOptionPane.showMessageDialog(null, "La factura no se pudo crear. Verifique los datos.");
         }
 
-        return idGenerado;
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Comuníquese con el Administrador para solicitar Ayuda.");
+        System.err.println("Error en FacturaControlador (SP): " + e.getMessage());
     }
+    return idGenerado;
 }
+} 
    

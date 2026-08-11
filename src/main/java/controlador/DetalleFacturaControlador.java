@@ -189,7 +189,7 @@ public class DetalleFacturaControlador {
                 System.out.println("Detalle registrado correctamente para la Factura ID: " + id_factura);
                 ejecutar.close();
             } else {
-                JOptionPane.showMessageDialog(null, "Detalle no ha sido creado, busque que los datos ingresados sean correctos.");
+                JOptionPane.showMessageDialog(null, "Detalle no haa sido creado, busque que los datos ingresados sean correctos.");
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Comuníquese con el Administrador para solicitar ayuda");
