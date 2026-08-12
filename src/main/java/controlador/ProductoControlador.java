@@ -111,4 +111,7 @@ public class ProductoControlador {
 
         return listaProductos;
     }
+    public ArrayList<Producto> listarProductosObjeto() {
+        return (ArrayList<Producto>) obtenerTodosProductos();
+    }
 }
