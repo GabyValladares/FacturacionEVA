@@ -32,7 +32,7 @@ public class FacturaVista extends javax.swing.JFrame {
     public FacturaVista() {
         initComponents();
         cargarProducto();
-        cargarClientes();
+        //cargarClientes();
         generarfecha();
     }
 
@@ -437,15 +437,15 @@ public class FacturaVista extends javax.swing.JFrame {
         }
     }
 
-    private void cargarClientes() {
-        ClienteControlador ct = new ClienteControlador();
-        listaCliente = ct.obtenerCliente();
-        cmbClientes.removeAllItems();
-
-        for (String[] cliente : listaCliente) {
-            cmbClientes.addItem(cliente[1] + " - " + cliente[4]);
-        }
-    }
+//    private void cargarClientes() {
+//        ClienteControlador ct = new ClienteControlador();
+//        listaCliente = ct.obtenerCliente();
+//        cmbClientes.removeAllItems();
+//
+//        for (String[] cliente : listaCliente) {
+//            cmbClientes.addItem(cliente[1] + " - " + cliente[4]);
+//        }
+//    }
 
     public int RPS() {  //recuperar producto seleccionado 
         if (listaProducto != null || !listaProducto.isEmpty()) {

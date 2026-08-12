@@ -13,6 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.Cliente;
+import modelo.ClienteRegular;
 import modelo.Numero;
 
 /**
@@ -74,10 +76,17 @@ public class Main {
 //    }
 
 
-    Numero modelo = new Numero();
-    Calculadora vista = new Calculadora();
-    NumeroControlador controlador = new NumeroControlador(modelo, vista);
-    controlador.iniciar();
-    controlador.borrar();
+//    Numero modelo = new Numero();
+//    Calculadora vista = new Calculadora();
+//    NumeroControlador controlador = new NumeroControlador(modelo, vista);
+//    controlador.iniciar();
+//    controlador.borrar();
+//    }
+    
+    Cliente modelo = new ClienteRegular();
+    ClienteVista vista = new ClienteVista();
+    ClienteControlador control = new ClienteControlador(modelo, vista);
+    control.iniciar();
+    
     }
 }

@@ -23,7 +23,7 @@ public class ClienteView extends javax.swing.JFrame {
      */
     public ClienteView() {
         initComponents();
-        obtenerCliente();
+       // obtenerCliente();
     }
 
     /**
@@ -83,35 +83,35 @@ public class ClienteView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     
-   private void obtenerCliente(){
-      ClienteControlador ct = new ClienteControlador();
-       ArrayList<String[]> lista = ct.obtenerCliente();
-
-        for (String[] fila : lista) {
-            int id = Integer.parseInt(fila[0]);
-            String nombre = fila[1];
-            String email = fila[2];
-            String telefono = fila[3];
-            String tipoCliente = fila[4];
-
-            Cliente cl;
-            
-            String descuentoVip = (txtPorcentajeFidelidad.getText());
-            System.out.println("-------"+descuentoVip);
-            if ("VIP".equalsIgnoreCase(tipoCliente)) {
-                          
-                cl = new ClienteVIP();
-                ClienteVIP cvip=(ClienteVIP)cl;
-                cvip.setNombre(nombre);
-               cmbCliente.addItem(cvip.getNombre()+"-"+tipoCliente);
-            } else {
-                //cl = new ClienteRegular(id, nombre, email, telefono);
-                //ClienteRegular cr=(ClienteRegular)cl;
-                //cmbCliente.addItem(cr.getNombre()+"-"+tipoCliente);
-            }
-            
-        }
-   }
+//   private void obtenerCliente(){
+//      ClienteControlador ct = new ClienteControlador();
+//       ArrayList<String[]> lista = ct.obtenerCliente();
+//
+//        for (String[] fila : lista) {
+//            int id = Integer.parseInt(fila[0]);
+//            String nombre = fila[1];
+//            String email = fila[2];
+//            String telefono = fila[3];
+//            String tipoCliente = fila[4];
+//
+//            Cliente cl;
+//            
+//            String descuentoVip = (txtPorcentajeFidelidad.getText());
+//            System.out.println("-------"+descuentoVip);
+//            if ("VIP".equalsIgnoreCase(tipoCliente)) {
+//                          
+//                cl = new ClienteVIP();
+//                ClienteVIP cvip=(ClienteVIP)cl;
+//                cvip.setNombre(nombre);
+//               cmbCliente.addItem(cvip.getNombre()+"-"+tipoCliente);
+//            } else {
+//                //cl = new ClienteRegular(id, nombre, email, telefono);
+//                //ClienteRegular cr=(ClienteRegular)cl;
+//                //cmbCliente.addItem(cr.getNombre()+"-"+tipoCliente);
+//            }
+//            
+//        }
+//   }
    
     private void cmbClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClienteActionPerformed
         // TODO add your handling code here:
