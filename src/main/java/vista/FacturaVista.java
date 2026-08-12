@@ -430,7 +430,7 @@ public class FacturaVista extends javax.swing.JFrame {
 
     public void cargarClientes() {
         ClienteControlador cc = new ClienteControlador();
-        lC = cc.obtenerClientes();
+       // lC = cc.obtenerClientes();
         DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
 
         for (String[] p : lC) {

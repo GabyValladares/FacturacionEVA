@@ -10,6 +10,8 @@ import controlador.NumeroControlador;
 import controlador.ProductoControlador;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.Cliente;
+import modelo.ClienteRegular;
 import modelo.Numero;
 
 /**
@@ -63,11 +65,15 @@ public class Main {
 //                null, 
 //                nombreClientes, 
 //                nombreClientes[0]); // El último valor es la opción seleccionada por defecto
-        Numero modelo=new Numero();
-        Calculadora vista=new Calculadora();
-        NumeroControlador controlador=new NumeroControlador(modelo, vista);
-        controlador.iniciar();
-
+//        Numero modelo=new Numero();
+//        Calculadora vista=new Calculadora();
+//        NumeroControlador controlador=new NumeroControlador(modelo, vista);
+//        controlador.iniciar();
+            //UPCASTING
+            Cliente modelo=new ClienteRegular();
+            ClienteVista vista=new ClienteVista();
+            ClienteControlador controlador=new ClienteControlador(modelo, vista);
+            controlador.iniciar();
     }
     
 }

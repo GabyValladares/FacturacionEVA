@@ -4,14 +4,22 @@
  */
 package modelo;
 
+import controlador.ConexionBDD;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author hp
  */
 public class ClienteVIP extends Cliente {
-
+    //ATRIBUTOS 
     private double porcentajeFidelidad;
-
+    
     public ClienteVIP() {
     }
 
@@ -34,12 +42,12 @@ public class ClienteVIP extends Cliente {
         this.porcentajeFidelidad = porcentajeFidelidad;
     }
 
-    
+    //MÉTODO DE REGLA DE NEGOCIO
     @Override
     public double calcularDescuento(double subtotal) {
         //Posee el atributo extra porcentajeFidelidad (double). Aplica un descuento directo según este porcentaje sobre cualquier monto.
         return subtotal*porcentajeFidelidad;
     
     }
-
+    
 }
