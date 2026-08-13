@@ -19,7 +19,7 @@ public class ConexionBDD {
         // LANZAR CÓDIGO DE PRUEBA 
         try {
             // Manera de Conexión a la Base de Datos
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
             //Parámetros de conexión url/usuario/clave en mysql
             conexion=DriverManager.getConnection("jdbc:mysql://localhost/examenpoo?autoReconnect=true&useSSL=false","root","Amaru233");
