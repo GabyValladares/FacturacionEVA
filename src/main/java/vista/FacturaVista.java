@@ -31,7 +31,7 @@ public class FacturaVista extends javax.swing.JFrame {
      */
     public FacturaVista() {
         initComponents();
-        cargarProducto();
+//        cargarProducto();
         cargarClientes();
         generarfecha();
     }
@@ -425,17 +425,17 @@ public class FacturaVista extends javax.swing.JFrame {
        
     }//GEN-LAST:event_txtFechaActionPerformed
 
-    private void cargarProducto() {
-        ProductoControlador pc = new ProductoControlador();
-        listaProducto = pc.obtenerProductosMarca(WIDTH);
-
-        for (String[] producto : listaProducto) {
-            Producto p = new Producto();
-            p.setPrecio(Double.parseDouble(producto[2]));
-
-            cmbProductos.addItem(producto[1]);
-        }
-    }
+//    private void cargarProducto() {
+//        ProductoControlador pc = new ProductoControlador();
+//        listaProducto = pc.obtenerProductosMarca(WIDTH);
+//
+//        for (String[] producto : listaProducto) {
+//            Producto p = new Producto();
+//            p.setPrecio(Double.parseDouble(producto[2]));
+//
+//            cmbProductos.addItem(producto[1]);
+//        }
+//    }
 
     private void cargarClientes() {
         ClienteControlador ct = new ClienteControlador();

@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.Numero;
+import modelo.Producto;
 
 /**
  *
@@ -74,10 +75,17 @@ public class Main {
 //    }
 
 
-    Numero modelo = new Numero();
-    Calculadora vista = new Calculadora();
-    NumeroControlador controlador = new NumeroControlador(modelo, vista);
-    controlador.iniciar();
-    controlador.borrar();
-    }
+//    Numero modelo = new Numero();
+//    Calculadora vista = new Calculadora();
+//    NumeroControlador controlador = new NumeroControlador(modelo, vista);
+//    controlador.iniciar();
+//    controlador.borrar();
+
+
+    Producto modelo = new Producto();
+    ProductoVista vista = new ProductoVista();
+    ProductoControlador control = new ProductoControlador(modelo, vista);
+    control.iniciar();
+
+   }
 }

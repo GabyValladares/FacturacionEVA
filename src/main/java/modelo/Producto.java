@@ -4,6 +4,14 @@
  */
 package modelo;
 
+import controlador.ConexionBDD;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+
 /**
  *
  * @author hp
@@ -47,6 +55,43 @@ public class Producto {
         this.precio = precio;
     }
     
-     
+    
+    ConexionBDD conectar = new ConexionBDD();
+    Connection conectado = (Connection) conectar.conectar();
+    PreparedStatement ejecutar;
+    ResultSet resultado;
+    
+    
+    public int insertarProductoSP(Producto p, int idMarca) {
+        int idGenerado = -1;
+        String sentenciaSQL = "{call sp_insertar_producto(?,?,?,?)}";
+        try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)){
+            //parametros de entrada 
+            ejecutar.setString(1, p.getNombre());
+            ejecutar.setDouble(2, p.getPrecio());
+            ejecutar.setInt(3, idMarca);
+            
+            // parametro de salida idCliente 
+            ejecutar.registerOutParameter(4, Types.INTEGER);
+            
+            ejecutar.execute();
+            
+            //Recuperar la Primary Key recién insertada
+            idGenerado = ejecutar.getInt(4);
+            
+            if (idGenerado > -1) {
+                System.out.println("Producto registrado en la BDD");
+                ejecutar.close();
+            } else {
+                System.out.println("Revise los datos. Verifique bien la informacion");
+            }
+            //conectado.close();
+
+        } catch (SQLException e) {
+            System.out.println("Comuniquese con el Administrador para mas informacion");
+            System.out.println("---------------" + e);
+        }
+        return idGenerado;
+    }
     
 }

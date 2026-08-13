@@ -50,7 +50,7 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
     public FacturaVista2Marca() {
         initComponents();
         f.setListaArticulos(LDF);
-        cargarProducto();
+//        cargarProducto();
         cargarClientes();
         generarfecha();
         cargarMarca();
@@ -665,7 +665,7 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
 
     private void cmbMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMarcaActionPerformed
         // TODO add your handling code here:
-        cargarProducto();
+//        cargarProducto();
     }//GEN-LAST:event_cmbMarcaActionPerformed
 
     private void txtDescuentoCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescuentoCliActionPerformed
@@ -702,24 +702,24 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
         }
     }
 
-    private void cargarProducto() {
-        int indMarca = cmbMarca.getSelectedIndex();
-
-        if (indMarca >= 0 && listaMarcas != null) {
-            int idMarca = Integer.parseInt(listaMarcas.get(indMarca)[0]);
-
-            ProductoControlador pc = new ProductoControlador();
-            listaProducto = pc.obtenerProductosMarca(idMarca);
-
-            cmbProductos.removeAllItems();
-
-            if (listaProducto != null) {
-                for (String[] prod : listaProducto) {
-                    cmbProductos.addItem(prod[1]);
-                }
-            }
-        }
-    }
+//    private void cargarProducto() {
+//        int indMarca = cmbMarca.getSelectedIndex();
+//
+//        if (indMarca >= 0 && listaMarcas != null) {
+//            int idMarca = Integer.parseInt(listaMarcas.get(indMarca)[0]);
+//
+//            ProductoControlador pc = new ProductoControlador();
+//            listaProducto = pc.obtenerProductosMarca(idMarca);
+//
+//            cmbProductos.removeAllItems();
+//
+//            if (listaProducto != null) {
+//                for (String[] prod : listaProducto) {
+//                    cmbProductos.addItem(prod[1]);
+//                }
+//            }
+//        }
+//    }
 
     // cargar clientes 
     public void cargarClientes() {
