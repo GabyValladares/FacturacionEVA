@@ -4,6 +4,11 @@
  */
 package modelo;
 
+import controlador.ConexionBDD;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 /**
  *
  * @author hp
@@ -42,4 +47,32 @@ public class ClienteVIP extends Cliente {
     
     }
 
+    
+    
+    
+    public int obtenerUltimaFactura() {
+    ConexionBDD conectar = new ConexionBDD();
+    Connection conectado = (Connection) conectar.conectar();
+    PreparedStatement ejecutar;
+    ResultSet resultado;
+
+    int id = 0;
+
+    try {
+        String sql = "SELECT MAX(id_factura) FROM factura";
+        ejecutar = conectado.prepareStatement(sql);
+        resultado = ejecutar.executeQuery();
+
+        if (resultado.next()) {
+            id = resultado.getInt(1);
+        }
+
+        resultado.close();
+        ejecutar.close();
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
+    }
+
+    return id;
+}
 }

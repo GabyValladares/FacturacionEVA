@@ -745,7 +745,7 @@ public class FacturaVista extends javax.swing.JFrame {
 
     public void cargarClientes() {
         ClienteControlador cc = new ClienteControlador();
-        lC = cc.obtenerCliente();
+//        lC = cc.obtenerCliente();
 
         cmbClientes.removeAllItems();
 

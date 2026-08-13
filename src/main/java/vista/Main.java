@@ -6,9 +6,11 @@ package vista;
 
 import controlador.ClienteControlador;
 import controlador.ConexionBDD;
+import controlador.NumeroControlador;
 import controlador.ProductoControlador;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.Numero;
 
 /**
  *
@@ -16,14 +18,14 @@ import javax.swing.JOptionPane;
  */
 public class Main {
 
-    public static void main(String[] args) {
-        ConexionBDD c = new ConexionBDD();
-        c.conectar();
-
-        //PRODUCTO
-        ProductoControlador pc = new ProductoControlador();
-
-//        ArrayList<String[]> productos = pc.obtenerProductos();
+//    public static void main(String[] args) {
+//        ConexionBDD c = new ConexionBDD();
+//        c.conectar();
+//
+//        //PRODUCTO
+//        ProductoControlador pc = new ProductoControlador();
+//
+//       ArrayList<String[]> productos = pc.obtenerProductos();
 //        Object[] nombreProductos = new Object[productos.size()];
 //
 //        for (int i = 0; i < productos.size(); i++) {
@@ -59,5 +61,10 @@ public class Main {
 //                null,
 //                nombreClientes,
 //                nombreClientes[0]);
-    }
+//    }
+    
+    Numero modelo = new Numero();
+    Calculadora vista = new Calculadora();
+    NumeroControlador controlador = new NumeroControlador(modelo, vista);
+//   
 }
