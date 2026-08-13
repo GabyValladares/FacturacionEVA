@@ -4,101 +4,57 @@
  */
 package controlador;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import modelo.Producto;
+import vista.ProductoVista;
 
 /**
  *
  * @author hp
  */
 public class ProductoControlador {
-     //INSTANCIAR LA CONEXIÃ“N A LA BASE DE DATOS
-    ConexionBDD conectar = new ConexionBDD();
-    //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
-    Connection conectado = (Connection) conectar.conectar();
-    //CLASE QUE ME PERMITE EJECUTAR MI SENTENCIA SQL
-    PreparedStatement ejecutar;
-    //OBTENER RESULTADOS DE LA CONSULTA
-    ResultSet resultado;
+    // REFERENCIA A MODELO Y A LA VISTA
+    private Producto pmodelo;
+    private ProductoVista pvista;
 
-    //METODOS DE TRANSACCIONABILIDAD
-    
-    public ArrayList<String[]> obtenerProductos() {
-        ArrayList<String[]> lregistros = new ArrayList<>();
-        try {
-            String sentenciaSQL = "select *from productos;";
-            ejecutar = conectado.prepareCall(sentenciaSQL);
-            ResultSet res = ejecutar.executeQuery();
-            
-            while (res.next()) {
-                String[] listaProducto = new String[3];
-                listaProducto[0] = res.getInt("id_producto") + "";
-                listaProducto[1] = res.getString("nombre");
-                listaProducto[2] = res.getString("precio");
-                lregistros.add(listaProducto);
-            }
-             ejecutar.close();
-            conectado.close();
-            return lregistros;
-        } catch (SQLException e) {
-            System.out.println("------" + e);
-        }
-            return lregistros;
-    
-    }
-    
-    public ArrayList<String[]> obtenerProductosMarca(int m) {
-        ArrayList<String[]> lregistros = new ArrayList<>();
-        try {
-            String sentenciaSQL = "select id_producto, nombre, precio from productos where id_marca = '"+ m +"';";
-            ejecutar = conectado.prepareCall(sentenciaSQL);
-            ResultSet res = ejecutar.executeQuery();
-            
-            while (res.next()) {
-                String[] listaProductoMarca = new String[3];
-                listaProductoMarca[0] = res.getInt("id_producto") + "";
-                listaProductoMarca[1] = res.getString("nombre");
-                listaProductoMarca[2] = res.getString("precio");
-                lregistros.add(listaProductoMarca);
-            }
-             ejecutar.close();
-            conectado.close();
-            return lregistros;
-        } catch (SQLException e) {
-            System.out.println("------" + e);
-        }
-            return lregistros;
-    
+    // CONSTRUCTORES
+    public ProductoControlador() {
     }
 
-//    public ArrayList<String[]> obtenerProductos() {
-//        ArrayList<String[]> lregistros = new ArrayList<>();
-//
-//        try {
-//            String sentenciaSQL = "select *from productos;";
-//            ejecutar = conectado.prepareCall(sentenciaSQL);
-//            ResultSet res = ejecutar.executeQuery();
-//
-//            while (res.next()) {
-//                String[] listaProductos = new String[3];
-//                listaProductos[0] = res.getInt("id_producto") + "";
-//                listaProductos[1] = res.getString("nombre");
-//                listaProductos[2] = res.getString("precio");
-//                lregistros.add(listaProductos);
-//
-//            }
-//
-//            ejecutar.close();
-//            conectado.close();
-//            return lregistros;
-//        } catch (SQLException e) {
-//            System.out.println("------" + e);
-//        }
-//        return lregistros;
-//    }
-    
-    
+    public ProductoControlador(Producto pmodelo, ProductoVista pvista) {
+        this.pmodelo = pmodelo;
+        this.pvista = pvista;
+    }
+
+    // RECUPERAR LOS DATOS DE LA VISTA E INSERTAR
+    public void recuperarProducto() {
+        String nombre = pvista.getTxtNombre();
+        String precio = pvista.getTxtPrecio(); 
+
+        // Validación de campos no vacíos
+        if (!nombre.isEmpty() && !precio.isEmpty()) {
+            try {
+                // Conversión de tipo para el precio
+                double precio1 = Double.parseDouble(precio);
+
+                // Asignación de datos al modelo
+                pmodelo.setNombre(nombre);
+                pmodelo.setPrecio(precio1);
+                pmodelo.setIdMarca(1);
+
+                // Llamada al método de inserción en el modelo (ya sin polimorfismo/downcasting)
+                pmodelo.insertarProductos();
+
+            } catch (NumberFormatException e) {
+                System.out.println("El precio ingresado debe ser un valor numérico válido.");
+            }
+        } else {
+            System.out.println("Por favor complete todos los campos.");
+        }
+    }
+
+    // INICIALIZAR LA VISTA Y REGISTRAR EVENTOS
+    public void iniciar() {
+        pvista.getBtnInsertar().addActionListener(e -> recuperarProducto());
+        pvista.setVisible(true);
+    }
 }

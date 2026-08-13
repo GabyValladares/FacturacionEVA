@@ -4,6 +4,14 @@
  */
 package modelo;
 
+import controlador.ConexionBDD;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
 /**
  *
  * @author hp
@@ -13,14 +21,16 @@ public class Producto {
     private int id;
     private String nombre;
     private double precio;
+    private int idMarca;
 
     public Producto() {
     }
 
-    public Producto(int id, String nombre, double precio) {
+    public Producto(int id, String nombre, double precio, int idMarca) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
+        this.idMarca = idMarca;
     }
 
     public int getId() {
@@ -46,7 +56,59 @@ public class Producto {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
+
+    public int getIdMarca() {
+        return idMarca;
+    }
+
+    public void setIdMarca(int idMarca) {
+        this.idMarca = idMarca;
+    }
     
      
+    //  EX CONTRALADOR 
+        //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
+    ConexionBDD conectar = new ConexionBDD();
+    //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
+    Connection conectado = (Connection) conectar.conectar();
+    //CLASE QUE ME PERMITE EJECUTAR MI SENTENCIA SQL
+    PreparedStatement ejecutar;
+    //OBTENER RESULTADOS DE LA CONSULTA
+    ResultSet resultado;
     
+        //MÉTODOS DE TRANSACCIONABILIDAD
+    public int insertarProductos() {
+        int idGenerado = -1;
+        String sentenciaSQL = "{call sp_insertar_producto(?, ?, ?, ?)}";
+        // USO DE TRY-WITH-RESOURCES: 
+        // El CallableStatement se cerrará automáticamente al finalizar la ejecución.
+        try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)) {
+            // 1. Mapeo de parámetros de entrada (IN)           
+            ejecutar.setString(1,nombre);
+            ejecutar.setDouble(2,precio); 
+            ejecutar.setDouble(3,idMarca); 
+
+            // 2. Parámetro de salida (OUT idCliente)
+            ejecutar.registerOutParameter(4, Types.INTEGER);
+
+            // 3. Ejecutar el Stored Procedure
+            ejecutar.execute();
+
+            // 4. Recuperar la Primary Key recién insertada
+            idGenerado = ejecutar.getInt(4);
+
+            if (idGenerado > -1) {
+                System.out.println("Producto creado en la BDD");
+            } else {
+                System.out.println("El producto no se pudo crear. Verifique los datos ingresados.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Comuníquese con el Administrador para solicitar ayuda.");
+            System.err.println("Error en el conector MySQL JDBC: " + e.getMessage());
+        }
+
+        return idGenerado;
+
+    }
 }

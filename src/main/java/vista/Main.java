@@ -7,22 +7,28 @@ package vista;
 import controlador.ClienteControlador;
 import controlador.ConexionBDD;
 import controlador.MarcaControlador;
+import controlador.NumeroControlador;
 import controlador.ProductoControlador;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.Cliente;
+import modelo.ClienteRegular;
+import modelo.Numero;
+import modelo.Producto;
 
 /**
  *
  * @author hp
  */
 public class Main {
+
     public static void main(String[] args) {
 //        ConexionBDD c=new ConexionBDD();
 //        c.conectar();
 //      PRODUCTO
         ConexionBDD conx = new ConexionBDD();
         conx.conectar();
-    
+
 //        ProductoControlador pc1= new ProductoControlador();
 //        ArrayList<String[]> lProducto = pc1.obtenerProductos();
 //        Object[] nombre = new Object[lProducto.size()];
@@ -41,8 +47,6 @@ public class Main {
 //        nombre,
 //        nombre[0]);
 //        JOptionPane.showInternalMessageDialog(null, "Producto seleccionado: " + productoElegido);
-    
-    
         //PRODUCTO
 //        ProductoControlador pc=new ProductoControlador();
 //         
@@ -63,9 +67,7 @@ public class Main {
 //                null, 
 //                nombreProductos, 
 //                nombreProductos[0]); // El último valor es la opción seleccionada por defecto
-       
-       //CLIENTE
-       
+        //CLIENTE
 //        ClienteControlador cc=new ClienteControlador();
 //         
 //                
@@ -85,27 +87,41 @@ public class Main {
 //                null, 
 //                nombreClientes, 
 //                nombreClientes[0]); // El último valor es la opción seleccionada por defecto
-       
-       //MARCA
-       MarcaControlador mc1= new MarcaControlador();
-        ArrayList<String[]> lMarca = mc1.obtenerMarcas();
-        Object[] nombreMarcas = new Object[lMarca.size()];
-        
-        int m = 0;
-            for(String[] marca : lMarca){ 
-            nombreMarcas[m] = marca[1]; 
-            m++;
-        }    
-        
-        String marcaElegido = (String) JOptionPane.showInputDialog(null,
-        "Ingrese su marca",
-        "Lista de Marcas",
-        JOptionPane.QUESTION_MESSAGE,
-        null,
-        nombreMarcas,
-        nombreMarcas[0]);
-        JOptionPane.showInternalMessageDialog(null, "Marca seleccionado: " + marcaElegido);
+        //MARCA
+//       MarcaControlador mc1= new MarcaControlador();
+//        ArrayList<String[]> lMarca = mc1.obtenerMarcas();
+//        Object[] nombreMarcas = new Object[lMarca.size()];
+//        
+//        int m = 0;
+//            for(String[] marca : lMarca){ 
+//            nombreMarcas[m] = marca[1]; 
+//            m++;
+//        }    
+//        
+//        String marcaElegido = (String) JOptionPane.showInputDialog(null,
+//        "Ingrese su marca",
+//        "Lista de Marcas",
+//        JOptionPane.QUESTION_MESSAGE,
+//        null,
+//        nombreMarcas,
+//        nombreMarcas[0]);
+//        JOptionPane.showInternalMessageDialog(null, "Marca seleccionado: " + marcaElegido);
+//
+//        Numero modelo = new Numero();
+//        Calculadora vista = new Calculadora();
+//        NumeroControlador controlador = new NumeroControlador(modelo, vista);
+//        controlador.iniciar();
+        //UPCASTING
+//        Cliente modelo = new ClienteRegular();
+//        ClienteVista vista = new ClienteVista();
+//        ClienteControlador controlador = new ClienteControlador(modelo, vista);
+//        controlador.iniciar();
 
+        //UPCASTING
+        Producto promodelo = new Producto();
+        ProductoVista pvista = new ProductoVista();
+        ProductoControlador procontrolador = new ProductoControlador(promodelo, pvista);
+        procontrolador.iniciar();
     }
-    
+
 }
