@@ -33,11 +33,11 @@ public class ClienteVIP extends Cliente {
     }
 
     
-    @Override
-    public double calcularDescuento(double subtotal) {
-        //Posee el atributo extra porcentajeFidelidad (double). Aplica un descuento directo según este porcentaje sobre cualquier monto.
-        return subtotal*porcentajeFidelidad;
-    
-    }
+//    @Override
+//    public double calcularDescuento(double subtotal) {
+//        //Posee el atributo extra porcentajeFidelidad (double). Aplica un descuento directo según este porcentaje sobre cualquier monto.
+//        return subtotal*porcentajeFidelidad;
+//    
+//    }
 
 }

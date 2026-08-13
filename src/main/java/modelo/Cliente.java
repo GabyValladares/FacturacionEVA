@@ -4,11 +4,30 @@
  */
 package modelo;
 
+import controlador.ConexionBDD;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author hp
  */
 public abstract class Cliente {
+    //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
+    ConexionBDD conectar = new ConexionBDD();
+    //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
+    Connection conectado = (Connection) conectar.conectar();
+    //CLASE QUE ME PERMITE EJECUTAR MI SENTENCIA SQL
+    PreparedStatement ejecutar;
+    //OBTENER RESULTADOS DE LA CONSULTA
+    ResultSet resultado;
+    
     //Aumentar cedula y direccion como campos no etidables, editar la vista con todos eso.
     private int id;
     private String nombre;
@@ -78,5 +97,46 @@ public abstract class Cliente {
     }
     
     
-    public abstract double calcularDescuento(double subtotal);
+    
+    //SP
+    //MÉTODOS DE TRANSACCIONABILIDAD
+    public int insertarClientes(String tipoCliente) {
+        int idGenerado = -1;
+        String sentenciaSQL = "{call sp_insertar_cliente_facturacion(?, ?, ?, ?, ?, ?, ?, ?)}";
+        // USO DE TRY-WITH-RESOURCES: 
+        // El CallableStatement se cerrará automáticamente al finalizar la ejecución.
+        try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)) {
+            // 1. Mapeo de parámetros de entrada (IN)          
+            ejecutar.setString(1,nombre); 
+            ejecutar.setString(2,email);
+            ejecutar.setString(3,telefono); 
+            ejecutar.setString(4,tipoCliente); 
+            ejecutar.setDouble(5, 0);
+            ejecutar.setString(6,this.cedula);
+            ejecutar.setString(7, getDireccion());
+
+            // 2. Parámetro de salida (OUT idCliente)
+            ejecutar.registerOutParameter(8, Types.INTEGER);
+
+            // 3. Ejecutar el Stored Procedure
+            ejecutar.execute();
+
+            // 4. Recuperar la Primary Key recién insertada
+            idGenerado = ejecutar.getInt(8);
+
+            if (idGenerado > -1) {
+                System.out.println("Cliente creado en la BDD");
+            } else {
+                System.out.println("El cliente no se pudo crear. Verifique los datos ingresados.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Comuníquese con el Administrador para solicitar ayuda.");
+            System.err.println("Error en el conector MySQL JDBC: " + e.getMessage());
+        }
+
+        return idGenerado;
+
+    }
 }
+
