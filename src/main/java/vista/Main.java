@@ -18,22 +18,20 @@ import modelo.Cliente;
 import modelo.ClienteRegular;
 import vista.ClienteVista;
 import controlador.ClienteControlador;
-/**
- *
- * @author Justin
- */
+import controlador.ProductoControlador;
+import modelo.Producto;
+
+
+
 public class Main {
 
     public static void main(String[] args) {
-        
-      
-    Cliente modelo = new ClienteRegular();
-    ClienteVista vista = new ClienteVista();
-    ClienteControlador controlador = new ClienteControlador(modelo, vista);
-    
-    controlador.iniciar();
-}
-  }  
+        Producto modelo = new Producto();
+        ProductoVista vista = new ProductoVista();
+        ProductoControlador controlador = new ProductoControlador(modelo, vista);
+        controlador.iniciar();
+    }
+} 
 //        
 //        ClienteControlador pc = new ClienteControlador();
 //        ArrayList<String[]> clientes = pc.obtenerClientes();
