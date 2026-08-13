@@ -62,7 +62,7 @@ public class FacturaVista extends javax.swing.JFrame {
 
   public void cargarClientes() {
     controlador.ClienteControlador cc = new controlador.ClienteControlador();
-    listaClientesGlobal = cc.listarClientesObjeto();
+//    listaClientesGlobal = cc.listarClientesObjeto();
 
     cmbClientes.removeAllItems();
     cmbClientes.addItem("--- Seleccione Cliente ---");

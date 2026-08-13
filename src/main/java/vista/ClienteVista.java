@@ -15,14 +15,14 @@ import javax.swing.JTextField;
  *
  * @author Usuario
  */
-public class ClienteControlador extends javax.swing.JFrame {
+public class ClienteVista extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ClienteControlador.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ClienteVista.class.getName());
 
     /**
      * Creates new form ClienteControlador
      */
-    public ClienteControlador() {
+    public ClienteVista() {
         initComponents();
     }
 
@@ -75,7 +75,7 @@ public class ClienteControlador extends javax.swing.JFrame {
         lblCedula.setText("Cédula:");
 
         lblDireccion.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblDireccion.setText("Dirección");
+        lblDireccion.setText("Dirección:");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -127,7 +127,7 @@ public class ClienteControlador extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(277, 277, 277)
                         .addComponent(jLabel1)))
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,7 +145,7 @@ public class ClienteControlador extends javax.swing.JFrame {
                             .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblNombres))
                         .addGap(18, 18, 18)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblCedula)
                     .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -177,84 +177,66 @@ public class ClienteControlador extends javax.swing.JFrame {
         return btnInsertar;
     }
 
-    public void setBtnInsertar(JButton btnInsertar) {
-        this.btnInsertar = btnInsertar;
-    }
-
-    public JComboBox<String> getCbxTipoCliente() {
-        return cbxTipoCliente;
-    }
-
-    public void setCbxTipoCliente(JComboBox<String> cbxTipoCliente) {
-        this.cbxTipoCliente = cbxTipoCliente;
-    }
-
-    public JLabel getjLabel1() {
-        return jLabel1;
-    }
-
-    public void setjLabel1(JLabel jLabel1) {
-        this.jLabel1 = jLabel1;
-    }
-
-    public JScrollPane getjScrollPane1() {
-        return jScrollPane1;
-    }
-
-    public void setjScrollPane1(JScrollPane jScrollPane1) {
-        this.jScrollPane1 = jScrollPane1;
-    }
-
-    public JTable getjTable1() {
-        return jTable1;
-    }
-
-    public void setjTable1(JTable jTable1) {
-        this.jTable1 = jTable1;
-    }
-
-    public JTextField getTxtCedula() {
-        return txtCedula;
-    }
-
-    public void setTxtCedula(String mensaje) {
-        this.txtCedula.setText(mensaje);
-    }
-
-    public String getTxtDireccion() {
-        return txtDireccion.getText();
-    }
-
-    public void setTxtDireccion(String mensaje) {
-        txtDireccion.setText(mensaje);
-    }
-
-    public String getTxtEmail() {
-        return txtEmail.getText();
-    }
-
-    public void setTxtEmail(String mensaje) {
-        this.txtEmail.setText(mensaje);
-    }
-
-    public JTextField getTxtNombres() {
-        return txtNombres;
-    }
-
-    public void setTxtNombres(String mensaje) {
-        this.txtNombres.setText(mensaje);
-    }
-
-    public String getTxtTelefono() {
-        return txtTelefono.getText();
-    }
-
-    public void setTxtTelefono(String mensaje) {
-        txtTelefono.setText(mensaje);
-    }
-
+    
+   public String getNombre(){
+       return txtNombres.getText();
+   }
    
+   public void setNombre(String mensaje){
+       txtNombres.setText(mensaje);
+   }
+   
+   
+   
+    public void setCedula(String mensaje){
+       txtCedula.setText(mensaje);
+   }
+    
+    public  String getCedula(){
+       return txtCedula.getText();
+   }
+    
+    
+    
+    public void setDireccion(String mensaje){
+       txtDireccion.setText(mensaje);      
+   }
+    
+    public String getDireccion(){
+       return txtDireccion.getText();
+   }
+    
+    
+    public void setEmail(String mensaje){
+       txtEmail.setText(mensaje);      
+   }
+    
+    public String getEmail(){
+       return txtEmail.getText();
+   }
+   
+    public void setTelefono(String mensaje){
+       txtTelefono.setText(mensaje);      
+   }
+    
+    public String getTelefono(){
+       return txtTelefono.getText();
+   }
+    
+    
+    public Object getTipo(){
+       return cbxTipoCliente.getSelectedItem();
+   }
+    
+    public void setTipo(String mensaje) {
+        cbxTipoCliente.setSelectedItem(mensaje);
+    }
 
+    /** Conecta el botón Guardar al controlador que se le pase */
+    public void setControlador(controlador.ClienteControlador ctrl) {
+        btnInsertar.addActionListener(e -> ctrl.recuperarDatos());
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnInsertar;

@@ -1,5 +1,6 @@
 package modelo;
 
+import controlador.ConexionBDD;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -92,6 +93,20 @@ public abstract class Cliente {
         this.descuentoVip = descuentoVip;
     }
 
+    // Solo mantenemos la clase de soporte para conectar si fuese necesario
+    private ConexionBDD conectar = new ConexionBDD();
+
+    // Método puente para obtener la lista en arreglos String[]
+    public ArrayList<String[]> obtenerClientes() {
+        Cliente cliente = new ClienteRegular();
+        return cliente.obtenerClientes();
+    }
+
+    // Método puente para obtener la lista de objetos Cliente
+    public ArrayList<Cliente> listarClientesObjeto() {
+        Cliente cliente = new ClienteRegular();
+        return cliente.listarClientesObjeto();
+    }
     public abstract double calcularDescuento(double subtotal);
     
     // MÉTODOS DE TRANSACCIONABILIDAD
@@ -122,16 +137,28 @@ public abstract class Cliente {
 
             // 4. Recuperar la Primary Key recién insertada
             idGenerado = ejecutar.getInt(8);
-            this.id = idGenerado;
-
+            
+            //validacion 
+            if (idGenerado > -1){
+                this.id = idGenerado;
+                System.out.println("Si se creó el cliente");
+                
+                 }else{ 
+                        
+                System.out.println("No se creó el cliente");
+                    
+                }
+             
+            
+       
         } catch (SQLException e) {
             // Error en BD silencioso
         }
 
         return idGenerado;
-    }
     
-     public ArrayList<String[]> obtenerClientes() {
+    }
+     public ArrayList<String[]> obtenerClientes1() {
         ArrayList<String[]> listaClientes = new ArrayList<>();
         String sentenciaSQL = "SELECT * FROM clientes;";
         
@@ -169,7 +196,7 @@ public abstract class Cliente {
 
         return listaClientes;
     }
-    public ArrayList<modelo.Cliente> listarClientesObjeto() {
+    public ArrayList<modelo.Cliente> listarClientesObjeto1() {
         ArrayList<modelo.Cliente> listaClientesObjeto = new ArrayList<>();
         String sentenciaSQL = "SELECT * FROM clientes;";
 
