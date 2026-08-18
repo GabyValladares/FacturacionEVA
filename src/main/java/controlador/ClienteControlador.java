@@ -1,10 +1,10 @@
 package controlador;
 
-//import java.sql.Connection;
-//import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
-//import java.sql.SQLException;
-//import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import modelo.Cliente;
 import modelo.ClienteRegular;
@@ -56,37 +56,37 @@ public class ClienteControlador {
     
     
     
-//    ConexionBDD conectar = new ConexionBDD();
-//    Connection conectado = (Connection) conectar.conectar();
-//    PreparedStatement ejecutar;
-//    ResultSet resultado;
-//      
-//    public ArrayList<String[]> obtenerCliente() {
-//        ArrayList<String[]> lregistros = new ArrayList<>();
-//        try {
-//            String sentenciaSQL = "select *from cliente";
-//            ejecutar = conectado.prepareCall(sentenciaSQL);
-//            ResultSet res = ejecutar.executeQuery();
-//
-//            while (res.next()) {
-//                String[] listaClien = new String[8];
-//                listaClien[0] = res.getInt("id") + "";
-//                listaClien[1] = res.getString("nombre");
-//                listaClien[2] = res.getString("email");
-//                listaClien[3] = res.getString("telefono");
-//                listaClien[4] = res.getString("tipo_cliente");
-//                listaClien[5] = res.getDouble("descuento_vip") + "";
-//                listaClien[6] = res.getString("cedula");
-//                listaClien[7] = res.getString("direccion");
-//                lregistros.add(listaClien);
-//            }
-//            ejecutar.close();
-//            conectado.close();
-//            return lregistros;
-//        } catch (SQLException e) {
-//            System.out.println("------" + e);
-//        }
-//        return lregistros;
-//    }
+    ConexionBDD conectar = new ConexionBDD();
+    Connection conectado = (Connection) conectar.conectar();
+    PreparedStatement ejecutar;
+    ResultSet resultado;
+      
+    public ArrayList<String[]> obtenerCliente() {
+        ArrayList<String[]> lregistros = new ArrayList<>();
+        try {
+            String sentenciaSQL = "select *from cliente";
+            ejecutar = conectado.prepareCall(sentenciaSQL);
+            ResultSet res = ejecutar.executeQuery();
+
+            while (res.next()) {
+                String[] listaClien = new String[8];
+                listaClien[0] = res.getInt("id") + "";
+                listaClien[1] = res.getString("nombre");
+                listaClien[2] = res.getString("email");
+                listaClien[3] = res.getString("telefono");
+                listaClien[4] = res.getString("tipo_cliente");
+                listaClien[5] = res.getDouble("descuento_vip") + "";
+                listaClien[6] = res.getString("cedula");
+                listaClien[7] = res.getString("direccion");
+                lregistros.add(listaClien);
+            }
+            ejecutar.close();
+            conectado.close();
+            return lregistros;
+        } catch (SQLException e) {
+            System.out.println("------" + e);
+        }
+        return lregistros;
+    }
     
 }

@@ -51,7 +51,7 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
         initComponents();
         f.setListaArticulos(LDF);
         cargarProducto();
-        //cargarClientes();
+        cargarClientes();
         generarfecha();
         cargarMarca();
         
@@ -722,16 +722,16 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
     }
 
     // cargar clientes 
-//    public void cargarClientes() {
-//        ClienteControlador cct = new ClienteControlador();
-//        listaClien = cct.obtenerCliente();
-//
-//        cmbClientes.removeAllItems();
-//        for (String[] p : listaClien) {
-//
-//            cmbClientes.addItem(p[1]);      //cmbClientes.addItem(p[1] + " - Cliente " + p[4]);
-//        }
-//    }
+    public void cargarClientes() {
+        ClienteControlador cct = new ClienteControlador();
+        listaClien = cct.obtenerCliente();
+
+        cmbClientes.removeAllItems();
+        for (String[] p : listaClien) {
+
+            cmbClientes.addItem(p[1]);      //cmbClientes.addItem(p[1] + " - Cliente " + p[4]);
+        }
+    }
 
     public void crearObjetoCliente(String tipo) {
         int pos = this.RCS();
