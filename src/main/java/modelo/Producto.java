@@ -21,14 +21,16 @@ public class Producto {
     private int id;
     private String nombre;
     private double precio;
+    private Marcas marcas;
 
     public Producto() {
     }
 
-    public Producto(int id, String nombre, double precio) {
+    public Producto(int id, String nombre, double precio, Marcas marcas) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
+        this.marcas = marcas;
     }
 
     public int getId() {
@@ -54,7 +56,14 @@ public class Producto {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
-    
+
+    public Marcas getMarcas() {
+        return marcas;
+    }
+
+    public void setMarcas(Marcas marcas) {
+        this.marcas = marcas;
+    }
     
     ConexionBDD conectar = new ConexionBDD();
     Connection conectado = (Connection) conectar.conectar();

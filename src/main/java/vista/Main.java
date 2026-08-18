@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.Marcas;
 import modelo.Numero;
 import modelo.Producto;
 
@@ -81,6 +82,9 @@ public class Main {
 //    controlador.iniciar();
 //    controlador.borrar();
 
+
+//    Marcas m = new Marcas();
+//    m.obtenerMarcas();
 
     Producto modelo = new Producto();
     ProductoVista vista = new ProductoVista();

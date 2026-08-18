@@ -1,9 +1,13 @@
 
 package modelo;
 
+import controlador.ConexionBDD;
 import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JComboBox;
 
 public class Marcas {
@@ -59,4 +63,32 @@ public class Marcas {
         return  getNombre();
     }
     
+     ConexionBDD conectar = new ConexionBDD();
+    Connection conectado = (Connection) conectar.conectar();
+    PreparedStatement ejecutar;
+    ResultSet resultado;
+ 
+    public ArrayList<Marcas> obtenerMarcas() {
+        ArrayList<Marcas> lregistros = new ArrayList<>();
+        try {
+            String sentenciaSQL = "SELECT * FROM marcas";
+            ejecutar = conectado.prepareStatement(sentenciaSQL);
+            ResultSet res = ejecutar.executeQuery();
+ 
+            while (res.next()) {
+                Marcas m = new Marcas();
+                m.setId(res.getInt("id_marca"));
+                m.setNombre(res.getString("nombre"));
+                m.setTelefono(telefono);
+                lregistros.add(m);
+            }
+            res.close();
+            ejecutar.close();
+            conectado.close();
+ 
+        } catch (SQLException e) {
+            System.out.println("------" + e);
+        }
+        return lregistros;
+    }
 }

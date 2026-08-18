@@ -4,8 +4,11 @@
  */
 package vista;
 
+import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import modelo.Marcas;
 
 /**
  *
@@ -22,16 +25,19 @@ public class ProductoVista extends javax.swing.JFrame {
         initComponents();
     }
 
+    public int getCmxMarcaSeleccionada() {
+        return cmxMarca.getSelectedIndex();
+    }
+
+      public void cargarMarcas(List<Marcas> marcas) {
+        cmxMarca.removeAllItems();
+        for(Marcas m : marcas){
+            cmxMarca.addItem(m.getNombre());
+        }
+    }
+    
     public JButton getBtnCrear() {
         return btnCrear;
-    }
-
-    public String getTxtMarca() {
-        return txtMarca.getText();
-    }
-
-    public void setTxtMarca(String mensaje) {
-        this.txtMarca.setText(mensaje);
     }
 
     public String getTxtPrecio() {
@@ -67,8 +73,8 @@ public class ProductoVista extends javax.swing.JFrame {
         txtProducto = new javax.swing.JTextField();
         txtPrecio = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtMarca = new javax.swing.JTextField();
         btnCrear = new javax.swing.JButton();
+        cmxMarca = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,39 +84,40 @@ public class ProductoVista extends javax.swing.JFrame {
 
         jLabel3.setText("Precio");
 
-        jLabel4.setText("Id Marca");
+        jLabel4.setText("Marca");
 
         btnCrear.setText("CREAR");
+
+        cmxMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(168, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(161, 161, 161))
             .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(207, 207, 207)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(btnCrear))
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtProducto)
-                            .addComponent(txtPrecio)
-                            .addComponent(txtMarca, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))))
-                .addContainerGap(122, Short.MAX_VALUE))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(btnCrear))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cmxMarca, 0, 171, Short.MAX_VALUE)
+                    .addComponent(txtProducto)
+                    .addComponent(txtPrecio))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addGap(20, 20, 20)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -119,12 +126,12 @@ public class ProductoVista extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(txtMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                    .addComponent(cmxMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addComponent(btnCrear)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         pack();
@@ -157,11 +164,11 @@ public class ProductoVista extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrear;
+    private javax.swing.JComboBox<String> cmxMarca;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField txtMarca;
     private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtProducto;
     // End of variables declaration//GEN-END:variables
