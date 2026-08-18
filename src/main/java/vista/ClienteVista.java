@@ -4,10 +4,13 @@
  */
 package vista;
 
+import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -15,11 +18,23 @@ import javax.swing.JTextField;
  */
 public class ClienteVista extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ClienteControlador
-     */
+    //ATRIBUTOS
+    private JTable tablaClientes;
+    String[] encabezado = {"N°","Nombres", "Cédula", "Email", "Dirección", "Teléfono", "Tipo_Cliente", "Descuento"};
+    DefaultTableModel modelo = new DefaultTableModel(encabezado, 0);
+
     public ClienteVista() {
         initComponents();
+        this.estiloJtable();
+        this.modelo();
+        
+    }
+
+    public void modelo() {
+        
+        
+        tblClientes.setModel(modelo);
+
     }
 
     /**
@@ -100,7 +115,8 @@ public class ClienteVista extends javax.swing.JFrame {
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(lblNombre)
                                         .addComponent(lblCedula)
-                                        .addComponent(lblDireccion))
+                                        .addComponent(lblDireccion)
+                                        .addComponent(lblEmail))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
@@ -109,25 +125,24 @@ public class ClienteVista extends javax.swing.JFrame {
                                                 .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 261, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(75, 75, 75)
-                                            .addComponent(btnInsertar)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(75, 75, 75)
+                                                    .addComponent(btnInsertar)))
                                             .addGap(0, 0, Short.MAX_VALUE))))
                                 .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
                                             .addComponent(lblTipoCliente)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(cmbTipoCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addComponent(lblEmail)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(cmbTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(lblTelefono)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                             .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGap(0, 265, Short.MAX_VALUE)))))
+                                    .addGap(0, 0, Short.MAX_VALUE)))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(103, 103, 103)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -171,8 +186,7 @@ public class ClienteVista extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 //ENCAPSULAMIENTO VISTA
-    
-    
+
 //    public static void main(String args[]) {
 //        /* Set the Nimbus look and feel */
 //        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -204,7 +218,6 @@ public class ClienteVista extends javax.swing.JFrame {
 //            }
 //        });
 //    }
-
     public JButton getBtnInsertar() {
         return btnInsertar;
     }
@@ -213,14 +226,13 @@ public class ClienteVista extends javax.swing.JFrame {
         return cmbTipoCliente.getSelectedItem();
     }
 
-//    public JTable getTblClientes() {
-//        return tblClientes;
-//    }
-//
-//    public void setTblClientes(JTable tblClientes) {
-//        this.tblClientes = tblClientes;
-//    }
+    public JTable getTblClientes() {
+        return tblClientes;
+    }
 
+    public void setTblClientes(JTable tblClientes) {
+        this.tblClientes = tblClientes;
+    }
     public String getTxtDireccion() {
         return txtDireccion.getText();
     }
@@ -260,7 +272,17 @@ public class ClienteVista extends javax.swing.JFrame {
     public void setTxtTelefono(String mensaje) {
         this.txtTelefono.setText(mensaje);
     }
-
+    public DefaultTableModel getModelo(){
+        return modelo;
+    
+    }
+    
+    public void estiloJtable(){
+        JTableHeader header=new JTableHeader();
+        Font f=new Font("Bold",MAXIMIZED_BOTH ,18);
+        header.setFont(f);        
+        tblClientes.setTableHeader(header);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnInsertar;
     private javax.swing.JComboBox<String> cmbTipoCliente;

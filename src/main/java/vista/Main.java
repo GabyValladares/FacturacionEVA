@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.Cliente;
 import modelo.ClienteRegular;
+import modelo.ClienteVIP;
 import modelo.Numero;
 
 /**
@@ -19,6 +20,7 @@ import modelo.Numero;
  * @author hp
  */
 public class Main {
+
     public static void main(String[] args) {
 //        ConexionBDD c=new ConexionBDD();
 //        c.conectar();
@@ -69,11 +71,21 @@ public class Main {
 //        Calculadora vista=new Calculadora();
 //        NumeroControlador controlador=new NumeroControlador(modelo, vista);
 //        controlador.iniciar();
+        //UPCASTING
+        ClienteVista vista = new ClienteVista();
+        String tipo = (String) vista.getCmbTipoCliente();
+        if (tipo.equals("Regular")) {
             //UPCASTING
-            Cliente modelo=new ClienteRegular();
-            ClienteVista vista=new ClienteVista();
-            ClienteControlador controlador=new ClienteControlador(modelo, vista);
+            Cliente modelo = new ClienteRegular();
+            ClienteControlador controlador = new ClienteControlador(modelo, vista);
             controlador.iniciar();
+        } else if (tipo.equals("VIP")) {
+            //UPCASTING
+            Cliente modelo = new ClienteVIP();
+            ClienteControlador controlador = new ClienteControlador(modelo, vista);
+            controlador.iniciar();
+        }
+       
     }
-    
+
 }
