@@ -26,6 +26,7 @@ public abstract class Cliente {
     private String telefono;
     private String cedula;
     private String direccion;
+    private String tipo;
 
     public Cliente() {
     }
@@ -88,6 +89,15 @@ public abstract class Cliente {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+    
     
     public abstract double calcularDescuento(double subtotal);
     

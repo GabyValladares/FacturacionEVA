@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import modelo.Cliente;
 import modelo.ClienteRegular;
 import modelo.Numero;
+import modelo.Producto;
 
 /**
  *
@@ -70,10 +71,18 @@ public class Main {
 //        NumeroControlador controlador=new NumeroControlador(modelo, vista);
 //        controlador.iniciar();
             //UPCASTING
-            Cliente modelo=new ClienteRegular();
-            ClienteVista vista=new ClienteVista();
-            ClienteControlador controlador=new ClienteControlador(modelo, vista);
-            controlador.iniciar();
-    }
+            
+            
+//            Cliente modelo=new ClienteRegular();
+//            ClienteVista vista=new ClienteVista();
+//            ClienteControlador controlador=new ClienteControlador(modelo, vista);
+//            controlador.iniciar();
+//    }
     
+
+Producto modelo = new Producto();
+ProductoVista vista = new ProductoVista();
+ProductoControlador controlador = new ProductoControlador(modelo, vista);
+controlador.iniciar();
+}
 }
