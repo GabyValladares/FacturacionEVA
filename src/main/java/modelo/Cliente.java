@@ -115,10 +115,9 @@ public abstract class Cliente {
  public int insertarClientesSP(String tipoCliente) {
         int idGenerado = -1;
         String sentenciaSQL = "{call sp_insertar_cliente(?, ?, ?, ?, ?, ?, ?, ?)}";
-        // USO DE TRY-WITH-RESOURCES: 
-        // El CallableStatement se cerrará automáticamente al finalizar la ejecución.
+   
         try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)) {
-            // 1. Mapeo de parámetros de entrada (IN)          
+                
             ejecutar.setString(1,nombre); 
             ejecutar.setString(2,email);
             ejecutar.setString(3,telefono); 
@@ -127,13 +126,10 @@ public abstract class Cliente {
             ejecutar.setString(6,this.cedula);
             ejecutar.setString(7, getDireccion());
 
-            // 2. Parámetro de salida (OUT idCliente)
             ejecutar.registerOutParameter(8, Types.INTEGER);
 
-            // 3. Ejecutar el Stored Procedure
             ejecutar.execute();
 
-            // 4. Recuperar la Primary Key recién insertada
             idGenerado = ejecutar.getInt(8);
 
             if (idGenerado > -1) {

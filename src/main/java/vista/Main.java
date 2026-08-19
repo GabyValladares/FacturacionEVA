@@ -27,23 +27,11 @@ public class Main {
 
     public static void main(String[] args) {
 ClienteVista vista = new ClienteVista();
-
-   
-        String tipo = vista.getCmbTipoCliente().toString().trim();
-
-  
-        Cliente modelo;
-        if (tipo.equalsIgnoreCase("VIP")) {
-            modelo = new ClienteVIP();
-        } else {
-         
-            modelo = new ClienteRegular();
-        }
+        Cliente modelo = new ClienteRegular();
         ClienteControlador controlador = new ClienteControlador(modelo, vista);
         controlador.iniciar();
-        vista.setVisible(true);
     }
-}    
+}   
 //        
 //        ClienteControlador pc = new ClienteControlador();
 //        ArrayList<String[]> clientes = pc.obtenerClientes();

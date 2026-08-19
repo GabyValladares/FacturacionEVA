@@ -64,7 +64,7 @@ public class ClienteControlador {
             modelo.setEmail(email);
             modelo.setTelefono(telefono);
             modelo.setDireccion(direccion);
-
+//se vuelve a construit un modelo VIP --CLIENTECIP CV = NEW...............
             ClienteRegular cr = (ClienteRegular) modelo;
             cr.insertarClientesSP(tipoCliente);
             Object[] fila = new Object[]{cont, modelo.getCedula(),   modelo.getNombre(),   modelo.getEmail(),   modelo.getTelefono(),   modelo.getDireccion(),   modelo.getTipo_cliente(),   "VIP"};
