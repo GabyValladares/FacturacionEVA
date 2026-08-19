@@ -18,6 +18,7 @@ import modelo.Cliente;
 import modelo.ClienteRegular;
 import vista.ClienteVista;
 import controlador.ClienteControlador;
+import modelo.ClienteVIP;
 /**
  *
  * @author Justin
@@ -25,15 +26,24 @@ import controlador.ClienteControlador;
 public class Main {
 
     public static void main(String[] args) {
-        
-      
-    Cliente modelo = new ClienteRegular();
-    ClienteVista vista = new ClienteVista();
-    ClienteControlador controlador = new ClienteControlador(modelo, vista);
-    
-    controlador.iniciar();
-}
-  }  
+ClienteVista vista = new ClienteVista();
+
+   
+        String tipo = vista.getCmbTipoCliente().toString().trim();
+
+  
+        Cliente modelo;
+        if (tipo.equalsIgnoreCase("VIP")) {
+            modelo = new ClienteVIP();
+        } else {
+         
+            modelo = new ClienteRegular();
+        }
+        ClienteControlador controlador = new ClienteControlador(modelo, vista);
+        controlador.iniciar();
+        vista.setVisible(true);
+    }
+}    
 //        
 //        ClienteControlador pc = new ClienteControlador();
 //        ArrayList<String[]> clientes = pc.obtenerClientes();

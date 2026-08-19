@@ -4,6 +4,7 @@
  */
 package controlador;
 
+import java.util.ArrayList;
 import modelo.Cliente;
 import modelo.ClienteRegular;
 import vista.ClienteVista;
@@ -12,6 +13,7 @@ public class ClienteControlador {
 
     private Cliente modelo;
     private ClienteVista vista;
+    int cont = 1;
 
     public ClienteControlador() {
     }
@@ -20,9 +22,21 @@ public class ClienteControlador {
         this.modelo = modelo;
         this.vista = vista;
     }
+    
+    //cArgar LA TABLA VISTA
+  public void cargarDatosTabla() {
+    vista.getModelo().setRowCount(0);
+    
+    ArrayList<String[]> lClientes = modelo.obtenerClientes();
+    for (String[] p : lClientes) {
+        Object[] fila = {cont, p[0], p[1], p[2], p[3], p[4], p[5], p[6]};
+        vista.getModelo().addRow(fila);
+        cont++;
+    }
+}
 
    public void recuperarCliente() {
-        System.out.println("--- SE PRESIONÓ EL BOTÓN CREAR ---");
+        System.out.println("SE PRESIONÓ EL BOTÓN CREAR ");
 
         String nombre = vista.getTxtNombres().trim();
         String email = vista.getTxtEmail().trim();
@@ -44,7 +58,7 @@ public class ClienteControlador {
                 && !cedula.isEmpty() && !direccion.isEmpty()
                 && tipoCliente.equalsIgnoreCase("Regular")) {
 
-            System.out.println("--> ¡POR FIN! TODO CORRECTO. Insertando en BDD...");
+            System.out.println("TODO CORRECTO. Insertando en BDD...");
             modelo.setNombre(nombre);
             modelo.setCedula(cedula);
             modelo.setEmail(email);
@@ -53,13 +67,16 @@ public class ClienteControlador {
 
             ClienteRegular cr = (ClienteRegular) modelo;
             cr.insertarClientesSP(tipoCliente);
+            Object[] fila = new Object[]{cont, modelo.getCedula(),   modelo.getNombre(),   modelo.getEmail(),   modelo.getTelefono(),   modelo.getDireccion(),   modelo.getTipo_cliente(),   "VIP"};
+            vista.getModelo().addRow(fila);
         } else {
-            System.out.println("--> NO ENTRÓ AL IF. Revisa los datos en corchetes.");
+            System.out.println(" NO ENTRÓ Revisa los datos .");
         }
     }
 
     public void iniciar() {
         vista.getBtnCrear().addActionListener(e -> recuperarCliente());
         vista.setVisible(true);
+        this.cargarDatosTabla();
     }
 }

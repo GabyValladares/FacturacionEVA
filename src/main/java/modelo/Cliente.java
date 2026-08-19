@@ -24,7 +24,7 @@ public abstract class Cliente {
     private String email;
     private String telefono;
     private String direccion;
-
+    private String tipo_cliente;
    
     public Cliente() {
     }
@@ -37,6 +37,7 @@ public abstract class Cliente {
         this.email = email;
         this.telefono = telefono;
         this.direccion = direccion;
+        this.tipo_cliente = tipo_cliente;
     }
 
     public int getId() {
@@ -85,6 +86,14 @@ public abstract class Cliente {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public String getTipo_cliente() {
+        return tipo_cliente;
+    }
+
+    public void setTipo_cliente(String tipo_cliente) {
+        this.tipo_cliente = tipo_cliente;
     }
 
     public abstract double calcularDescuento(double subtotal);
