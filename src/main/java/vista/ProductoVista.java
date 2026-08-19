@@ -4,8 +4,11 @@
  */
 package vista;
 
+import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -13,12 +16,27 @@ import javax.swing.JTable;
  */
 public class ProductoVista extends javax.swing.JFrame {
 
+    //ATRIBUTOS
+    private JTable tablaProductos;
+    String[] encabezado = {"N°", "ID", "Nombre", "Precio", "ID Marca"};
+    DefaultTableModel modelo = new DefaultTableModel(encabezado, 0);
+
+    public ProductoVista() {
+        initComponents();
+        this.estiloJtable();
+        this.modelo();
+    }
+
+    public void modelo() {
+        tblProducto.setModel(modelo);
+    }
+    
     /**
      * Creates new form ProductoVista
      */
-    public ProductoVista() {
-        initComponents();
-    }
+//    public ProductoVista() {
+//        initComponents();
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -57,13 +75,13 @@ public class ProductoVista extends javax.swing.JFrame {
 
         tblProducto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Nombre", "Precio", "ID Marca"
+                "ID Producto", "Nombre", "Precio", "ID Marca"
             }
         ));
         jScrollPane1.setViewportView(tblProducto);
@@ -134,12 +152,16 @@ public class ProductoVista extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbIdMarcaActionPerformed
 
-    public JButton getBtnInsertar() {
+   public JButton getBtnInsertar() {
         return btnInsertar;
     }
 
-    public Object getCmbIdMarca() {
-        return cmbIdMarca.getSelectedItem();
+    public JTable getTblProductos() {
+        return tblProducto;
+    }
+
+    public void setTblProductos(JTable tblProductos) {
+        this.tblProducto = tblProductos;
     }
 
     public String getTxtNombre() {
@@ -158,18 +180,28 @@ public class ProductoVista extends javax.swing.JFrame {
         this.txtPrecio.setText(mensaje);
     }
 
-    public JTable getTblProductos() {
-        return tblProducto;
+    public String getTxtIdMarca() {
+        return cmbIdMarca.getSelectedItem().toString();
     }
 
-    public void setTblProductos(JTable tblProductos) {
-        this.tblProducto = tblProductos;
+   public void setCmbIdMarca(Object item) {
+    this.cmbIdMarca.setSelectedItem(item);
     }
-    
-    public int getIdMarcaSeleccionado() {
-  
-    return cmbIdMarca.getSelectedIndex() + 1;
+
+   public String getCmbIdMarca() {
+    return cmbIdMarca.getSelectedItem().toString();
 }
+   
+    public DefaultTableModel getModelo() {
+        return modelo;
+    }
+
+    public void estiloJtable() {
+        JTableHeader header = new JTableHeader();
+        Font f = new Font("Bold", MAXIMIZED_BOTH, 18);
+        header.setFont(f);
+        tblProducto.setTableHeader(header);
+    }
     
     /**
      * @param args the command line arguments

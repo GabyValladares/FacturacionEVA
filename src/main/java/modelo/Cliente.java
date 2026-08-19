@@ -31,13 +31,14 @@ public abstract class Cliente {
     public Cliente() {
     }
 
-    public Cliente(int id, String nombre, String email, String telefono, String cedula, String direccion) {
+    public Cliente(int id, String nombre, String email, String telefono, String cedula, String direccion, String tipo) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.telefono = telefono;
         this.cedula = cedula;
         this.direccion = direccion;
+        this.tipo= tipo;
     }
 
   

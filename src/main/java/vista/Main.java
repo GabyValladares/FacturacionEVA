@@ -78,6 +78,7 @@ public class Main {
 //            ClienteControlador controlador=new ClienteControlador(modelo, vista);
 //            controlador.iniciar();
 //    }
+//}
     
 
 Producto modelo = new Producto();

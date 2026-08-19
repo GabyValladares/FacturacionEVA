@@ -71,24 +71,62 @@ public class ProductoControlador {
         this.pmodelo = pmodelo;
         this.pvista = pvista;
     }
-
-    // RECUPERAR LOS DATOS
-    public void recuperarProducto() {
-    String nombre = pvista.getTxtNombre();
-    String precioTexto = pvista.getTxtPrecio();
-    int idMarca = pvista.getIdMarcaSeleccionado();
-
-    if (!nombre.isEmpty() && !precioTexto.isEmpty()) {
-        pmodelo.setNombre(nombre);
-        pmodelo.setPrecio(Double.parseDouble(precioTexto));
-        pmodelo.setIdMarca(idMarca);
-
-        pmodelo.insertarProductos();
+    
+    // CARGAR LA TABLA EN LA VISTA
+    public void cargarDatosTabla() {
+        pvista.getTblProductos().getRowCount();
+        int cont = 1;
+        ArrayList<String[]> lProductos = pmodelo.obtenerProductos();
+        for (String[] p : lProductos) {
+            Object[] fila = {cont, p[0], p[1], p[2],p[3]};
+            pvista.getModelo().addRow(fila);
+            cont++;
         }
     }
 
+    // RECUPERAR LOS DATOS
+//    public void recuperarProducto() {
+//    String nombre = pvista.getTxtNombre();
+//    String precioTexto = pvista.getTxtPrecio();
+//    int idMarca = pvista.getIdMarcaSeleccionado();
+//
+//    if (!nombre.isEmpty() && !precioTexto.isEmpty()) {
+//        pmodelo.setNombre(nombre);
+//        pmodelo.setPrecio(Double.parseDouble(precioTexto));
+//        pmodelo.setIdMarca(idMarca);
+//
+//        pmodelo.insertarProductos();
+//        }
+//    }
+    
+    public void agregarProducto() {
+    String nombre = pvista.getTxtNombre();
+    String precioStr = pvista.getTxtPrecio();
+    String marcaStr = pvista.getCmbIdMarca(); // Asegúrate de llamar al getter del ComboBox
+
+    if (!nombre.isEmpty() && !precioStr.isEmpty()) {
+        double precio = Double.parseDouble(precioStr);
+        int idMarca = Integer.parseInt(marcaStr);
+
+        // Seteamos los datos en el modelo recibido
+        pmodelo.setNombre(nombre);
+        pmodelo.setPrecio(precio);
+        pmodelo.setIdMarca(idMarca);
+
+        // Llamada directa sin Downcasting engañoso
+        int idGen = pmodelo.insertarProductos();
+
+        if (idGen > -1) {
+            int cont = pvista.getModelo().getRowCount() + 1;
+            Object[] fila = {cont, idGen, pmodelo.getNombre(), pmodelo.getPrecio(), pmodelo.getIdMarca()};
+            pvista.getModelo().addRow(fila);
+        }
+    }
+    }
+
     public void iniciar() {
-        pvista.getBtnInsertar().addActionListener(e -> recuperarProducto());
+        pvista.getBtnInsertar().addActionListener(e -> agregarProducto());
         pvista.setVisible(true);
+        this.cargarDatosTabla();
     }
 }

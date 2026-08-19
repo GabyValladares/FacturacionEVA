@@ -4,10 +4,13 @@
  */
 package vista;
 
+import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -15,12 +18,34 @@ import javax.swing.JTextField;
  */
 public class ClienteVista extends javax.swing.JFrame {
 
+    //ATRIBUTOS
+    private JTable tablaClientes;
+    String[] encabezado = {"N°","Nombres", "Cédula", "Email", "Dirección", "Teléfono", "Tipo_Cliente", "Descuento"};
+    DefaultTableModel modelo = new DefaultTableModel(encabezado, 0);
+
+    public ClienteVista() {
+        initComponents();
+        this.estiloJtable();
+        this.modelo();
+        
+    }
+
+    public void modelo() {
+        
+        
+        tblClientes.setModel(modelo);
+
+    }
+
+    
+    
+    
     /**
      * Creates new form ClienteControlador
      */
-    public ClienteVista() {
-        initComponents();
-    }
+//    public ClienteVista() {
+//        initComponents();
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -212,14 +237,13 @@ public class ClienteVista extends javax.swing.JFrame {
         return cmbTipoCliente.getSelectedItem();
     }
 
-//    public JTable getTblClientes() {
-//        return tblClientes;
-//    }
-//
-//    public void setTblClientes(JTable tblClientes) {
-//        this.tblClientes = tblClientes;
-//    }
+    public JTable getTblClientes() {
+        return tblClientes;
+    }
 
+    public void setTblClientes(JTable tblClientes) {
+        this.tblClientes = tblClientes;
+    }
     public String getTxtDireccion() {
         return txtDireccion.getText();
     }
@@ -258,6 +282,17 @@ public class ClienteVista extends javax.swing.JFrame {
 
     public void setTxtTelefono(String mensaje) {
         this.txtTelefono.setText(mensaje);
+    }
+    public DefaultTableModel getModelo(){
+        return modelo;
+    
+    }
+    
+    public void estiloJtable(){
+        JTableHeader header=new JTableHeader();
+        Font f=new Font("Bold",MAXIMIZED_BOTH ,18);
+        header.setFont(f);        
+        tblClientes.setTableHeader(header);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

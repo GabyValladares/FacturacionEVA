@@ -68,6 +68,7 @@ public  class Producto{
         this.idMarca = idMarca;
     }
     
+    
 
 
     public double calcularDescuento(double subtotal) {
@@ -93,21 +94,24 @@ public  class Producto{
             ResultSet res = ejecutar.executeQuery();
 
             while (res.next()) {
-                String[] listaProductos = new String[3];
+                String[] listaProductos = new String[4];
                 listaProductos[0] = res.getInt("id_producto") + "";
                 listaProductos[1] = res.getString("nombre");
                 listaProductos[2] = res.getDouble("precio") + "";
+                listaProductos[3] = res.getString("id_marca");
                 lregistros.add(listaProductos);
             }
 
-            ejecutar.close();
-            conectado.close();
-            return lregistros;
-        } catch (SQLException e) {
-            System.out.println("------" + e);
-        }
+            res.close();
+        ejecutar.close(); 
+        
         return lregistros;
+    } catch (SQLException e) {
+        System.out.println("------" + e);
     }
+    return lregistros;
+}
+            
 
     // MÉTODOS DE TRANSACCIONABILIDAD
     public int insertarProductos() {
