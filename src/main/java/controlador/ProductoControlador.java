@@ -63,20 +63,21 @@ public class ProductoControlador {
 
 public ArrayList<String[]> obtenerProductos() {
         ArrayList<String[]> lista = new ArrayList<>();
-        String sql = "SELECT id_producto, nombre, precio FROM productos";
+      String sql = "SELECT id_producto, nombre, precio, stock FROM productos"; 
 
         ConexionBDD c = new ConexionBDD();
         try (Connection con = c.conectar();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
-                String[] p = new String[3];
-                p[0] = rs.getString("id_producto");
-                p[1] = rs.getString("nombre");
-                p[2] = rs.getString("precio");
-                lista.add(p);
-            }
+        while (rs.next()) {
+            String[] prod = new String[4]; 
+            prod[0] = String.valueOf(rs.getInt("id_producto"));
+            prod[1] = rs.getString("nombre");
+            prod[2] = String.valueOf(rs.getDouble("precio"));
+            prod[3] = String.valueOf(rs.getInt("stock")); 
+            lista.add(prod);
+        }
         } catch (SQLException e) {
             System.out.println("Error al obtener todos los productos: " + e.getMessage());
         }

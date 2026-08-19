@@ -19,8 +19,8 @@ public class ClienteVIP extends Cliente {
         this.porcentajeFidelidad = porcentajeFidelidad;
     }
 
-    public ClienteVIP(double porcentajeFidelidad, int id, String nombre, String email, String telefono, int cedula, String direccion, String ciudad) {
-        super(id, nombre, email, telefono, cedula, direccion, ciudad);
+    public ClienteVIP(double porcentajeFidelidad, int id, String nombre, String email, String telefono, int cedula, String direccion, String ciudad,String tipo) {
+        super(id, nombre, email, telefono, cedula, direccion, ciudad,tipo);
         this.porcentajeFidelidad = porcentajeFidelidad;
     }
 
@@ -42,7 +42,7 @@ public class ClienteVIP extends Cliente {
     
     @Override
     public double calcularDescuento(double subtotal) {
-        //Posee el atributo extra porcentajeFidelidad (double). Aplica un descuento directo según este porcentaje sobre cualquier monto.
+        
         return subtotal*porcentajeFidelidad;
     
     }

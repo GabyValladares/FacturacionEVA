@@ -62,22 +62,39 @@ dinámica List<DetalleFactura> con los artículos agregados. */
         this.listaArticulos = listaArticulos;
     }
     
-    //Posee métodos para calcular el subtotal acumulado, el descuento otorgado por el cliente y el total neto.
+ 
     
-    public double calcularSubTotal(){
-        double subtotal=0;
-        for (DetalleFactura l : listaArticulos) {
-            subtotal+=l.getCantidad()*l.getProducto().getPrecio();            
+    public double calcularSubTotal() {
+    double subtotal = 0.0;
+    if (listaArticulos != null) {
+        for (DetalleFactura df : listaArticulos) {
+            subtotal += df.getSubtotal();
         }
-      return subtotal;
     }
-    public double calcularDescuento(){
-        return this.calcularSubTotal()*(getCliente().calcularDescuento(this.calcularSubTotal()));
-    }
-    public double calcularTotalNeto(){
-        
-        return this.calcularSubTotal()*0.15-calcularDescuento();
+    return subtotal;
+}
+    public double calcularDescuento() {
+    double subtotal = this.calcularSubTotal();
+    
+    // descuento>1000
+    if (this.cliente != null && "REGULAR".equalsIgnoreCase(this.cliente.getTipo())) {
+        if (subtotal > 1000) {
+            return subtotal * 0.05; 
+        } else {
+            return 0.0; 
+        }
     }
     
+    return 0.0; 
+}
+    public double calcularTotalNeto(boolean pagaIva) {
+    double subtotal = this.calcularSubTotal();
+    double descuento = this.calcularDescuento();
+    double baseImponible = subtotal - descuento;
     
+    if (pagaIva) {
+        return baseImponible * 1.15; // Aplica IVA 15%
+    }
+    return baseImponible;
+}
 }

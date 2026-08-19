@@ -4,6 +4,7 @@
  */
 package modelo;
 
+import controlador.ConexionBDD;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -21,11 +22,12 @@ public abstract class Cliente {
     private int cedula;
     private String direccion;
     private String ciudad;
+    private String tipo;
 
     public Cliente() {
     }
 
-    public Cliente(int id, String nombre, String email, String telefono, int cedula, String direccion, String ciudad) {
+    public Cliente(int id, String nombre, String email, String telefono, int cedula, String direccion, String ciudad,String tipo) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
@@ -33,6 +35,7 @@ public abstract class Cliente {
         this.cedula = cedula;
         this.direccion = direccion;
         this.ciudad = ciudad;
+        this.tipo= tipo;
     }
 
     
@@ -92,7 +95,16 @@ public abstract class Cliente {
     public void setCiudad(String ciudad) {
         this.ciudad = ciudad;
     }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
     
+ 
     
     
     public abstract double calcularDescuento(double subtotal);
@@ -101,6 +113,9 @@ public abstract class Cliente {
 
 //MÉTODOS DE TRANSACCIONABILIDAD
     public int insertarClientes(String tipoCliente) {
+        
+        ConexionBDD con = new ConexionBDD();
+java.sql.Connection conectado = con.conectar();
         int idGenerado = -1;
         String sentenciaSQL = "{call sp_insertar_cliente(?, ?, ?, ?, ?, ?, ?, ?)}";
         // USO DE TRY-WITH-RESOURCES: 
@@ -112,7 +127,7 @@ public abstract class Cliente {
             ejecutar.setString(3,telefono); 
             ejecutar.setString(4,tipoCliente); 
             ejecutar.setDouble(5, 0);
-            ejecutar.setString(6,this.cedula);
+            ejecutar.setString(6, String.valueOf(this.cedula));
             ejecutar.setString(7, getDireccion());
 
             // 2. Parámetro de salida (OUT idCliente)

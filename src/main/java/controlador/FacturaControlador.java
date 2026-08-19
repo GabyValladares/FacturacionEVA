@@ -11,6 +11,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List; 
 import javax.swing.JProgressBar;
+import modelo.Cliente;
+import modelo.ClienteRegular;
+import modelo.ClienteVIP;
 
 import modelo.DetalleFactura; 
 import modelo.Factura;
@@ -20,6 +23,8 @@ public class FacturaControlador {
     public boolean guardarFactura(Factura f, double totalFinal, JProgressBar pgBar) {
         ConexionBDD cn = new ConexionBDD();
         Connection con = cn.conectar();
+        
+        
         
         PreparedStatement psFactura = null;
         ResultSet rs = null;
@@ -49,7 +54,7 @@ if (pgBar != null) {
 }
 
 
-if (pgBar != null) {    // (Detalle guardado):
+if (pgBar != null) {   
     javax.swing.SwingUtilities.invokeLater(() -> {
         pgBar.setValue(100);
         pgBar.setString("100% - Guardado");
@@ -111,5 +116,24 @@ if (pgBar != null) {    // (Detalle guardado):
                 ex.printStackTrace();
             }
         }
+    }
+    
+   public double obtenerDescuento(String tipo, double subtotal) {
+    Factura f = new Factura();
+    Cliente c;
+
+    if ("VIP".equalsIgnoreCase(tipo)) {
+        c = new ClienteVIP();
+    } else {
+        c = new ClienteRegular();
+    }
+
+    f.setCliente(c);
+    return c.calcularDescuento(subtotal);
+}
+
+    public double obtenerTotalFinal(double subtotal, double descuento, boolean aplicaIva) {
+        double neto = subtotal - descuento;
+        return aplicaIva ? neto * 1.15 : neto;
     }
 }
