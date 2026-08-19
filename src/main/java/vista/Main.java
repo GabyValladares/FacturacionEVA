@@ -73,18 +73,11 @@ public class Main {
 //        NumeroControlador controlador = new NumeroControlador(modelo, vista);
 //        controlador.iniciar();
     //Upcasting
-    ClienteVista vista = new ClienteVista();
-        String tipo = (String) vista.getCbmTipoCliente();
-        if (tipo.equals("Regular")) {
-            //UPCASTING
-            Cliente modelo = new ClienteRegular();
-            ClienteControlador controlador = new ClienteControlador(modelo, vista);
-            controlador.iniciar();
-        } else if (tipo.equals("VIP")) {
-            Cliente modelo = new ClienteVIP();
-            ClienteControlador controlador = new ClienteControlador(modelo, vista);
-            controlador.iniciar();
-        }
+        Cliente modelo = new ClienteRegular();
+        //No se puede generar downcasting si ya fue
+        ClienteVista vista = new ClienteVista();
+        ClienteControlador controlador = new ClienteControlador();
+        controlador.iniciar();
 
 //        Producto mod = new Producto();
 //        ProductoVista view = new ProductoVista();

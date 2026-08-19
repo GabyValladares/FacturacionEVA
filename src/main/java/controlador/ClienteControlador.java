@@ -110,6 +110,7 @@ public class ClienteControlador {
 
             //Downcasting
             ClienteRegular cr = (ClienteRegular) cmodelo;
+            System.out.println("*******"+cr.toString());
             cr.insertarClientes(tipoCliente.toString()); //+""
             Object[] fila = {cont,cmodelo.getNombre(),cmodelo.getCedula(),cmodelo.getEmail(),cmodelo.getDireccion(),cmodelo.getTelefono(),"Regular",0};
             cvista.getModelo().addRow(fila);
@@ -124,7 +125,7 @@ public class ClienteControlador {
             cmodelo.setDireccion(direccion);
             cmodelo.setEmail(email);
             cmodelo.setTelefono(telefono);
-            ClienteVIP cv = (ClienteVIP) cmodelo;
+            ClienteVIP cv = new ClienteVIP (nombre, email, telefono, cedula, telefono);
             cv.insertarClientes(tipoCliente.toString());
             Object[] fila={cv.getNombre(),cv.getCedula(),cv.getEmail(),cv.getDireccion(),
             cv.getTelefono(),"VIP",0};
