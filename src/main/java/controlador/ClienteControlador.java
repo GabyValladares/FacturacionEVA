@@ -78,5 +78,6 @@ public class ClienteControlador {
         vista.getBtnCrear().addActionListener(e -> recuperarCliente());
         vista.setVisible(true);
         this.cargarDatosTabla();
+        
     }
 }

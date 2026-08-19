@@ -4,71 +4,51 @@
  */
 package controlador;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import modelo.Producto;
+import vista.ProductoVista;
 
-/**
- *
- * @author Justin
- */
 public class ProductoControlador {
-    private final ConexionBDD conexionBDD; 
-
+    private Producto pmodelo;
+    private ProductoVista pvista;
     public ProductoControlador() {
-        this.conexionBDD = new ConexionBDD();
     }
 
-    // Metodo para obtener todos los productos de la base de datos
-    public List<Producto> obtenerProductos() {
-        List<Producto> listaProductos = new ArrayList<>();
-        Connection conexion = conexionBDD.conectar();
-        String sql = "SELECT * FROM productos";
-        
-        try {
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            
-            while (rs.next()) {
-                Producto p = new Producto();
-                p.setId(rs.getInt("id_prod")); 
-                p.setNombre(rs.getString("nombre"));
-                p.setPrecio(rs.getDouble("precio"));
-                listaProductos.add(p);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al obtener los productos: " + e.getMessage());
+    public ProductoControlador(Producto pmodelo, ProductoVista pvista) {
+        this.pmodelo = pmodelo;
+        this.pvista = pvista;
+    }
+
+    public void cargarDatosTabla() {
+        pvista.getModelo().setRowCount(0);
+        int cont = 1;
+        ArrayList<String[]> lproductos = pmodelo.obtenerProductos();
+
+        for (String[] p : lproductos) {
+            Object[] fila = {cont, p[1], p[2]};
+            pvista.getModelo().addRow(fila);
+            cont++;
         }
-        return listaProductos;
-    }
-
-    // Metodo para buscar un producto específico por su ID
-    public Producto obtenerProductoPorId(int id) {
-        Producto producto = null;
-        Connection conexion = conexionBDD.conectar();
-        String sql = "SELECT * FROM productos WHERE id_prod= ?";
-        
-        try {
-            PreparedStatement ps = conexion.prepareStatement(sql);
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            
-            if (rs.next()) {
-                producto = new Producto();
-                producto.setId(rs.getInt("id_producto"));
-                producto.setNombre(rs.getString("nombre"));
-                producto.setPrecio(rs.getDouble("precio"));
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al buscar el producto: " + e.getMessage());
-        }
-        return producto;
     }
 
 
-    }
+ public void agregarProducto() {
+    String nombre = pvista.getTxtNombre();
+    String precioStr = pvista.getTxtPrecio();
 
+    if (!nombre.isEmpty() && !precioStr.isEmpty()) {
+        double precio = Double.parseDouble(precioStr);
+        pmodelo.setNombre(nombre);
+        pmodelo.setPrecio(precio);
+        pmodelo.insertarProducto();
+
+        cargarDatosTabla();     
+        pvista.limpiarCampos();  
+    }
+}
+    public void iniciar() {
+        pvista.getBntGuardar().addActionListener(e -> agregarProducto());
+        pvista.setVisible(true);
+        this.cargarDatosTabla();
+    }
+}
