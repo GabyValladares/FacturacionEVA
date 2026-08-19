@@ -74,26 +74,24 @@ public class ProductoControlador {
 
     public void iniciar() {
 
-    avista.getBtnCrear().addActionListener(
-            e -> recuperarProducto()
-    );
+        avista.getBtnCrear().addActionListener(
+                e -> recuperarProducto()
+        );
 
-    avista.getBtnEditar().addActionListener(
-            e -> actualizarProducto()
-    );
+        avista.getBtnEditar().addActionListener(
+                e -> actualizarProducto()
+        );
 
-    avista.getBtnEliminar().addActionListener(
-            e -> eliminarProducto()
-    );
+        avista.getBtnEliminar().addActionListener(
+                e -> eliminarProducto()
+        );
 
+        avista.setVisible(true);
 
-    avista.setVisible(true);
+        cargarDatosTabla();
+    }
 
-    cargarDatosTabla();
-}
-    
-    // ACTUALIZAR PRODUCTO
-public void actualizarProducto() {
+    public void actualizarProducto() {
 
         int fila = avista.getTabla().getSelectedRow();
 
@@ -136,42 +134,42 @@ public void actualizarProducto() {
             );
         }
     }
-// ELIMINAR PRODUCTO
-public void eliminarProducto() {
 
-    int fila = avista.getTabla().getSelectedRow();
+    public void eliminarProducto() {
 
-    if (fila == -1) {
-        JOptionPane.showMessageDialog(
+        int fila = avista.getTabla().getSelectedRow();
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Seleccione un producto de la tabla"
+            );
+            return;
+        }
+
+        int respuesta = JOptionPane.showConfirmDialog(
                 null,
-                "Seleccione un producto de la tabla"
+                "¿Está seguro de eliminar este producto?",
+                "Eliminar producto",
+                JOptionPane.YES_NO_OPTION
         );
-        return;
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+
+            int id = Integer.parseInt(
+                    avista.getModelo()
+                            .getValueAt(fila, 0)
+                            .toString()
+            );
+
+            amodelo.eliminarProducto(id);
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Producto eliminado correctamente"
+            );
+
+            cargarDatosTabla();
+        }
     }
-
-    int respuesta = JOptionPane.showConfirmDialog(
-            null,
-            "¿Está seguro de eliminar este producto?",
-            "Eliminar producto",
-            JOptionPane.YES_NO_OPTION
-    );
-
-    if (respuesta == JOptionPane.YES_OPTION) {
-
-        int id = Integer.parseInt(
-                avista.getModelo()
-                        .getValueAt(fila, 0)
-                        .toString()
-        );
-
-        amodelo.eliminarProducto(id);
-
-        JOptionPane.showMessageDialog(
-                null,
-                "Producto eliminado correctamente"
-        );
-
-        cargarDatosTabla();
-    }
-}
 }
