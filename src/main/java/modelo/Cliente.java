@@ -25,17 +25,19 @@ public abstract class Cliente {
     private String telefono;
     private String cedula;
     private String direccion;
+    private String tipo;
 
     public Cliente() {
     }
 
-    public Cliente(int id, String nombre, String email, String telefono, String cedula, String direccion) {
+    public Cliente(int id, String nombre, String email, String telefono, String cedula, String direccion, String tipo) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.telefono = telefono;
         this.cedula = cedula;
         this.direccion = direccion;
+        this.tipo = tipo;
     }
 
     public int getId() {
@@ -85,6 +87,15 @@ public abstract class Cliente {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+    
     
     public abstract double calcularDescuento(double subtotal);
     //  EX CONTRALADOR 
@@ -119,7 +130,7 @@ public abstract class Cliente {
 
             }
             ejecutar.close();
-            conectado.close();
+//            conectado.close();
             return lregistros;
         } catch (SQLException e) {
             System.out.println("------" + e);

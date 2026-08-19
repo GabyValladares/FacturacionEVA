@@ -4,6 +4,7 @@
  */
 package controlador;
 
+import java.util.ArrayList;
 import modelo.Producto;
 import vista.ProductoVista;
 
@@ -12,9 +13,11 @@ import vista.ProductoVista;
  * @author hp
  */
 public class ProductoControlador {
+
     // REFERENCIA A MODELO Y A LA VISTA
     private Producto pmodelo;
     private ProductoVista pvista;
+    int cont = 1;
 
     // CONSTRUCTORES
     public ProductoControlador() {
@@ -25,25 +28,40 @@ public class ProductoControlador {
         this.pvista = pvista;
     }
 
+    //CARGRA LA TABLA EN LA VISTA
+    public void cargarDatosTabla() {
+        pvista.getTblProductos().getRowCount();
+
+        ArrayList<String[]> lProductos = pmodelo.obtenerProductos();
+        for (String[] pr : lProductos) {
+            Object[] fila = {cont, pr[1], pr[2], pr[3],};
+            pvista.getModelo().addRow(fila);
+            cont++;
+        }
+    }
+
     // RECUPERAR LOS DATOS DE LA VISTA E INSERTAR
-    public void recuperarProducto() {
+    public void agregarProducto() {
         String nombre = pvista.getTxtNombre();
-        String precio = pvista.getTxtPrecio(); 
+        String precio = pvista.getTxtPrecio();
+        String id_marca = pvista.getTxtIdMarca();
 
-        // Validación de campos no vacíos
-        if (!nombre.isEmpty() && !precio.isEmpty()) {
+        if (!nombre.isEmpty() && !precio.isEmpty() && !id_marca.isEmpty()) {
             try {
-                // Conversión de tipo para el precio
+                
                 double precio1 = Double.parseDouble(precio);
+                int idMarca = Integer.parseInt(id_marca);
 
-                // Asignación de datos al modelo
                 pmodelo.setNombre(nombre);
                 pmodelo.setPrecio(precio1);
-                pmodelo.setIdMarca(1);
+                pmodelo.setIdMarca(idMarca);
 
-                // Llamada al método de inserción en el modelo (ya sin polimorfismo/downcasting)
+
                 pmodelo.insertarProductos();
-
+                Object[] fila = {cont, pmodelo.getNombre(), pmodelo.getPrecio(), pmodelo.getIdMarca()};
+                pvista.getModelo().addRow(fila);
+                cont++;
+                
             } catch (NumberFormatException e) {
                 System.out.println("El precio ingresado debe ser un valor numérico válido.");
             }
@@ -52,9 +70,9 @@ public class ProductoControlador {
         }
     }
 
-    // INICIALIZAR LA VISTA Y REGISTRAR EVENTOS
     public void iniciar() {
-        pvista.getBtnInsertar().addActionListener(e -> recuperarProducto());
+        pvista.getBtnInsertar().addActionListener(e -> agregarProducto());
         pvista.setVisible(true);
+        this.cargarDatosTabla();
     }
 }

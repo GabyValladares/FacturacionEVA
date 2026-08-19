@@ -77,6 +77,32 @@ public class Producto {
     ResultSet resultado;
     
         //MÉTODOS DE TRANSACCIONABILIDAD
+    public ArrayList<String[]> obtenerProductos() {
+        ArrayList<String[]> lregistros = new ArrayList<>();
+
+        try {
+            String sentenciaSQL = "select *from productos;";
+            ejecutar = conectado.prepareCall(sentenciaSQL);
+            ResultSet res = ejecutar.executeQuery();
+
+            while (res.next()) {
+                String[] listaProductos = new String[4];
+                listaProductos[0] = res.getInt("id_producto") + "";
+                listaProductos[1] = res.getString("nombre");
+                listaProductos[2] = res.getDouble("precio") + "";
+                listaProductos[3] = res.getInt("id_marca") + "";
+                lregistros.add(listaProductos);
+
+            }
+            ejecutar.close();
+//            conectado.close();
+            return lregistros;
+        } catch (SQLException e) {
+            System.out.println("------" + e);
+        }
+        return lregistros;
+    }
+    
     public int insertarProductos() {
         int idGenerado = -1;
         String sentenciaSQL = "{call sp_insertar_producto(?, ?, ?, ?)}";
@@ -86,7 +112,7 @@ public class Producto {
             // 1. Mapeo de parámetros de entrada (IN)           
             ejecutar.setString(1,nombre);
             ejecutar.setDouble(2,precio); 
-            ejecutar.setDouble(3,idMarca); 
+            ejecutar.setInt(3,idMarca); 
 
             // 2. Parámetro de salida (OUT idCliente)
             ejecutar.registerOutParameter(4, Types.INTEGER);
