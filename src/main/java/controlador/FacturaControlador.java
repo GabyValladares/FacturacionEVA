@@ -32,7 +32,7 @@ public class FacturaControlador {
 
             ps.setDate(1, java.sql.Date.valueOf(factura.getFecha()));
             ps.setInt(2, factura.getCliente().getId());
-            ps.setDouble(3, factura.calcularSubTotal());
+            ps.setDouble(3, factura.calcularTotalNeto());
 
             ps.executeUpdate();
 

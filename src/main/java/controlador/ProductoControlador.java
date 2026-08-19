@@ -37,11 +37,12 @@ public class ProductoControlador {
 
             while (resultado.next()) {
 
-                String[] producto = new String[3];
+                String[] producto = new String[4];
 
                 producto[0] = String.valueOf(resultado.getInt("id_producto"));
                 producto[1] = resultado.getString("nombre");
                 producto[2] = String.valueOf(resultado.getDouble("precio"));
+                producto[3] = String.valueOf(resultado.getInt("stock"));
 
                 listaProductos.add(producto);
 

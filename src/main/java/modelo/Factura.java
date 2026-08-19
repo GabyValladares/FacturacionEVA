@@ -12,8 +12,6 @@ import java.util.List;
  * @author hp
  */
 public class Factura {
-    /*Contiene idFactura, fecha (LocalDate), referencia al objeto Cliente, y una lista
-dinámica List<DetalleFactura> con los artículos agregados. */
     
     private int idFactura;
     private LocalDate fecha;
@@ -61,23 +59,23 @@ dinámica List<DetalleFactura> con los artículos agregados. */
     public void setListaArticulos(List<DetalleFactura> listaArticulos) {
         this.listaArticulos = listaArticulos;
     }
-    
-    //Posee métodos para calcular el subtotal acumulado, el descuento otorgado por el cliente y el total neto.
-    
-    public double calcularSubTotal(){
-        double subtotal=0;
+
+    //SUBTOTAL Y DESCUENTO
+    public double calcularSubTotal() {
+        double subtotal = 0;
         for (DetalleFactura l : listaArticulos) {
-            subtotal+=l.getCantidad()*l.getProducto().getPrecio();            
+            subtotal += l.getCantidad() * l.getProducto().getPrecio();
         }
-      return subtotal;
+        return subtotal;
     }
-    public double calcularDescuento(){
-        return this.calcularSubTotal()*(getCliente().calcularDescuento(this.calcularSubTotal()));
+
+    public double calcularDescuento() {
+        return getCliente().calcularDescuento(calcularSubTotal());
     }
-    public double calcularTotalNeto(){
-        
-        return this.calcularSubTotal()*0.15-calcularDescuento();
+
+    public double calcularTotalNeto() {
+
+        return calcularSubTotal() - calcularDescuento();
     }
-    
-    
+
 }
