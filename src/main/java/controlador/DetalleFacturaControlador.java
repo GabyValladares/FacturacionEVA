@@ -5,7 +5,6 @@
  */
 package controlador;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import modelo.DetalleFactura;
@@ -16,26 +15,31 @@ import modelo.DetalleFactura;
  */
 public class DetalleFacturaControlador {
 
-    public boolean guardarDetalle(Connection conexion,
-            int idFactura,
+    ConexionBDD conexionBDD = new ConexionBDD();
+
+    public boolean guardarDetalle(int idFactura,
             DetalleFactura detalle) {
 
         String sql = "INSERT INTO detalles_facturas "
                 + "(id_factura, id_producto, cantidad, subtotal) "
-                + "VALUES (?, ?, ?, ?)";
+                + "VALUES (?,?,?,?)";
 
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try {
+
+            PreparedStatement ps = conexionBDD.conectar().prepareStatement(sql);
 
             ps.setInt(1, idFactura);
             ps.setInt(2, detalle.getProducto().getId());
             ps.setInt(3, detalle.getCantidad());
             ps.setDouble(4, detalle.getSubtotal());
 
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
+
+            return true;
 
         } catch (SQLException e) {
 
-            System.out.println("Error al guardar detalle: " + e.getMessage());
+            System.out.println(e.getMessage());
             return false;
 
         }

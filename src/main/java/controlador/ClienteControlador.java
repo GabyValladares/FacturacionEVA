@@ -36,7 +36,7 @@ public class ClienteControlador {
                 String[] cliente = new String[8];
 
                 cliente[0] = resultado.getInt("id_cliente") + "";
-                cliente[1] = resultado.getString("nombre") + " - " + resultado.getString("tipo_cliente");
+                cliente[1] = resultado.getString("nombre");
                 cliente[2] = resultado.getString("cedula");
                 cliente[3] = resultado.getString("email");
                 cliente[4] = resultado.getString("telefono");

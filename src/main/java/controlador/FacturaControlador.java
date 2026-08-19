@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import modelo.DetalleFactura;
 import modelo.Factura;
 
@@ -22,20 +21,14 @@ public class FacturaControlador {
 
     public int guardarFactura(Factura factura) {
 
-        Connection conexion = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
         try {
 
-            conexion = conexionBDD.conectar();
+            Connection conexion = conexionBDD.conectar();
 
-            // Iniciar transacción
-            conexion.setAutoCommit(false);
-
+            // Guardar la factura
             String sql = "INSERT INTO facturas(fecha, id_cliente, total) VALUES(?,?,?)";
 
-            ps = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conexion.prepareStatement(sql);
 
             ps.setDate(1, java.sql.Date.valueOf(factura.getFecha()));
             ps.setInt(2, factura.getCliente().getId());
@@ -43,78 +36,40 @@ public class FacturaControlador {
 
             ps.executeUpdate();
 
-            rs = ps.getGeneratedKeys();
+            // Obtener el último id de la factura
+            String consulta = "SELECT id_factura FROM facturas ORDER BY id_factura DESC LIMIT 1";
+
+            PreparedStatement ps2 = conexion.prepareStatement(consulta);
+
+            ResultSet rs = ps2.executeQuery();
 
             int idFactura = 0;
 
             if (rs.next()) {
-                idFactura = rs.getInt(1);
+                idFactura = rs.getInt("id_factura");
             }
 
-            // Guardar detalles
-            DetalleFacturaControlador detalleControlador
-                    = new DetalleFacturaControlador();
+            // Guardar los detalles de la factura
+            DetalleFacturaControlador detalleControlador = new DetalleFacturaControlador();
 
             for (DetalleFactura detalle : factura.getListaArticulos()) {
 
-                boolean ok = detalleControlador.guardarDetalle(
-                        conexion,
-                        idFactura,
-                        detalle);
-
-                if (!ok) {
-                    throw new SQLException("No se pudo guardar un detalle");
-                }
+                detalleControlador.guardarDetalle(idFactura, detalle);
 
             }
 
-            // Confirmar transacción
-            conexion.commit();
+            rs.close();
+            ps.close();
+            ps2.close();
+            conexion.close();
 
             return idFactura;
 
         } catch (SQLException e) {
 
-            try {
-
-                if (conexion != null) {
-                    conexion.rollback();
-                }
-
-            } catch (SQLException ex) {
-
-                System.out.println(ex.getMessage());
-
-            }
-
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error al guardar factura: " + e.getMessage());
 
             return -1;
-
-        } finally {
-
-            try {
-
-                if (rs != null) {
-                    rs.close();
-                }
-
-                if (ps != null) {
-                    ps.close();
-                }
-
-                if (conexion != null) {
-
-                    conexion.setAutoCommit(true);
-                    conexion.close();
-
-                }
-
-            } catch (SQLException e) {
-
-                System.out.println(e.getMessage());
-
-            }
 
         }
 

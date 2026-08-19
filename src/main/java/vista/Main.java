@@ -17,62 +17,48 @@ import javax.swing.JOptionPane;
 public class Main {
 
     public static void main(String[] args) {
+        ConexionBDD c = new ConexionBDD();
+        c.conectar();
 
-        // Conexion a la BDD
-        ConexionBDD conexion = new ConexionBDD();
-        conexion.conectar();
+        //PRODUCTO
+        ProductoControlador pc = new ProductoControlador();
 
-        // PRODUCTOS
-        ProductoControlador productoControlador = new ProductoControlador();
+        ArrayList<String[]> productos = pc.obtenerProductos();
+        Object[] nombreProductos = new Object[productos.size()];
 
-        ArrayList<String[]> productos = productoControlador.obtenerProductos();
-
-        if (productos.isEmpty()) {
-
-            JOptionPane.showMessageDialog(null,
-                    "No existen productos registrados");
-
-        } else {
-
-            String listaProductos = "LISTA DE PRODUCTOS\n\n";
-
-            for (int i = 0; i < productos.size(); i++) {
-
-                listaProductos += (i + 1) + ". "
-                        + productos.get(i)[1]
-                        + "\n";
-
-            }
-
-            JOptionPane.showMessageDialog(null, listaProductos);
+        for (int i = 0; i < productos.size(); i++) {
+            nombreProductos[i] = productos.get(i)[1];
+            System.out.println("-------" + productos.get(1)[2]);
 
         }
+        JOptionPane.showInputDialog(
+                null,
+                "Selecciona el producto:",
+                "Lista Desplegable",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                nombreProductos,
+                nombreProductos[0]); // El último valor es la opción seleccionada por defecto
 
-        // CLIENTES
-        ClienteControlador clienteControlador = new ClienteControlador();
+        //CLIENTE
+        ClienteControlador cc = new ClienteControlador();
 
-        ArrayList<String[]> clientes = clienteControlador.obtenerClientes();
+        ArrayList<String[]> clientes = cc.obtenerClientes();
+        Object[] nombreClientes = new Object[clientes.size()];
 
-        if (clientes.isEmpty()) {
-
-            JOptionPane.showMessageDialog(null,
-                    "No existen clientes registrados");
-
-        } else {
-
-            String listaClientes = "LISTA DE CLIENTES\n\n";
-
-            for (int i = 0; i < clientes.size(); i++) {
-
-                listaClientes += (i + 1) + ". "
-                        + clientes.get(i)[1]
-                        + "\n";
-
-            }
-
-            JOptionPane.showMessageDialog(null, listaClientes);
+        for (int i = 0; i < clientes.size(); i++) {
+            nombreClientes[i] = clientes.get(i)[1];
+            // System.out.println("-------"+clientes.get(1)[2]);
 
         }
+        JOptionPane.showInputDialog(
+                null,
+                "Selecciona el cliente:",
+                "Lista Desplegable",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                nombreClientes,
+                nombreClientes[0]); // El último valor es la opción seleccionada por defecto
 
     }
 }
