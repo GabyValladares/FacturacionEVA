@@ -38,6 +38,7 @@ public class ProductoControlador {
                 p.setId(rs.getInt("id_prod")); 
                 p.setNombre(rs.getString("nombre"));
                 p.setPrecio(rs.getDouble("precio"));
+                p.setStock(rs.getInt("stock"));
                 listaProductos.add(p);
             }
         } catch (SQLException e) {
@@ -59,9 +60,10 @@ public class ProductoControlador {
             
             if (rs.next()) {
                 producto = new Producto();
-                producto.setId(rs.getInt("id_producto"));
+                producto.setId(rs.getInt("id_prod"));
                 producto.setNombre(rs.getString("nombre"));
                 producto.setPrecio(rs.getDouble("precio"));
+                producto.setStock(rs.getInt("stock"));
             }
         } catch (SQLException e) {
             System.out.println("Error al buscar el producto: " + e.getMessage());

@@ -14,17 +14,27 @@ public class Producto {
     private String nombre;
     public double precio;
     private Marcas Marcas;
+    private int stock = 5 ;
     public Producto() {
     }
 
-    public Producto(int id, String nombre, double precio) {
+    public Producto(int id, String nombre, double precio, int stock) {
         this.id_prod = id;
         this.nombre = nombre;
         this.precio = precio;
+        this.stock= stock;
     }
 
     public int getId() {
         return id_prod;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public void setId(int id) {
