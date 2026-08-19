@@ -68,11 +68,11 @@ private double totalFactura = 0;
     txtFecha.setText(LocalDate.now().toString());
     txtFecha.setEditable(false);
 
-    cargarProductos();
-    cargarClientes();
+//    cargarProductos();
+//    cargarClientes();
     }
-
- 
+//
+// 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -519,79 +519,79 @@ private double totalFactura = 0;
 
     private void cmbClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClientesActionPerformed
                                          
-
-    int indice = clienteSeleccionado();
-
-    if (indice < 0) {
-        return;
-    }
-
-    try {
-
-        String[] cliente = clientes.get(indice);
-
-        textCedula.setText(cliente[2]);
-        jTextField5.setText(cliente[3]);
-        TextTelefono.setText(cliente[4]);
-        TextDireccion.setText(cliente[5]);
-
-
-        String tipo = cliente[6];
-
-        c = crearObjetoCliente(tipo);
-
-        if (c != null) {
-
-            c.setId(Integer.parseInt(cliente[0]));
-            c.setNombre(cliente[1]);
-            c.setCedula(cliente[2]);
-            c.setEmail(cliente[3]);
-            c.setTelefono(cliente[4]);
-            c.setDireccion(cliente[5]);
-        }
-
-        // RADIO BUTTON SEGÚN LA BASE DE DATOS
-      
-
-        if (tipo.equalsIgnoreCase("VIP")) {
-
-            rbtnVIP.setSelected(true);
-            rbtnRegular.setSelected(false);
-
-        } else if (tipo.equalsIgnoreCase("Regular")) {
-
-            rbtnVIP.setSelected(false);
-            rbtnRegular.setSelected(true);
-        }
-
-
-        // ENCABEZADO COMPLETADO
-     
-        actualizarProgressBar();
-
-        // Si ya existen productos, actualizar descuento
-        if (!lDF.isEmpty()) {
-            actualizarTotales();
-        }
-
-    } catch (Exception e) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Error al cargar el cliente: " + e.getMessage()
-        );
-    }
+//
+//    int indice = clienteSeleccionado();
+//
+//    if (indice < 0) {
+//        return;
+//    }
+//
+//    try {
+//
+//        String[] cliente = clientes.get(indice);
+//
+//        textCedula.setText(cliente[2]);
+//        jTextField5.setText(cliente[3]);
+//        TextTelefono.setText(cliente[4]);
+//        TextDireccion.setText(cliente[5]);
+//
+//
+//        String tipo = cliente[6];
+//
+//        c = crearObjetoCliente(tipo);
+//
+//        if (c != null) {
+//
+//            c.setId(Integer.parseInt(cliente[0]));
+//            c.setNombre(cliente[1]);
+//            c.setCedula(cliente[2]);
+//            c.setEmail(cliente[3]);
+//            c.setTelefono(cliente[4]);
+//            c.setDireccion(cliente[5]);
+//        }
+//
+//        // RADIO BUTTON SEGÚN LA BASE DE DATOS
+//      
+//
+//        if (tipo.equalsIgnoreCase("VIP")) {
+//
+//            rbtnVIP.setSelected(true);
+//            rbtnRegular.setSelected(false);
+//
+//        } else if (tipo.equalsIgnoreCase("Regular")) {
+//
+//            rbtnVIP.setSelected(false);
+//            rbtnRegular.setSelected(true);
+//        }
+//
+//
+//        // ENCABEZADO COMPLETADO
+//     
+//        actualizarProgressBar();
+//
+//        // Si ya existen productos, actualizar descuento
+//        if (!lDF.isEmpty()) {
+//            actualizarTotales();
+//        }
+//
+//    } catch (Exception e) {
+//
+//        JOptionPane.showMessageDialog(
+//                this,
+//                "Error al cargar el cliente: " + e.getMessage()
+//        );
+//    }
 
     }//GEN-LAST:event_cmbClientesActionPerformed
 
     private void cmbProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductosActionPerformed
      
-    int indice = productoSeleccionado();
-
-    if (indice >= 0) {
-        txtPrecio.setText(productos.get(indice)[2]);
-        calcularSubtotal();
-    }                              
+//    int indice = productoSeleccionado();
+//
+//    if (indice >= 0) {
+//        txtPrecio.setText(productos.get(indice)[2]);
+//        calcularSubtotal();
+//    }                              
     }//GEN-LAST:event_cmbProductosActionPerformed
 
     private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
@@ -599,122 +599,122 @@ private double totalFactura = 0;
     }//GEN-LAST:event_txtPrecioActionPerformed
 
     private void txtSubTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSubTotalActionPerformed
-    calcularSubtotal();         // TODO add your handling code here:
+    //calcularSubtotal();         // TODO add your handling code here:
     }//GEN-LAST:event_txtSubTotalActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
-    int indice = productoSeleccionado();
-
-    if (indice < 0) {
-        JOptionPane.showMessageDialog(
-                this,
-                "Seleccione un producto."
-        );
-        return;
-    }
-
-    if (txtPrecio.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(
-                this,
-                "El producto no tiene un precio válido."
-        );
-        return;
-    }
-
-    try {
-
-        String producto = productos.get(indice)[1];
-        double precio = Double.parseDouble(productos.get(indice)[2]);
-        int cantidad = (Integer) spCantidad.getValue();
-
-        if (cantidad <= 0) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "La cantidad debe ser mayor a cero."
-            );
-            return;
-        }
-
-        double subtotal = precio * cantidad;
-
-
-        // AGREGAR PRODUCTO A LA TABLA
- 
-
-        modelo.addRow(new Object[]{
-            producto,
-            String.format("%.2f", precio),
-            cantidad,
-            String.format("%.2f", subtotal)
-        });
-
-
-        // CREAR PRODUCTO
-
-
-        Producto p = new Producto();
-
-        p.setId(Integer.parseInt(productos.get(indice)[0]));
-        p.setNombre(productos.get(indice)[1]);
-        p.setPrecio(precio);
-
-        // CREAR DETALLE DE FACTURA
-
-
-        DetalleFactura dF = new DetalleFactura();
-
-        dF.setProducto(p);
-        dF.setCantidad(cantidad);
-        dF.setSubtotal(subtotal);
-
-        lDF.add(dF);
-        
-        actualizarProgressBar();
-        actualizarTotales();
-
-
-        // CALCULAR SUBTOTAL GENERAL
-  
-
-        double subtotalGeneral = calcularTotal();
-
-
-        // CALCULAR DESCUENTO
-
-
-        double descuento = 0;
-
-        if (c != null) {
-            descuento = c.calcularDescuento(subtotalGeneral);
-        }
-
-        // CALCULAR TOTAL FINAL
-
-
-        double total = subtotalGeneral - descuento;
-
-        txtDescuento.setText(
-                String.format("%.2f", descuento)
-        );
-
-        txtTotal.setText(
-                String.format("%.2f", total)
-        );
-
-        // LIMPIAR CAMPOS
-
-        txtPrecio.setText("");
-        txtSubTotal.setText("");
-        spCantidad.setValue(1);
-
-    } catch (NumberFormatException e) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Error: los datos del producto no son válidos."
-        );
-    }
+//    int indice = productoSeleccionado();
+//
+//    if (indice < 0) {
+//        JOptionPane.showMessageDialog(
+//                this,
+//                "Seleccione un producto."
+//        );
+//        return;
+//    }
+//
+//    if (txtPrecio.getText().isEmpty()) {
+//        JOptionPane.showMessageDialog(
+//                this,
+//                "El producto no tiene un precio válido."
+//        );
+//        return;
+//    }
+//
+//    try {
+//
+//        String producto = productos.get(indice)[1];
+//        double precio = Double.parseDouble(productos.get(indice)[2]);
+//        int cantidad = (Integer) spCantidad.getValue();
+//
+//        if (cantidad <= 0) {
+//            JOptionPane.showMessageDialog(
+//                    this,
+//                    "La cantidad debe ser mayor a cero."
+//            );
+//            return;
+//        }
+//
+//        double subtotal = precio * cantidad;
+//
+//
+//        // AGREGAR PRODUCTO A LA TABLA
+// 
+//
+//        modelo.addRow(new Object[]{
+//            producto,
+//            String.format("%.2f", precio),
+//            cantidad,
+//            String.format("%.2f", subtotal)
+//        });
+//
+//
+//        // CREAR PRODUCTO
+//
+//
+//        Producto p = new Producto();
+//
+//        p.setId(Integer.parseInt(productos.get(indice)[0]));
+//        p.setNombre(productos.get(indice)[1]);
+//        p.setPrecio(precio);
+//
+//        // CREAR DETALLE DE FACTURA
+//
+//
+//        DetalleFactura dF = new DetalleFactura();
+//
+//        dF.setProducto(p);
+//        dF.setCantidad(cantidad);
+//        dF.setSubtotal(subtotal);
+//
+//        lDF.add(dF);
+//        
+//        actualizarProgressBar();
+//        actualizarTotales();
+//
+//
+//        // CALCULAR SUBTOTAL GENERAL
+//  
+//
+//        double subtotalGeneral = calcularTotal();
+//
+//
+//        // CALCULAR DESCUENTO
+//
+//
+//        double descuento = 0;
+//
+//        if (c != null) {
+//            descuento = c.calcularDescuento(subtotalGeneral);
+//        }
+//
+//        // CALCULAR TOTAL FINAL
+//
+//
+//        double total = subtotalGeneral - descuento;
+//
+//        txtDescuento.setText(
+//                String.format("%.2f", descuento)
+//        );
+//
+//        txtTotal.setText(
+//                String.format("%.2f", total)
+//        );
+//
+//        // LIMPIAR CAMPOS
+//
+//        txtPrecio.setText("");
+//        txtSubTotal.setText("");
+//        spCantidad.setValue(1);
+//
+//    } catch (NumberFormatException e) {
+//
+//        JOptionPane.showMessageDialog(
+//                this,
+//                "Error: los datos del producto no son válidos."
+//        );
+//    }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void textCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textCedulaActionPerformed
@@ -726,7 +726,7 @@ private double totalFactura = 0;
     }//GEN-LAST:event_txtFechaActionPerformed
 
     private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
-    txtTotal.setText(String.valueOf(calcularTotal())); // TODO add your handling code here:
+    //txtTotal.setText(String.valueOf(calcularTotal())); // TODO add your handling code here:
     }//GEN-LAST:event_txtTotalActionPerformed
 
     private void txtDescuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescuentoActionPerformed
@@ -736,99 +736,99 @@ private double totalFactura = 0;
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
                                       
 
-    // VALIDAR CLIENTE
-
-    if (c == null) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Seleccione un cliente."
-        );
-
-        return;
-    }
-
-     // VALIDAR PRODUCTOS
-
-
-    if (lDF.isEmpty()) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Agregue al menos un producto a la factura."
-        );
-
-        return;
-    }
-
-    try {
-
-        FacturaControlador fc = new FacturaControlador();
-        DetalleFacturaControlador dc = new DetalleFacturaControlador();
-
-
-        // CREAR FACTURA
-    
-
-        Factura factura = new Factura();
-
-        factura.setFecha(
-                LocalDate.parse(txtFecha.getText())
-        );
-
-        factura.setCliente(c);
-
-        factura.setListaArticulos(lDF);
-
-        // INSERTAR FACTURA
-
-        int idFactura = fc.insertarFactura(factura);
-
-        if (idFactura > 0) {
-
-            // INSERTAR DETALLES
-     
-
-            for (DetalleFactura detalle : lDF) {
-
-                dc.insertarDetalle(
-                        detalle,
-                        idFactura
-                );
-            }
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Factura guardada correctamente."
-            );
-
-            // Limpiar formulario
-            limpiarFactura();
-
-        } else {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "No se pudo guardar la factura."
-            );
-        }
-
-    } catch (Exception e) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Error al guardar la factura: "
-                + e.getMessage()
-        );
-    }
+//    // VALIDAR CLIENTE
+//
+//    if (c == null) {
+//
+//        JOptionPane.showMessageDialog(
+//                this,
+//                "Seleccione un cliente."
+//        );
+//
+//        return;
+//    }
+//
+//     // VALIDAR PRODUCTOS
+//
+//
+//    if (lDF.isEmpty()) {
+//
+//        JOptionPane.showMessageDialog(
+//                this,
+//                "Agregue al menos un producto a la factura."
+//        );
+//
+//        return;
+//    }
+//
+//    try {
+//
+//        FacturaControlador fc = new FacturaControlador();
+//        DetalleFacturaControlador dc = new DetalleFacturaControlador();
+//
+//
+//        // CREAR FACTURA
+//    
+//
+//        Factura factura = new Factura();
+//
+//        factura.setFecha(
+//                LocalDate.parse(txtFecha.getText())
+//        );
+//
+//        factura.setCliente(c);
+//
+//        factura.setListaArticulos(lDF);
+//
+//        // INSERTAR FACTURA
+//
+//        int idFactura = fc.insertarFactura(factura);
+//
+//        if (idFactura > 0) {
+//
+//            // INSERTAR DETALLES
+//     
+//
+//            for (DetalleFactura detalle : lDF) {
+//
+//                dc.insertarDetalle(
+//                        detalle,
+//                        idFactura
+//                );
+//            }
+//
+//            JOptionPane.showMessageDialog(
+//                    this,
+//                    "Factura guardada correctamente."
+//            );
+//
+//            // Limpiar formulario
+//            limpiarFactura();
+//
+//        } else {
+//
+//            JOptionPane.showMessageDialog(
+//                    this,
+//                    "No se pudo guardar la factura."
+//            );
+//        }
+//
+//    } catch (Exception e) {
+//
+//        JOptionPane.showMessageDialog(
+//                this,
+//                "Error al guardar la factura: "
+//                + e.getMessage()
+//        );
+//    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void spCantidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spCantidadStateChanged
-    calcularSubtotal();
+    //calcularSubtotal();
     }//GEN-LAST:event_spCantidadStateChanged
 
     private void chkIVAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkIVAActionPerformed
-    actualizarTotales();        // TODO add your handling code here:
+    //actualizarTotales();        // TODO add your handling code here:
     }//GEN-LAST:event_chkIVAActionPerformed
 
     private void txtIVAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIVAActionPerformed
@@ -843,241 +843,241 @@ private double totalFactura = 0;
         // TODO add your handling code here:
     }//GEN-LAST:event_rbtnVIPActionPerformed
    
-    public void cargarProductos() {
-         ProductoControlador pc = new ProductoControlador();
-
-    productos = pc.obtenerProductos();
-
-    cmbProductos.removeAllItems();
-
-    for (String[] producto : productos) {
-        cmbProductos.addItem(producto[1]);
-    }
-     
-}
-    public void cargarClientes() {
-
-    ClienteControlador cc = new ClienteControlador();
-
-    clientes = cc.obtenerCliente();
-
-    cmbClientes.removeAllItems();
-
-    for (String[] cliente : clientes) {
-        cmbClientes.addItem(cliente[1]);
-    }
-}
-    public void calcularSubtotal() {
-        if (txtPrecio.getText().isEmpty()) {
-        return;
-    }
-
-    double precio = Double.parseDouble(txtPrecio.getText());
-    int cantidad = (Integer) spCantidad.getValue();
-
-    double subtotal = precio * cantidad;
-
-    txtSubTotal.setText(String.valueOf(subtotal));
-}
-    
-    public int productoSeleccionado(){
-     if (productos != null && !productos.isEmpty()) {
-        return cmbProductos.getSelectedIndex();
-    }
-
-    return -1;
-
-    }
-    public void limpiarDetalle() {
-        txtPrecio.setText("");
-        spCantidad.setValue(1);
-        txtSubTotal.setText("");
-    }
-     public int clienteSeleccionado(){
-     if (clientes != null && !clientes.isEmpty()) {
-        return cmbClientes.getSelectedIndex();
-    }
-    return -1;
-     }
-
-     
-    public Cliente crearObjetoCliente(String tipo) {
-
-    if (tipo == null) {
-        return null;
-    }
-
-    if (tipo.equalsIgnoreCase("VIP")) {
-
-        return new ClienteVIP();
-
-    } else if (tipo.equalsIgnoreCase("Regular")) {
-
-        return new ClienteRegular();
-    }
-
-    return null;
-}
-
-    
-        public double calcularTotal() {
-
-          double total = 0;
-
-          for (DetalleFactura df : lDF) {
-              total += df.getSubtotal();
-          }
-
-          return total;
-      }
-
-        public void limpiarFactura() {
-
-    // Limpiar lista de detalles
-    lDF.clear();
-
-    // Limpiar tabla
-    modelo.setRowCount(0);
-
-    // Limpiar campos del cliente
-    textCedula.setText("");
-    jTextField5.setText("");
-    TextTelefono.setText("");
-    TextDireccion.setText("");
-
-
-    // Limpiar datos del producto
-    txtPrecio.setText("");
-    txtSubTotal.setText("");
-
-    // Reiniciar cantidad
-    spCantidad.setValue(1);
-
-    // Limpiar totales
-    txtDescuento.setText("");
-    txtTotal.setText("");
-
-    // Cliente actual
-    c = null;
-
-    // Volver a seleccionar
-    if (cmbClientes.getItemCount() > 0) {
-        cmbClientes.setSelectedIndex(0);
-    }
-
-    if (cmbProductos.getItemCount() > 0) {
-        cmbProductos.setSelectedIndex(0);
-    }
-}
-        
-        public void actualizarProgressBar() {
-
-    int progreso = 0;
-
-    // 50% encabezado
-    if (c != null) {
-        progreso += 50;
-    }
-
-    // 50% detalle
-    if (!lDF.isEmpty()) {
-        progreso += 50;
-    }
-    
-    
-
-    progressFactura.setValue(progreso);
-    progressFactura.setString(progreso + "%");
-}
-public void actualizarTotales() {
-
-    subtotalFactura = calcularTotal();
-
- 
-    // DESCUENTO
- 
-
-    descuentoFactura = 0;
-
-    if (c != null) {
-        descuentoFactura =
-                c.calcularDescuento(subtotalFactura);
-    }
-
-
-    // BASE PARA IVA
-
-
-    double baseIVA =
-            subtotalFactura - descuentoFactura;
-
-    // IVA
-
-
-    ivaFactura = 0;
-
-    if (chkIVA.isSelected()) {
-        ivaFactura = baseIVA * 0.15;
-    }
-
-
-    // TOTAL
-
-
-    totalFactura =
-            baseIVA + ivaFactura;
-
-    // MOSTRAR
-  
-
-    txtDescuento.setText(
-            String.format("%.2f", descuentoFactura)
-    );
-
-    txtIVA.setText(
-            String.format("%.2f", ivaFactura)
-    );
-
-    txtTotal.setText(
-            String.format("%.2f", totalFactura)
-    );
-}
-
-
-
-
-        public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FacturaVista().setVisible(true);
-            }
-        });
-    }
-
+//    public void cargarProductos() {
+//         ProductoControlador pc = new ProductoControlador();
+//
+//    productos = pc.obtenerProductos();
+//
+//    cmbProductos.removeAllItems();
+//
+//    for (String[] producto : productos) {
+//        cmbProductos.addItem(producto[1]);
+//    }
+//     
+//////////}
+//////////    public void cargarClientes() {
+//////////
+//////////    ClienteControlador cc = new ClienteControlador();
+////////////
+////////////    clientes = cc.obtenerCliente();
+//////////
+//////////    cmbClientes.removeAllItems();
+//////////
+//////////    for (String[] cliente : clientes) {
+//////////        cmbClientes.addItem(cliente[1]);
+//////////    }
+//////////}
+//////////    public void calcularSubtotal() {
+//////////        if (txtPrecio.getText().isEmpty()) {
+//////////        return;
+//////////    }
+//////////
+//////////    double precio = Double.parseDouble(txtPrecio.getText());
+//////////    int cantidad = (Integer) spCantidad.getValue();
+//////////
+//////////    double subtotal = precio * cantidad;
+//////////
+//////////    txtSubTotal.setText(String.valueOf(subtotal));
+//////////}
+//////////    
+//////////    public int productoSeleccionado(){
+//////////     if (productos != null && !productos.isEmpty()) {
+//////////        return cmbProductos.getSelectedIndex();
+//////////    }
+//////////
+//////////    return -1;
+//////////
+//////////    }
+//////////    public void limpiarDetalle() {
+//////////        txtPrecio.setText("");
+//////////        spCantidad.setValue(1);
+//////////        txtSubTotal.setText("");
+//////////    }
+//////////     public int clienteSeleccionado(){
+//////////     if (clientes != null && !clientes.isEmpty()) {
+//////////        return cmbClientes.getSelectedIndex();
+//////////    }
+//////////    return -1;
+//////////     }
+//////////
+//////////     
+//////////    public Cliente crearObjetoCliente(String tipo) {
+//////////
+//////////    if (tipo == null) {
+//////////        return null;
+//////////    }
+//////////
+//////////    if (tipo.equalsIgnoreCase("VIP")) {
+//////////
+//////////        return new ClienteVIP();
+//////////
+//////////    } else if (tipo.equalsIgnoreCase("Regular")) {
+//////////
+//////////        return new ClienteRegular();
+//////////    }
+//////////
+//////////    return null;
+//////////}
+//////////
+//////////    
+//////////        public double calcularTotal() {
+//////////
+//////////          double total = 0;
+//////////
+//////////          for (DetalleFactura df : lDF) {
+//////////              total += df.getSubtotal();
+//////////          }
+//////////
+//////////          return total;
+//////////      }
+//////////
+//////////        public void limpiarFactura() {
+//////////
+//////////    // Limpiar lista de detalles
+//////////    lDF.clear();
+//////////
+//////////    // Limpiar tabla
+//////////    modelo.setRowCount(0);
+//////////
+//////////    // Limpiar campos del cliente
+//////////    textCedula.setText("");
+//////////    jTextField5.setText("");
+//////////    TextTelefono.setText("");
+//////////    TextDireccion.setText("");
+//////////
+//////////
+//////////    // Limpiar datos del producto
+//////////    txtPrecio.setText("");
+//////////    txtSubTotal.setText("");
+//////////
+//////////    // Reiniciar cantidad
+//////////    spCantidad.setValue(1);
+//////////
+//////////    // Limpiar totales
+//////////    txtDescuento.setText("");
+//////////    txtTotal.setText("");
+//////////
+//////////    // Cliente actual
+//////////    c = null;
+//////////
+//////////    // Volver a seleccionar
+//////////    if (cmbClientes.getItemCount() > 0) {
+//////////        cmbClientes.setSelectedIndex(0);
+//////////    }
+//////////
+//////////    if (cmbProductos.getItemCount() > 0) {
+//////////        cmbProductos.setSelectedIndex(0);
+//////////    }
+//////////}
+//////////        
+//////////        public void actualizarProgressBar() {
+//////////
+//////////    int progreso = 0;
+//////////
+//////////    // 50% encabezado
+//////////    if (c != null) {
+//////////        progreso += 50;
+//////////    }
+//////////
+//////////    // 50% detalle
+//////////    if (!lDF.isEmpty()) {
+//////////        progreso += 50;
+//////////    }
+//////////    
+//////////    
+//////////
+//////////    progressFactura.setValue(progreso);
+//////////    progressFactura.setString(progreso + "%");
+//////////}
+//////////public void actualizarTotales() {
+//////////
+//////////    subtotalFactura = calcularTotal();
+//////////
+////////// 
+//////////    // DESCUENTO
+////////// 
+//////////
+//////////    descuentoFactura = 0;
+//////////
+//////////    if (c != null) {
+//////////        descuentoFactura =
+//////////                c.calcularDescuento(subtotalFactura);
+//////////    }
+//////////
+//////////
+//////////    // BASE PARA IVA
+//////////
+//////////
+//////////    double baseIVA =
+//////////            subtotalFactura - descuentoFactura;
+//////////
+//////////    // IVA
+//////////
+//////////
+//////////    ivaFactura = 0;
+//////////
+//////////    if (chkIVA.isSelected()) {
+//////////        ivaFactura = baseIVA * 0.15;
+//////////    }
+//////////
+//////////
+//////////    // TOTAL
+//////////
+//////////
+//////////    totalFactura =
+//////////            baseIVA + ivaFactura;
+//////////
+//////////    // MOSTRAR
+//////////  
+//////////
+//////////    txtDescuento.setText(
+//////////            String.format("%.2f", descuentoFactura)
+//////////    );
+//////////
+//////////    txtIVA.setText(
+//////////            String.format("%.2f", ivaFactura)
+//////////    );
+//////////
+//////////    txtTotal.setText(
+//////////            String.format("%.2f", totalFactura)
+//////////    );
+//////////}
+//////////
+//////////
+//////////
+//////////
+////////////        public static void main(String args[]) {
+////////////        /* Set the Nimbus look and feel */
+////////////        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+////////////        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+////////////         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+////////////         */
+////////////        try {
+////////////            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+////////////                if ("Nimbus".equals(info.getName())) {
+////////////                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+////////////                    break;
+////////////                }
+////////////            }
+////////////        } catch (ClassNotFoundException ex) {
+////////////            java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+////////////        } catch (InstantiationException ex) {
+////////////            java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+////////////        } catch (IllegalAccessException ex) {
+////////////            java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+////////////        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+////////////            java.util.logging.Logger.getLogger(FacturaVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+////////////        }
+////////////        //</editor-fold>
+////////////
+////////////        /* Create and display the form */
+////////////        java.awt.EventQueue.invokeLater(new Runnable() {
+////////////            public void run() {
+////////////                new FacturaVista().setVisible(true);
+////////////            }
+////////////        });
+////////////    }
+//////////
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField TextDireccion;
     private javax.swing.JTextField TextTelefono;

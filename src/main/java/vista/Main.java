@@ -1,19 +1,19 @@
+package vista;
 
-//package vista;
-//
-//
-//import controlador.ConexionBDD;
-//import controlador.ClienteControlador;
-//import controlador.ConexionBDD;
-//import controlador.ProductoControlador;
-//import java.util.ArrayList;
-//import javax.swing.JOptionPane;
-//import modelo.Producto;
-//
-//public class Main {
-//
-//    public static void main(String[] args) {
-//
+import controlador.ConexionBDD;
+import controlador.ClienteControlador;
+import controlador.ConexionBDD;
+import controlador.ProductoControlador;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import modelo.Cliente;
+import modelo.ClienteRegular;
+import modelo.Producto;
+
+public class Main {
+
+    public static void main(String[] args) {
+
 //        ConexionBDD c = new ConexionBDD();
 //        c.conectar();
 //
@@ -76,7 +76,7 @@
 //            prod[i] = Producto[1]; //guarda el nombre en la posición i
 //                System.out.println("-----" + Producto[1] + " | Precio: " + Producto[2]);
 //            i++; //avanza a la siguiente posición
-////             JOptionPane.showMessageDialog(null,producto[i]);
+        ////             JOptionPane.showMessageDialog(null,producto[i]);
 //        }  
 //        String productoElegido = (String) JOptionPane.showInputDialog(null,
 //        "Escoga un producto",
@@ -104,5 +104,21 @@
 //}
 //
 //        
-// 
+//         Cliente modelo=new ClienteRegular();
+//            ClienteVista vista=new ClienteVista();
+//            ClienteControlador controlador=new ClienteControlador(modelo, vista);
+//            controlador.iniciar();
+//    }
+    
+Producto modelo = new Producto();
+        ProductoVista vista = new ProductoVista();
+
+        ProductoControlador controlador
+                = new ProductoControlador(modelo, vista);
+
+        controlador.iniciar();
+    }
+}
+
+       
 //        

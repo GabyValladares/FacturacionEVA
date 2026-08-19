@@ -1,58 +1,177 @@
-
 package controlador;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.Producto;
-
+import vista.ProductoVista;
 
 public class ProductoControlador {
-    //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
-    ConexionBDD conectar = new ConexionBDD();
-    //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
-    Connection conectado = (Connection) conectar.conectar();
-    //CLASE QUE ME PERMITE EJECUTAR MI SENTENCIA SQL
-    PreparedStatement ejecutar;
-    //OBTENER RESULTADOS DE LA CONSULTA
-    ResultSet resultado;
+
+    private Producto amodelo;
+    private ProductoVista avista;
+
+    public ProductoControlador() {
+    }
+
+    public ProductoControlador(Producto amodelo, ProductoVista avista) {
+        this.amodelo = amodelo;
+        this.avista = avista;
+    }
+
+ 
+    public void cargarDatosTabla() {
+    avista.getModelo().setRowCount(0);
+    ArrayList<String[]> lProductos = amodelo.recuperarProducto();
+
+    for (String[] p : lProductos) {
+
+        Object[] fila = {
+            p[0],  // id
+            p[1],  // nombre
+            p[2]   // precio
+        };
+
+        avista.getModelo().addRow(fila);
+    }
+}
     
-    public ArrayList<String[]> obtenerProductos() {
+
+    public ArrayList<String[]> recuperarProducto() {
 
     ArrayList<String[]> lista = new ArrayList<>();
 
-    try {
+    String sentenciaSQL = "{call facturero.sp_ver_productos()}";
 
-        String sql = "SELECT id, nombre, precio, id_marca FROM producto ";
+    ConexionBDD conectar = new ConexionBDD();
 
-        ejecutar = conectado.prepareStatement(sql);
-        ResultSet res = ejecutar.executeQuery();
+    try (Connection conectado = conectar.conectar();
+         CallableStatement ejecutar =
+                 conectado.prepareCall(sentenciaSQL);
+         ResultSet resultado = ejecutar.executeQuery()) {
 
-        while (res.next()) {
+        while (resultado.next()) {
 
-            String[] producto = new String[4];
+            String[] producto = {
+                resultado.getString("id"),
+                resultado.getString("nombre"),
+                resultado.getString("precio")
+            };
 
-            producto[0] = res.getString("id");
-            producto[1] = res.getString("nombre");
-            producto[2] = res.getString("precio");
-            producto[3] = res.getString("id_marca");
-            
-                   lista.add(producto);
+            lista.add(producto);
         }
 
     } catch (SQLException e) {
-        System.out.println(e);
+        System.out.println("Error al listar productos:");
+        e.printStackTrace();
     }
 
     return lista;
 }
 
+    public void iniciar() {
+
+    avista.getBtnCrear().addActionListener(
+            e -> recuperarProducto()
+    );
+
+    avista.getBtnEditar().addActionListener(
+            e -> actualizarProducto()
+    );
+
+    avista.getBtnEliminar().addActionListener(
+            e -> eliminarProducto()
+    );
+
+
+    avista.setVisible(true);
+
+    cargarDatosTabla();
+}
+    
+    // ACTUALIZAR PRODUCTO
+public void actualizarProducto() {
+
+        int fila = avista.getTabla().getSelectedRow();
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Seleccione un producto de la tabla"
+            );
+            return;
+        }
+
+        try {
+
+            int id = Integer.parseInt(
+                    avista.getModelo()
+                            .getValueAt(fila, 0)
+                            .toString()
+            );
+
+            String nombre = avista.getTxtNombre();
+
+            double precio = Double.parseDouble(
+                    avista.getTxtPrecio()
+            );
+
+            amodelo.actualizarProducto(id, nombre, precio);
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Producto actualizado correctamente"
+            );
+
+            cargarDatosTabla();
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "El precio debe ser un número válido"
+            );
+        }
     }
-       
+// ELIMINAR PRODUCTO
+public void eliminarProducto() {
 
+    int fila = avista.getTabla().getSelectedRow();
 
+    if (fila == -1) {
+        JOptionPane.showMessageDialog(
+                null,
+                "Seleccione un producto de la tabla"
+        );
+        return;
+    }
 
+    int respuesta = JOptionPane.showConfirmDialog(
+            null,
+            "¿Está seguro de eliminar este producto?",
+            "Eliminar producto",
+            JOptionPane.YES_NO_OPTION
+    );
 
+    if (respuesta == JOptionPane.YES_OPTION) {
+
+        int id = Integer.parseInt(
+                avista.getModelo()
+                        .getValueAt(fila, 0)
+                        .toString()
+        );
+
+        amodelo.eliminarProducto(id);
+
+        JOptionPane.showMessageDialog(
+                null,
+                "Producto eliminado correctamente"
+        );
+
+        cargarDatosTabla();
+    }
+}
+}
