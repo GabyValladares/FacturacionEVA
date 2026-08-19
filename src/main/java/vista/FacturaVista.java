@@ -415,7 +415,7 @@ public class FacturaVista extends javax.swing.JFrame {
         this.crearFactura(c);
     }//GEN-LAST:event_btnPDFActionPerformed
     public void cargarProductos() {
-        ProductoControlador pc = new ProductoControlador();
+        Producto pc = new Producto();
         lP = pc.obtenerProductos();
         DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
 

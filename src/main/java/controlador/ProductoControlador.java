@@ -113,7 +113,6 @@ public class ProductoControlador {
         pmodelo.setPrecio(precio);
         pmodelo.setIdMarca(idMarca);
 
-        // Llamada directa sin Downcasting engañoso
         int idGen = pmodelo.insertarProductos();
 
         if (idGen > -1) {

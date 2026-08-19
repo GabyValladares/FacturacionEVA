@@ -137,7 +137,7 @@ public abstract class Cliente {
             }
 
             ejecutar.close();
-            conectado.close();
+           // conectado.close();
             return lregistros;
         } catch (SQLException e) {
             System.out.println("------" + e);

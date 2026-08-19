@@ -118,8 +118,6 @@ public  class Producto{
         int idGenerado = -1;
         String sentenciaSQL = "{call sp_insertar_producto2(?, ?, ?,?)}";
         
-        // USO DE TRY-WITH-RESOURCES: 
-        // El CallableStatement se cerrará automáticamente al finalizar la ejecución.
 try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)) {
     // 1. Asignar los parámetros de entrada (IN)
     ejecutar.setString(1, this.nombre);
@@ -128,12 +126,8 @@ try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)) {
 
     // 2. Registrar el parámetro de salida (OUT) en el índice 4
     ejecutar.registerOutParameter(4, java.sql.Types.INTEGER);
-
-    // 3. Ejecutar el procedimiento
     ejecutar.execute();
-
-    // 4. Obtener el ID generado
-    idGenerado = ejecutar.getInt(4); // Si idGenerado está declarada fuera del try, no pongas 'int' aquí.
+    idGenerado = ejecutar.getInt(4); 
     
     System.out.println("Producto guardado con éxito. ID: " + idGenerado);
 

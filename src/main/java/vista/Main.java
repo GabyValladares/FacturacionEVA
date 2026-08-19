@@ -73,17 +73,17 @@ public class Main {
             //UPCASTING
             
             
-//            Cliente modelo=new ClienteRegular();
-//            ClienteVista vista=new ClienteVista();
-//            ClienteControlador controlador=new ClienteControlador(modelo, vista);
-//            controlador.iniciar();
-//    }
-//}
+            Cliente modelo=new ClienteRegular();
+            ClienteVista vista=new ClienteVista();
+            ClienteControlador controlador=new ClienteControlador(modelo, vista);
+            controlador.iniciar();
+    }
+}
     
 
-Producto modelo = new Producto();
-ProductoVista vista = new ProductoVista();
-ProductoControlador controlador = new ProductoControlador(modelo, vista);
-controlador.iniciar();
-}
-}
+//Producto modelo = new Producto();
+//ProductoVista vista = new ProductoVista();
+//ProductoControlador controlador = new ProductoControlador(modelo, vista);
+//controlador.iniciar();
+//}
+//}
