@@ -105,35 +105,57 @@ public abstract class Cliente {
     //OBTENER EL LISTADO TOTAL DE CLIENTES SEAN VIP O REGULAR
     
     public ArrayList<String[]> obtenerClientes() {
-        ArrayList<String[]> lregistros = new ArrayList<>();
 
-        try {
-            String sentenciaSQL = "select *from clientes;";
-            ejecutar = conectado.prepareCall(sentenciaSQL);
-            ResultSet res = ejecutar.executeQuery();
+    ArrayList<String[]> lregistros = new ArrayList<>();
 
-            while (res.next()) {
-                String[] listaClientes = new String[8];
-                listaClientes[0] = res.getInt("id_cliente") + "";
-                listaClientes[1] = res.getString("nombre");
-                listaClientes[2] = res.getString("email");
-                listaClientes[3] = res.getString("telefono") + "";
-                listaClientes[4] = res.getString("tipo_cliente");
-                listaClientes[5] = res.getDouble("descuento_vip")+"";
-                listaClientes[6] = res.getString("cedula");
-                listaClientes[7] = res.getString("direccion");
-                lregistros.add(listaClientes);
+    try {
 
-            }
+        String sentenciaSQL = "SELECT * FROM cliente";
 
-            ejecutar.close();
-            conectado.close();
-            return lregistros;
-        } catch (SQLException e) {
-            System.out.println("------" + e);
+        ejecutar = conectado.prepareStatement(sentenciaSQL);
+
+        ResultSet res = ejecutar.executeQuery();
+
+        System.out.println("CONSULTA EJECUTADA");
+
+        while (res.next()) {
+
+            String[] listaClientes = new String[7];
+
+            listaClientes[0] = res.getString("id_cliente");
+            listaClientes[1] = res.getString("nombre");
+            listaClientes[2] = res.getString("cedula");
+            listaClientes[3] = res.getString("email");
+            listaClientes[4] = res.getString("telefono");
+            listaClientes[5] = res.getString("direccion");
+            listaClientes[6] = res.getString("tipo_cliente");
+
+            lregistros.add(listaClientes);
+
+            System.out.println(
+                "CLIENTE ENCONTRADO: " + listaClientes[1]
+            );
         }
-        return lregistros;
+
+        System.out.println(
+            "TOTAL CLIENTES: " + lregistros.size()
+        );
+
+        res.close();
+        ejecutar.close();
+        conectado.close();
+
+    } catch (SQLException e) {
+
+        System.out.println(
+            "ERROR SQL: " + e.getMessage()
+        );
+
+        e.printStackTrace();
     }
+
+    return lregistros;
+}
     
     //MÉTODOS DE TRANSACCIONABILIDAD
     public int insertarClientes(String tipoCliente) {

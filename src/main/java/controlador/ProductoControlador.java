@@ -38,39 +38,48 @@ public class ProductoControlador {
         avista.getModelo().addRow(fila);
     }
 }
-    
-
     public ArrayList<String[]> recuperarProducto() {
 
-    ArrayList<String[]> lista = new ArrayList<>();
+        ArrayList<String[]> lista = new ArrayList<>();
 
-    String sentenciaSQL = "{call facturero.sp_ver_productos()}";
+        String sentenciaSQL = "{call facturero.sp_ver_productos()}";
 
-    ConexionBDD conectar = new ConexionBDD();
+        ConexionBDD conectar = new ConexionBDD();
 
-    try (Connection conectado = conectar.conectar();
-         CallableStatement ejecutar =
-                 conectado.prepareCall(sentenciaSQL);
-         ResultSet resultado = ejecutar.executeQuery()) {
+        try (
+                Connection conectado = conectar.conectar(); CallableStatement ejecutar
+                = conectado.prepareCall(sentenciaSQL); ResultSet resultado
+                = ejecutar.executeQuery()) {
 
-        while (resultado.next()) {
+            while (resultado.next()) {
 
-            String[] producto = {
-                resultado.getString("id"),
-                resultado.getString("nombre"),
-                resultado.getString("precio")
-            };
+                String[] producto = {
+                    resultado.getString("id"),
+                    resultado.getString("nombre"),
+                    resultado.getString("precio"),
+                    resultado.getString("stock")
+                };
 
-            lista.add(producto);
+                lista.add(producto);
+            }
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Error al listar productos:\n"
+                    + e.getMessage()
+            );
+
+            e.printStackTrace();
         }
 
-    } catch (SQLException e) {
-        System.out.println("Error al listar productos:");
-        e.printStackTrace();
+        return lista;
     }
+    
 
-    return lista;
-}
+    
+
 
     public void iniciar() {
 
@@ -171,5 +180,8 @@ public class ProductoControlador {
 
             cargarDatosTabla();
         }
+    }
+     public ArrayList<String[]> obtenerProductos() {
+        return recuperarProducto();
     }
 }
