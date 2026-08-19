@@ -82,14 +82,12 @@ dinámica List<DetalleFactura> con los artículos agregados. */
         return this.calcularSubTotal() - this.calcularDescuento();
     }
 
-    public double PagarIva() {
-        double totalIva = 0;
-        if (listaArticulos != null) {
-            for (DetalleFactura l : listaArticulos) {
-                totalIva += (l.getCantidad() * l.getProducto().getPrecio()) * IVA;
-            }
+    public double calcularIva(boolean pagarIva) {
+        
+        if (pagarIva) {
+           return this.calcularSubTotal() * 0.15;
         }
-        return totalIva;
+        return 0;
     }
 
 }

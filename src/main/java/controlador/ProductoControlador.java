@@ -37,11 +37,12 @@ public class ProductoControlador {
             ResultSet res = ejecutar.executeQuery();
 
             while (res.next()) {
-                String[] listaProductos = new String[4];
+                String[] listaProductos = new String[5];
                 listaProductos[0] = res.getInt("id")+"";
                 listaProductos[1] = res.getString("nombre");
                 listaProductos[2] = res.getString("precio");
                 listaProductos[3] = res.getString("marca");
+                listaProductos[4] = res.getString("cantidad");
                 lregistros.add(listaProductos);
             }
             res.close();

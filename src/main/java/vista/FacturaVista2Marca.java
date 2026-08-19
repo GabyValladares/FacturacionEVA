@@ -1,4 +1,4 @@
-    /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
@@ -16,6 +16,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
@@ -41,9 +42,10 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
     Cliente c;
     Factura f = new Factura();
     ArrayList<String[]> lista;
+    Producto pr;
 
-    
     DefaultTableModel modelo = new DefaultTableModel();
+
     /**
      * Creates new form FacturaVista
      */
@@ -54,20 +56,20 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
         cargarClientes();
         generarfecha();
         cargarMarca();
-        
+
         //jtable
         modelo.addColumn("Producto");
         modelo.addColumn("Precio U");
         modelo.addColumn("Cantidad");
         modelo.addColumn("Subtotal");
-        
+
         jtblDetalle.setModel(modelo);
-        
+
         //spinner
-        SpinnerNumberModel nm= new SpinnerNumberModel(0, 0, 200, 1);
+        SpinnerNumberModel nm = new SpinnerNumberModel(0, 0, 200, 1);
         jSpinner.setModel(nm);
-        
-        JFormattedTextField txt = ((JSpinner.DefaultEditor)jSpinner.getEditor()).getTextField();
+
+        JFormattedTextField txt = ((JSpinner.DefaultEditor) jSpinner.getEditor()).getTextField();
         txt.setEditable(false);
     }
 
@@ -120,6 +122,8 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jtblDetalle = new javax.swing.JTable();
         jSpinner = new javax.swing.JSpinner();
+        txtStock = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -313,6 +317,8 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jtblDetalle);
 
+        jLabel4.setText("STOCK");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -356,27 +362,32 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
                                                 .addComponent(rbtnVIP)
                                                 .addComponent(lblCorreo)
                                                 .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(chbxPagaIVA, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(chbxPagaIVA, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(btnAgregar)))
                                         .addComponent(lblDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(lblMarca)
-                                    .addGap(194, 194, 194)
-                                    .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(cmbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(40, 40, 40)
+                                                .addComponent(cmbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(lblPrecio)
+                                                .addGap(222, 222, 222)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(lblSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(57, 57, 57)))
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(cmbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(40, 40, 40)
-                                            .addComponent(cmbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(lblPrecio)
-                                            .addGap(222, 222, 222)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(lblSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGap(57, 57, 57)))
-                                    .addGap(41, 41, 41)
-                                    .addComponent(btnAgregar))))
+                                            .addComponent(lblMarca)
+                                            .addGap(194, 194, 194)
+                                            .addComponent(lblProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(128, 128, 128)))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel4)))))
                         .addGroup(layout.createSequentialGroup()
                             .addGap(194, 194, 194)
                             .addComponent(lblTitulo))
@@ -446,27 +457,30 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
                 .addComponent(lblDetalle)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblMarca)
+                        .addComponent(lblProducto))
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblMarca)
-                            .addComponent(lblProducto))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblPrecio)
-                            .addComponent(lblCantidad))
+                            .addComponent(lblCantidad)
+                            .addComponent(lblSubTotal))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblSubTotal)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnAgregar))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAgregar))))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -483,7 +497,7 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
                 .addComponent(btnPDF)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pgbrCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         pack();
@@ -497,8 +511,9 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
         int indice = this.RPS();
         if (indice >= 0) {
             txtPrecio.setText(listaProducto.get(indice)[2]);
-        }
-        this.cantidadSpinner();
+            txtStock.setText(listaProducto.get(indice)[4]);
+       }
+        //this.cantidadSpinner();
 
 //        Producto productoSeleccionado = (Producto) cmbProductos.getSelectedItem();
 //        if (productoSeleccionado != null) {
@@ -509,19 +524,11 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
 
     private void txtSubTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSubTotalActionPerformed
         // TODO add your handling code here:
-//        Factura f = new Factura();
-//        f.calcularSubTotal();
+        
     }//GEN-LAST:event_txtSubTotalActionPerformed
 
     private void cmbProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbProductosMouseClicked
-        // TODO add your handling code here:
-        if (listaProducto != null && !listaProducto.isEmpty()) {
-            int indice = cmbProductos.getSelectedIndex();
-            if (indice >= 0) {
-                txtPrecio.setText(listaProducto.get(indice)[2]);
-            }
-            this.cantidadSpinner();
-        }
+
     }//GEN-LAST:event_cmbProductosMouseClicked
 
     private void cmbProductosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbProductosMousePressed
@@ -535,11 +542,24 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-        
-        int cantidad = (Integer) jSpinner.getValue();
+
+        int cantidad = (int) jSpinner.getValue();
+
+        // Captura de la cantidad del jSpinner
+        int stockActual = Integer.parseInt(listaProducto.get(this.RPS())[4]);
+
+        if (stockActual < 5) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Generar el restock", "Advetencia de Stock", javax.swing.JOptionPane.WARNING_MESSAGE);
+        }
+
+        if (cantidad > stockActual) {
+            javax.swing.JOptionPane.showMessageDialog(this, "La cantida ingresadaa(" + cantidad + ") supera el stock disponible (" + stockActual + ").", "Error de Stock", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         double precio = Double.parseDouble(listaProducto.get(this.RPS())[2]);
         double subtotal = precio * cantidad;
-        
+
         Producto p = new Producto();
         p.setId(Integer.parseInt(listaProducto.get(this.RPS())[0]));
         p.setNombre(listaProducto.get(this.RPS())[1]);
@@ -548,91 +568,110 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
         //objeto detalle factura 
         DetalleFactura df = new DetalleFactura();
         df.setProducto(p);
-        df.setCantidad(cantidad);       //df.setCantidad(Integer.parseInt(txtCantidad.getText()));
+        //df.setCantidad(cantidad);       //df.setCantidad(Integer.parseInt(txtCantidad.getText()));
         df.setSubtotal(subtotal);       //df.setSubtotal(Double.parseDouble(txtSubTotal.getText())); 
+        df.setCantidad((int) jSpinner.getValue());
 
         total += df.getSubtotal();              //calculamos
         txtTotalNet.setText(total + "");       //el total sumando los subtotales
 
         LDF.add(df);         //Añado a la lista dinámica
-        
-           //jTable con detalle de la factura 
+
+        //jTable con detalle de la factura 
         String nombre = listaProducto.get(this.RPS())[1];
         //double precio = Double.parseDouble(listaProducto.get(this.RPS())[2]);
         //String cantidad = txtCantidad.getText();
         //double subtotal = Double.parseDouble(txtSubTotal.getText());
-        
+
         modelo.addRow(new Object[]{
-        nombre,
-        precio,
-        cantidad,
-        subtotal,
-        });
-        
-        
+            nombre,
+            precio,
+            cantidad,
+            subtotal,});
+
         //PROGRESS BAR en detalle 
         pgbrCarga.setValue(50);
-        Thread t1 = new Thread(){
-            @Override 
-                public void run(){
-                    //txtADetalle.append(df.toString());      //muestro en la vista en el TextArea
-                    while (pgbrCarga.getValue() <= 100) {
+        Thread t1 = new Thread() {
+            @Override
+            public void run() {
+                //txtADetalle.append(df.toString());      //muestro en la vista en el TextArea
+                while (pgbrCarga.getValue() <= 100) {
                     pgbrCarga.setValue(pgbrCarga.getValue() + 10);
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException ex) {
-                            System.getLogger(FacturaVista2Marca.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-                        }
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        System.getLogger(FacturaVista2Marca.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                     }
                 }
+            }
         };
         t1.start();
-        
+
         this.limpiarDetalle();
-        System.out.println("------++++++++++----------" + c.getId());
-        
-        this.CalcularIVA(); // metodo para calcular el IVA a pagar 
-        
+        System.out.println("------++++++++++----------" + c.getId()); 
+
         f.setListaArticulos(LDF);
         f.setCliente(c);
         
-        //txtSubTotal.setText(f.calcularSubTotal()+ "");
-        //txtTotal.setText(f.calcularTotalNeto() + "");
-
+//        subtotal += (int)jSpinner.getValue() * precio;              
+//        txtSubTotal.setText(subtotal + "");
+//        
+//        txtTotal.setText(f.calcularTotalNeto()+"");
+        this.calcularTotales();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    public void cantidadSpinner(){
-        int indice = this.RPS();
-        if (indice < 0) {
-            txtSubTotal.setText("");
-            return;
-        }
+    public void calcularTotales() {
+    double descuento = 0.0;
 
-        try {
-            double precio = Double.parseDouble(listaProducto.get(indice)[2]);
-            int cantidad = (Integer) jSpinner.getValue();
-            txtSubTotal.setText(String.format("%.2f", precio * cantidad));
-        } catch (NumberFormatException ex) {
-            txtSubTotal.setText("");
-        }
-    }
+    boolean esRegular = rbntRegular.isSelected() || (c != null && c instanceof ClienteRegular);
     
-     public void crearFactura(Cliente c) {
-        
+    if (esRegular && total > 1000) {
+        descuento = total * 0.05;
+    }
+    double baseImponible = total - descuento;
+    double iva = 0.0;
+    if (chbxPagaIVA.isSelected()) {
+        iva = baseImponible * 0.15; 
+    }
+    double totalAPagar = baseImponible + iva;
+
+    txtTotalNet.setText(String.format("%.2f", total));
+    txtDescuentoCli.setText(String.format("%.2f", descuento));
+    txtTotal.setText(String.format("%.2f", totalAPagar));
+}
+    
+    
+//    public void cantidadSpinner(){
+//        int indice = this.RPS();
+//        if (indice < 0) {
+//            txtSubTotal.setText("");
+//            return;
+//        }
+//
+//        try {
+//            double precio = Double.parseDouble(listaProducto.get(indice)[2]);
+//            int cantidad = (Integer) jSpinner.getValue();
+//            txtSubTotal.setText(String.format("%.2f", precio * cantidad));
+//        } catch (NumberFormatException ex) {
+//            txtSubTotal.setText("");
+//        }
+//    }
+    public void crearFactura(Cliente c) {
+
         f.setCliente(c);
         f.setFecha(this.generarfecha());        //f.setFecha(LocalDate.now());
         f.setListaArticulos(LDF);
-        
+
         FacturaControlador fc = new FacturaControlador();
         int id = fc.insertarFacturaSP(f, total);
-        
-        DetalleFacturaControlador dfC=new DetalleFacturaControlador();
+
+        DetalleFacturaControlador dfC = new DetalleFacturaControlador();
         for (DetalleFactura dt : LDF) {
             dfC.insertarDetalleFactura(dt, id);
         }
-        
+
     }
-     
+
     private void btnPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPDFActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPDFActionPerformed
@@ -690,9 +729,11 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
     }//GEN-LAST:event_rbntRegularActionPerformed
 
     private void chbxPagaIVAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbxPagaIVAActionPerformed
-        // TODO add your handling code here:
+       double iva = f.calcularIva(chbxPagaIVA.isSelected());
+       double total = f.calcularTotalNeto() + iva;
+       txtTotal.setText(total+"");
     }//GEN-LAST:event_chbxPagaIVAActionPerformed
-    
+
     private void cargarMarca() {
         MarcasControlador mc = new MarcasControlador();
         listaMarcas = mc.obtenerMarcas();
@@ -704,6 +745,7 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
 
     private void cargarProducto() {
         int indMarca = cmbMarca.getSelectedIndex();
+        int cantidad = (int) jSpinner.getValue();
 
         if (indMarca >= 0 && listaMarcas != null) {
             int idMarca = Integer.parseInt(listaMarcas.get(indMarca)[0]);
@@ -716,7 +758,9 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
             if (listaProducto != null) {
                 for (String[] prod : listaProducto) {
                     cmbProductos.addItem(prod[1]);
+                    
                 }
+               
             }
         }
     }
@@ -760,9 +804,9 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
 
     public void limpiarDetalle() {
         txtPrecio.setText("");
-        
+
         txtSubTotal.setText("");
-        
+
     }
 
     public int RCS() {    //recuperar cliente seleccionado 
@@ -780,7 +824,7 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
     }
 
     public LocalDate generarfecha() {
-        
+
         LocalDate fecha = LocalDate.now();
         LocalTime hora = LocalTime.now().truncatedTo(ChronoUnit.SECONDS);
         String fechaHora = fecha.toString() + "  |  " + hora.toString();
@@ -790,65 +834,64 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
 
     public void clienteSelecionado() {
         int indice = this.RCS();
-        
+
         if (indice > -1) {
 
-        //PROGRESS BAR en cliente  
+            //PROGRESS BAR en cliente  
             pgbrCarga.setValue(0);
-            Thread t1 = new Thread(){
-            @Override 
-                public void run(){
-                    
-            txtCedula.setText(listaClien.get(indice)[6]);
-            txtDireccion.setText(listaClien.get(indice)[7]);
-            txtTelefono.setText(listaClien.get(indice)[3]);
-            txtCorreo.setText(listaClien.get(indice)[2]);
-            txtDescuentoCli.setText(listaClien.get(indice)[5]);
-            
-             while (pgbrCarga.getValue() <= 40) {
-                    pgbrCarga.setValue(pgbrCarga.getValue() + 10);
-                        try  {
+            Thread t1 = new Thread() {
+                @Override
+                public void run() {
+
+                    txtCedula.setText(listaClien.get(indice)[6]);
+                    txtDireccion.setText(listaClien.get(indice)[7]);
+                    txtTelefono.setText(listaClien.get(indice)[3]);
+                    txtCorreo.setText(listaClien.get(indice)[2]);
+                    txtDescuentoCli.setText(listaClien.get(indice)[5]);
+
+                    while (pgbrCarga.getValue() <= 40) {
+                        pgbrCarga.setValue(pgbrCarga.getValue() + 10);
+                        try {
                             Thread.sleep(500);
                         } catch (InterruptedException ex) {
                             System.getLogger(FacturaVista2Marca.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                         }
                     }
                 }
-        };
-        t1.start();
-            
+            };
+            t1.start();
+
             String tipo = listaClien.get(indice)[4];
             f.setCliente(c);
-            
-            
+
             //RADIO BUTTON para el tipo de cliente 
-            if(tipo.equalsIgnoreCase("VIP")){
+            if (tipo.equalsIgnoreCase("VIP")) {
                 rbtnVIP.setSelected(true);
                 rbtnVIP.setEnabled(false);  //no se pueda marcar esa opcion 
-                
-            }else{ 
+
+            } else {
                 rbntRegular.setSelected(true);
                 rbntRegular.setEnabled(false);  //no se pueda marcar esa opcion
             }
             this.crearObjetoCliente(tipo);
         }
     }
-    
-    public void CalcularIVA(){
-        // checkbox 
-            double subtotal = Double.parseDouble(txtTotalNet.getText());
-            double total =0.0;
-            boolean checkbox = chbxPagaIVA.isSelected();
-            
-            if(checkbox){
-                total = subtotal + f.PagarIva();
-            }else{
-                total = subtotal;
-            }
-            txtTotal.setText(total+" ");      
-    }
-    
-    public void LDF(){
+
+//    public void CalcularIVA() {
+//        // checkbox 
+//        double subtotal = Double.parseDouble(txtTotalNet.getText());
+//        double total = 0.0;
+//        boolean checkbox = chbxPagaIVA.isSelected();
+//
+//        if (checkbox) {
+//            total = subtotal + f.PagarIva();
+//        } else {
+//            total = subtotal;
+//        }
+//        txtTotal.setText(total + " ");
+//    }
+
+    public void LDF() {
         f = new Factura();
         f.calcularTotalNeto();
     }
@@ -901,6 +944,7 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinner;
     private javax.swing.JTable jtblDetalle;
@@ -926,6 +970,7 @@ public class FacturaVista2Marca extends javax.swing.JFrame {
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtPrecio;
+    private javax.swing.JTextField txtStock;
     private javax.swing.JTextField txtSubTotal;
     private javax.swing.JTextField txtTelefono;
     private javax.swing.JTextField txtTotal;
