@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -74,7 +76,9 @@ public class Producto {
     public int insertarProductoSP(Producto p, int idMarca) {
         int idGenerado = -1;
         String sentenciaSQL = "{call sp_insertar_producto(?,?,?,?)}";
-        try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)){
+        ConexionBDD conectar = new ConexionBDD();
+        try(Connection conectado = conectar.conectar();
+            CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)){
             //parametros de entrada 
             ejecutar.setString(1, p.getNombre());
             ejecutar.setDouble(2, p.getPrecio());
@@ -90,17 +94,42 @@ public class Producto {
             
             if (idGenerado > -1) {
                 System.out.println("Producto registrado en la BDD");
-                ejecutar.close();
             } else {
                 System.out.println("Revise los datos. Verifique bien la informacion");
             }
-            //conectado.close();
 
         } catch (SQLException e) {
             System.out.println("Comuniquese con el Administrador para mas informacion");
-            System.out.println("---------------" + e);
+            System.out.println("---------------" + e.getMessage());
         }
         return idGenerado;
+    }
+    
+    
+     public ArrayList<String[]> obtenerProducto() {
+        ArrayList<String[]> lProducto = new ArrayList<>();
+        String sentenciaSQL = "select*from producto";
+        try {
+            
+            ejecutar = conectado.prepareStatement(sentenciaSQL);
+            ResultSet res = ejecutar.executeQuery();
+
+            while (res.next()) {
+                String[] lisProductos = new String[4];
+                lisProductos[0] = res.getInt("id")+"";
+                lisProductos[1] = res.getString("nombre");
+                lisProductos[2] = res.getDouble("precio")+"";
+                lisProductos[3] = res.getInt("id_marca")+"";
+                lProducto.add(lisProductos);
+            }
+            res.close();
+            ejecutar.close();
+            conectado.close();
+            return lProducto;
+        } catch (SQLException e) {
+            System.out.println("------" + e);
+        }
+        return lProducto;
     }
     
 }

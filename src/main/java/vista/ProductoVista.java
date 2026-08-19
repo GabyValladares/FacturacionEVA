@@ -4,10 +4,14 @@
  */
 package vista;
 
+import java.awt.Font;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import modelo.Marcas;
 
 /**
@@ -15,27 +19,44 @@ import modelo.Marcas;
  * @author sjtoa
  */
 public class ProductoVista extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProductoVista.class.getName());
 
-    /**
-     * Creates new form ProductoVista
-     */
+    //atributos
+    private JTable tablaProductos;
+
+    String[] encabezado = {"numero", "nombre", "precio", "id_Marca"};
+    DefaultTableModel modelo = new DefaultTableModel(encabezado, 0);
+
     public ProductoVista() {
         initComponents();
+        this.estiloTabla();
+        this.modelo();
+    }
+
+    public void agregarFilaTabla(int numero, String nombre, double precio, int idMarca) {
+        modelo.addRow(new Object[]{numero, nombre, precio, idMarca});
+    }
+
+    public void modelo() {
+        tblProducto.setModel(modelo);
     }
 
     public int getCmxMarcaSeleccionada() {
         return cmxMarca.getSelectedIndex();
     }
 
-      public void cargarMarcas(List<Marcas> marcas) {
+    public Marcas getMarcaSeleccionada() {
+        return (Marcas) cmxMarca.getSelectedItem();
+    }
+
+    public void cargarMarcas(List<Marcas> marcas) {
         cmxMarca.removeAllItems();
-        for(Marcas m : marcas){
-            cmxMarca.addItem(m.getNombre());
+        for (Marcas m : marcas) {
+            cmxMarca.addItem(m);
         }
     }
-    
+
     public JButton getBtnCrear() {
         return btnCrear;
     }
@@ -55,8 +76,26 @@ public class ProductoVista extends javax.swing.JFrame {
     public void setTxtProducto(String mensaje) {
         this.txtProducto.setText(mensaje);
     }
-    
-    
+
+    public JTable getTblProducto() {
+        return tblProducto;
+    }
+
+    public void setTblProducto(JTable tblProducto) {
+        this.tblProducto = tblProducto;
+    }
+
+    public DefaultTableModel getModelo() {
+        return modelo;
+    }
+
+    public void estiloTabla() {
+        JTableHeader header = new JTableHeader(tblProducto.getColumnModel());
+        Font d = new Font("SansSerif", Font.BOLD, 14);
+        header.setFont(d);
+
+        tblProducto.setTableHeader(header);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -75,6 +114,8 @@ public class ProductoVista extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btnCrear = new javax.swing.JButton();
         cmxMarca = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblProducto = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -88,29 +129,46 @@ public class ProductoVista extends javax.swing.JFrame {
 
         btnCrear.setText("CREAR");
 
-        cmxMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        tblProducto.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblProducto);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(168, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(161, 161, 161))
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(btnCrear))
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cmxMarca, 0, 171, Short.MAX_VALUE)
-                    .addComponent(txtProducto)
-                    .addComponent(txtPrecio))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cmxMarca, 0, 171, Short.MAX_VALUE)
+                            .addComponent(txtProducto)
+                            .addComponent(txtPrecio))
+                        .addGap(72, 72, 72)
+                        .addComponent(btnCrear))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 494, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,17 +179,22 @@ public class ProductoVista extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(btnCrear)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(cmxMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addComponent(btnCrear)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
@@ -164,11 +227,13 @@ public class ProductoVista extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrear;
-    private javax.swing.JComboBox<String> cmxMarca;
+    private javax.swing.JComboBox<Marcas> cmxMarca;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblProducto;
     private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtProducto;
     // End of variables declaration//GEN-END:variables

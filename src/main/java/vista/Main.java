@@ -90,6 +90,8 @@ public class Main {
     ProductoVista vista = new ProductoVista();
     ProductoControlador control = new ProductoControlador(modelo, vista);
     control.iniciar();
-
+    
+    
+  
    }
 }
