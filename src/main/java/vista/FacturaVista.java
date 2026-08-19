@@ -319,9 +319,9 @@ public class FacturaVista extends javax.swing.JFrame {
                         .addComponent(cbxPagaIVA, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(38, 38, 38)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(pgbProceso, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                            .addComponent(btnGuardarFac, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(btnGuardarFac, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(195, 195, 195)
+                .addComponent(pgbProceso, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -383,13 +383,14 @@ public class FacturaVista extends javax.swing.JFrame {
                         .addGap(114, 114, 114)
                         .addComponent(btnPDF))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(cbxPagaIVA)
-                .addGap(34, 34, 34)
-                .addComponent(btnGuardarFac)
-                .addGap(71, 71, 71)
-                .addComponent(pgbProceso, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cbxPagaIVA)
+                        .addGap(34, 34, 34)
+                        .addComponent(btnGuardarFac))
+                    .addComponent(pgbProceso, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(219, Short.MAX_VALUE))
         );
 
         pack();
@@ -518,6 +519,16 @@ public void cargarClientesCombo() {
 
     double precio = Double.parseDouble(txtPrecio.getText());
     int cantidad = (int) spnCantidad.getValue();
+    int stockDisponible = listaProductos.get(this.productoSelecionado()).getStock();
+
+// 1. Mensaje si el stock es menor a 5
+if (stockDisponible < 5) { javax.swing.JOptionPane.showMessageDialog(this, "Generar el restock");
+}
+
+// 2. Validar que la cantidad ingresada no sea mayor al stock
+if (cantidad > stockDisponible) { javax.swing.JOptionPane.showMessageDialog(this, "La cantidad ingresada supera el stock disponible (" + stockDisponible + ").");
+    return; // Cancela el proceso para que no agreque el producto a la tabla
+}
 
     double subtotal = precio * cantidad;
     txtSubTotal.setText(String.valueOf(subtotal));
@@ -560,6 +571,7 @@ public void cargarClientesCombo() {
     if (indice >= 0) {
         this.c = crearObjetoCliente(indice);
     }
+    
     if (this.c == null || listaDF.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un cliente y agregue al menos un producto.");
         return;
@@ -574,23 +586,47 @@ public void cargarClientesCombo() {
                 Factura factura = new Factura();
                 factura.setFecha(ldate);
                 factura.setCliente(c);
-                factura.setListaArticulos(listaDF);              
+                factura.setListaArticulos(listaDF);
                 factura.settipoCliente(getTipoCliente());
 
+                // 1. CÁLCULO DE SUBTOTAL NETO
                 double subtotal = factura.calcularSubTotal();
-                double iva = calcularIvaFactura(subtotal);
-                double total = subtotal + iva;
 
+                // 2. DESCUENTO DEL 5% (Solo para cliente REGULAR si supera 1000)
+                double descuento = 0.0;
+                if (getTipoCliente().equalsIgnoreCase("REGULAR") && subtotal > 1000) {
+                    descuento = subtotal * 0.05;
+                }
+
+                // 3. CÁLCULO DEL TOTAL CON IVA
+                double subtotalConDescuento = subtotal - descuento;
+                double iva = calcularIvaFactura(subtotalConDescuento);
+                double total = subtotalConDescuento + iva;
+
+                // Guardar Factura en Base de Datos
                 FacturaControlador fc = new FacturaControlador();
                 int idFacturaGenerado = fc.insertarFacturaSp(factura, total);
 
                 if (idFacturaGenerado > 0) {
+                    // VENTANA EMERGENTE: INDICAR EL TOTAL A PAGAR Y DESGLOSE
+                    javax.swing.JOptionPane.showMessageDialog(null, 
+                        "FACTURA GUARDADA CON ÉXITO\n\n" +
+                        "Subtotal Neto: $" + String.format("%.2f", subtotal) + "\n" +
+                        "Descuento Aplicado (5%): $" + String.format("%.2f", descuento) + "\n" +
+                        "IVA: $" + String.format("%.2f", iva) + "\n" +
+                        "-----------------------------------\n" +
+                        "TOTAL A PAGAR: $" + String.format("%.2f", total),
+                        "Resumen de Cobro",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+                    // Guardar Detalles de Factura
                     DetalleFacturaControlador dfc = new DetalleFacturaControlador();
                     for (DetalleFactura item : listaDF) {
-                        dfc.insertarDetalleFactura(item, idFacturaGenerado);    }
+                        dfc.insertarDetalleFactura(item, idFacturaGenerado);
+                    }
 
+                    // Limpieza de campos y barra de progreso
                     pgbProceso.setValue(100);
-
                     listaDF.clear();
                     modelo.setRowCount(0);
                     c = null;
@@ -598,7 +634,6 @@ public void cargarClientesCombo() {
                     Thread.sleep(800);
                     pgbProceso.setValue(0);
                 }
-
             } catch (Exception e) {
                 System.err.println("Error al procesar la factura: " + e.getMessage());
             } finally {
