@@ -69,12 +69,6 @@ public class ProductoControlador {
             modelo.setMarcas(marcaId);
 
             int idGenerado = modelo.insertarProductoSP(modelo, marcaId.getId());
-
-//            Producto pr = new Producto();
-//            pr.insertarProductoSP(pr, idGenerado);
-//            Object[] fila = {pr.getNombre(), pr.getPrecio(), pr.getMarcas()};
-//            vista.getModelo().addRow(fila); 
-//                this.cargarDatosTabla();
                 
             int sigNum = vista.getModelo().getRowCount() + 1;
                 vista.agregarFilaTabla(sigNum, nombre, precio, marcaId.getId());
