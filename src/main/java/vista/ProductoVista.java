@@ -4,53 +4,27 @@
  */
 package vista;
 
-import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 
 /**
  *
  * @author Usuario
  */
 public class ProductoVista extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProductoVista.class.getName());
-    private java.util.List<modelo.Producto> listaProductos;
 
-    private java.util.List<modelo.Marca> listaMarcas;
-    
-    
-    public ProductoVista() {   
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProductoVista.class.getName());
+
+    /**
+     * Creates new form ProductoVista
+     */
+    public ProductoVista() {
         initComponents();
-        cargarMarcas();
     }
-    
-    
-    public void cargarMarcas() {
-        controlador.MarcaControlador mc = new controlador.MarcaControlador();
-        this.listaMarcas = mc.obtenerTodasMarcas();
-        
-        comboClientes.removeAllItems();
-        comboClientes.addItem("--- Seleccione una Marca ---");
-        
-        for (modelo.Marca mar : this.listaMarcas) {
-            comboClientes.addItem(mar.getNombre());
-        }
-    }
-  
-    
-    public void cargarProductosPorMarca(int idMarca) {
-        controlador.ProductoControlador pc = new controlador.ProductoControlador();
-        this.listaProductos = pc.obtenerProductosPorMarca(idMarca);
-        
-        // Limpiamos el ComboBox de productos antes de llenarlo con los nuevos
-        comboGrupos.removeAllItems();
-        comboGrupos.addItem("--- Seleccione un Producto ---");
-        
-        if (this.listaProductos != null) {
-            for (modelo.Producto prod : this.listaProductos) {
-                comboGrupos.addItem(prod.getNombre());
-            }
-        }
-}
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -60,102 +34,118 @@ public class ProductoVista extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblGrupos = new javax.swing.JLabel();
-        lblGestionFacturas = new javax.swing.JLabel();
-        comboGrupos = new javax.swing.JComboBox<>();
-        lblClientes = new javax.swing.JLabel();
-        comboClientes = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        lblPrecio = new javax.swing.JLabel();
+        txtPrecio = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtMostrar = new javax.swing.JTextArea();
+        jTable1 = new javax.swing.JTable();
+        btnInsertar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lblGrupos.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblGrupos.setText("Grupos:");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("GESTIÓN PRODUCTOS");
 
-        lblGestionFacturas.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblGestionFacturas.setText("Clientes ");
+        lblNombre.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblNombre.setText("Nombre:");
 
-        comboGrupos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        lblPrecio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblPrecio.setText("Precio:");
 
-        lblClientes.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblClientes.setText("Clientes");
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        comboClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        comboClientes.addActionListener(this::comboClientesActionPerformed);
+            },
+            new String [] {
+                "ID", "Nombre", "Precio"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
-        txtMostrar.setColumns(20);
-        txtMostrar.setRows(5);
-        jScrollPane1.setViewportView(txtMostrar);
+        btnInsertar.setText("Guardar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(54, 54, 54)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(lblGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(202, 202, 202)
-                            .addComponent(lblClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(comboGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(195, 195, 195)
-                            .addComponent(lblGestionFacturas, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(111, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblNombre)
+                                    .addComponent(lblPrecio))
+                                .addGap(85, 85, 85)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtNombre)
+                                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(191, 191, 191))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(261, 261, 261)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(336, 336, 336)
+                        .addComponent(btnInsertar)))
+                .addContainerGap(142, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(lblGestionFacturas)
+                .addGap(32, 32, 32)
+                .addComponent(jLabel1)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNombre)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPrecio)
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(68, 68, 68)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblGrupos)
-                    .addComponent(lblClientes))
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addComponent(btnInsertar)
+                .addContainerGap(139, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void comboClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesActionPerformed
-        // 1. Verificamos que se haya seleccionado una marca real (no el índice 0)
-        if (comboClientes.getSelectedIndex() > 0) {
-            
-            // 2. Obtenemos el nombre de la marca que el usuario eligió
-            String nombreMarcaSeleccionada = comboClientes.getSelectedItem().toString();
-            int idMarcaEncontrada = 0;
-            
-            // 3. Buscamos ese nombre en nuestra lista global de marcas para sacar su ID
-            for (modelo.Marca mar : listaMarcas) {
-                if (mar.getNombre().equals(nombreMarcaSeleccionada)) {
-                    idMarcaEncontrada = mar.getIdMarca();
-                    break; // Terminamos la búsqueda al encontrarla
-                }
-            }
-            
-            // 4. Cargamos los productos usando el ID que encontramos
-            cargarProductosPorMarca(idMarcaEncontrada);
-            
-        } else {
-            // Si elige "--- Seleccione una Marca ---", limpiamos los productos
-            comboGrupos.removeAllItems();
-            comboGrupos.addItem("--- Seleccione un Producto ---");
-        }
-    }//GEN-LAST:event_comboClientesActionPerformed
+    //ENCAPSULAMIENTO
+    public JButton getBtnInsertar() {
+        return btnInsertar;
+    }
+
+    public String getNombre() {
+        return txtNombre.getText();
+    }
+
+    public void setNombre(String mensaje) {
+        txtNombre.setText(mensaje);
+    }
+
+    public String getPrecio() {
+        return txtPrecio.getText();
+    }
+
+    public void setPrecio(String mensaje) {
+        txtPrecio.setText(mensaje);
+    }
+
+    /** Recibe un modelo de tabla desde el controlador y lo asigna a la tabla */
+    public void setTablaProducto(javax.swing.table.DefaultTableModel modeloTabla) {
+        jTable1.setModel(modeloTabla);
+    }
+
+    /** Conecta el botón Guardar al controlador que se le pase */
+    public void setControlador(controlador.ProductoControlador ctrl) {
+        btnInsertar.addActionListener(e -> ctrl.recuperarDatos());
+    }
 
     /**
      * @param args the command line arguments
@@ -164,7 +154,7 @@ public class ProductoVista extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -179,16 +169,23 @@ public class ProductoVista extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new ProductoVista().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> {
+            ProductoVista vista = new ProductoVista();
+            controlador.ProductoControlador controlador =
+                new controlador.ProductoControlador(vista, new modelo.Producto());
+            vista.setControlador(controlador);
+            vista.setVisible(true);
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> comboClientes;
-    private javax.swing.JComboBox<String> comboGrupos;
+    private javax.swing.JButton btnInsertar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblClientes;
-    private javax.swing.JLabel lblGestionFacturas;
-    private javax.swing.JLabel lblGrupos;
-    private javax.swing.JTextArea txtMostrar;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblPrecio;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
 }

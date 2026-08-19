@@ -4,13 +4,10 @@
  */
 package controlador;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.Producto;
+import vista.ProductoVista;
 
 /**
  *
@@ -18,97 +15,99 @@ import modelo.Producto;
  */
 public class ProductoControlador {
 
-    // Instanciamos la clase de conexión
-    ConexionBDD conectar = new ConexionBDD();
+    private ProductoVista vista;
+    private Producto modelo;
 
-    // MÉTODOS DE TRANSACCIONABILIDAD
-
-    public ArrayList<String[]> obtenerProductos() {
-        ArrayList<String[]> lregistros = new ArrayList<>();
-
-        try {
-            Connection conectado = conectar.conectar();
-            String sentenciaSQL = "select * from productos;";
-            PreparedStatement ejecutar = conectado.prepareStatement(sentenciaSQL);
-            ResultSet res = ejecutar.executeQuery();
-
-            while (res.next()) {
-                String[] listaProductos = new String[3];
-                listaProductos[0] = res.getInt("id_producto") + "";
-                listaProductos[1] = res.getString("nombre");
-                listaProductos[2] = res.getString("precio");
-                lregistros.add(listaProductos);
-            }
-
-            res.close();
-            ejecutar.close();
-            conectado.close();
-
-        } catch (SQLException e) {
-            System.out.println("Error en obtenerProductos: " + e);
-        }
-        return lregistros;
+    public ProductoControlador() {
     }
 
-    
-    public java.util.List<modelo.Producto> obtenerProductosPorMarca(int idMarca) {
-        java.util.List<modelo.Producto> listaFiltrada = new java.util.ArrayList<>();
-        // Filtrar los productos donde el id_marca coincida
-        String sql = "SELECT * FROM productos WHERE id_marca = ?;";
+    public ProductoControlador(ProductoVista vista, Producto modelo) {
+        this.vista = vista;
+        this.modelo = modelo;
+        cargarProductos();
+    }
 
-        try {
-            java.sql.Connection cn = conectar.conectar();
-            java.sql.PreparedStatement ps = cn.prepareStatement(sql);
-            ps.setInt(1, idMarca); 
-            java.sql.ResultSet rs = ps.executeQuery();
+    /**
+     * Recupera los datos ingresados en la vista, valida que no estén vacíos,
+     * crea el objeto Producto correspondiente y llama al SP para insertar en BD.
+     */
+    public void recuperarDatos() {
+        String nombre = vista.getNombre().trim();
+        String precioTexto = vista.getPrecio().trim();
 
-            while (rs.next()) {
-                modelo.Producto prod = new modelo.Producto();
-                // Asumiendo la estructura de tu modelo Producto
-                prod.setId(rs.getInt("id")); 
-                prod.setNombre(rs.getString("nombre"));
-                // (Agrega precio y otros campos que tengas en tu clase Producto)
-                
-                listaFiltrada.add(prod);
-            }
-            rs.close();
-            ps.close();
-            cn.close();
-        } catch (java.sql.SQLException e) {
-            System.out.println("Error al filtrar productos por marca: " + e.getMessage());
+        if (nombre.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(vista,
+                "El campo NOMBRE es obligatorio.", "Validación",
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
         }
-        return listaFiltrada;
-      }  
+
+        double precio;
+        try {
+            precio = Double.parseDouble(precioTexto.replace(",", "."));
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(vista,
+                "Ingrese un precio válido.", "Validación",
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        modelo.setNombre(nombre);
+        modelo.setPrecio(precio);
+
+        int idGenerado = modelo.insertarProducto();
+
+        if (idGenerado > 0) {
+            javax.swing.JOptionPane.showMessageDialog(vista,
+                "¡Producto guardado exitosamente! ID asignado: " + idGenerado,
+                "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            limpiarCampos();
+            cargarProductos();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(vista,
+                "Error al guardar el producto en la base de datos.",
+                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /** Limpia todos los campos del formulario desde el controlador */
+    public void limpiarCampos() {
+        vista.setNombre("");
+        vista.setPrecio("");
+    }
+
+    /**
+     * Consulta los productos en la BD y los refleja en la tabla de la vista.
+     */
+    public void cargarProductos() {
+        javax.swing.table.DefaultTableModel modeloTabla = new javax.swing.table.DefaultTableModel(
+            new Object[]{"ID", "Nombre", "Precio"}, 0
+        );
+
+        ArrayList<String[]> listaProductos = new Producto().obtenerProductos();
+
+        if (listaProductos != null) {
+            for (String[] fila : listaProductos) {
+                modeloTabla.addRow(fila);
+            }
+        }
+
+        vista.setTablaProducto(modeloTabla);
+    }
+
+    public ArrayList<String[]> obtenerProductos() {
+        return new Producto().obtenerProductos();
+    }
+
+    public List<Producto> obtenerProductosPorMarca(int idMarca) {
+        return new Producto().obtenerProductosPorMarca(idMarca);
+    }
+
     public List<Producto> obtenerTodosProductos() {
-        List<Producto> listaProductos = new ArrayList<>();
-        String sentenciaSQL = "select * from productos;";
+        return new Producto().obtenerTodosProductos();
+    }
 
-        try {
-            // Abrimos la conexión localmente para evitar errores de conexión cerrada
-            Connection conectado = conectar.conectar();
-            PreparedStatement ejecutar = conectado.prepareStatement(sentenciaSQL);
-            ResultSet res = ejecutar.executeQuery();
-
-            while (res.next()) {
-                Producto prod = new Producto();
-                
-                // Mapeamos las columnas de la tabla 'productos' a las propiedades del objeto
-                prod.setId(res.getInt("id_producto"));
-                prod.setNombre(res.getString("nombre"));
-                prod.setPrecio(res.getDouble("precio"));
-
-                listaProductos.add(prod);
-            }
-
-            // Cerramos los recursos de esta consulta
-            res.close();
-            ejecutar.close();
-            conectado.close();
-
-        } catch (SQLException e) {
-            System.out.println("Error al obtener la lista de productos: " + e);
-        }
-
-        return listaProductos;
+    public ArrayList<Producto> listarProductosObjeto() {
+        return new Producto().listarProductosObjeto();
     }
 }

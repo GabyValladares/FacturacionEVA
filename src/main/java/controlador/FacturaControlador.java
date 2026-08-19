@@ -22,33 +22,28 @@ public class FacturaControlador implements Exportable {
     }
 
   public boolean guardarFactura(Factura factura) {
-    // Consulta sin 'id_factura' (6 parámetros en lugar de 7)
-    String sql = "INSERT INTO facturas (fecha, id_cliente, subtotal_parcial, descuento, subtotal, total) VALUES (?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO facturas (fecha, id_cliente, descuento, subtotal, total, aprobada) VALUES (?, ?, ?, ?, ?, 1)";
     Connection con = conexionBDD.conectar();
 
     if (con == null) {
         return false;
     }
 
-    // Solicitamos a la base de datos la clave autonumérica generada
     try (PreparedStatement ps = con.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
 
         ps.setDate(1, Date.valueOf(factura.getFecha()));
         ps.setInt(2, factura.getCliente().getId());
-        ps.setDouble(3, factura.calcularSubTotal());                   // subtotal_parcial
-        ps.setDouble(4, factura.calcularDescuento());                  // descuento
-        ps.setDouble(5, factura.calcularSubTotal() - factura.calcularDescuento()); // subtotal
-        ps.setDouble(6, factura.calcularTotalNeto());                  // total
+        ps.setDouble(3, factura.calcularDescuento());
+        ps.setDouble(4, factura.calcularSubTotal() - factura.calcularDescuento());
+        ps.setDouble(5, factura.calcularTotalNeto());
 
         int filasAfectadas = ps.executeUpdate();
 
         if (filasAfectadas > 0) {
-            // Recuperar el ID autogenerado por MySQL
             try (java.sql.ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
                     int idGenerado = rs.getInt(1);
 
-                    // Guardar cada detalle usando el ID devuelto por la BD
                     for (DetalleFactura detalle : factura.getListaArticulos()) {
                         detalleControlador.guardarDetalle(idGenerado, detalle);
                     }
