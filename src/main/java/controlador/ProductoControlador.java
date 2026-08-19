@@ -9,50 +9,64 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import modelo.Cliente;
+import modelo.ClienteRegular;
+import modelo.ClienteVIP;
+import modelo.Producto;
+import vista.ClienteVista;
+import vista.ProductoVista;
 
 /**
  *
  * @author hp
  */
 public class ProductoControlador {
-     //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
-    ConexionBDD conectar = new ConexionBDD();
-    //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
-    Connection conectado = (Connection) conectar.conectar();
-    //CLASE QUE ME PERMITE EJECUTAR MI SENTENCIA SQL
-    PreparedStatement ejecutar;
-    //OBTENER RESULTADOS DE LA CONSULTA
-    ResultSet resultado;
 
-    //MÉTODOS DE TRANSACCIONABILIDAD
-    
- 
+    private Producto cmodelo;
+    private ProductoVista pvista;
 
-    public ArrayList<String[]> obtenerProductos() {
-        ArrayList<String[]> lregistros = new ArrayList<>();
-
-        try {
-            String sentenciaSQL = "select *from productos;";
-            ejecutar = conectado.prepareCall(sentenciaSQL);
-            ResultSet res = ejecutar.executeQuery();
-
-            while (res.next()) {
-                String[] listaProductos = new String[3];
-                listaProductos[0] = res.getInt("id_producto") + "";
-                listaProductos[1] = res.getString("nombre");
-                listaProductos[2] = res.getString("precio");
-                lregistros.add(listaProductos);
-
-            }
-
-            ejecutar.close();
-            conectado.close();
-            return lregistros;
-        } catch (SQLException e) {
-            System.out.println("------" + e);
-        }
-        return lregistros;
+    public ProductoControlador() {
     }
-    
-    
+
+    public ProductoControlador(Producto cmodelo, ProductoVista pvista) {
+        this.cmodelo = cmodelo;
+        this.pvista = pvista;
+    }
+
+        public ArrayList<String[]> obtenerProductos() {
+            return cmodelo.obtenerProductos();
+        }
+
+        //CARGAR LA TABLA EN LA VISTA
+        public void cargarDatosTabla() {
+        pvista.getModelo().setRowCount(0);  
+        int cont = 1;
+        ArrayList<String[]> lProducto = cmodelo.obtenerProductos();
+        for (String[] p : lProducto) {
+            Object[] fila = {cont, p[0], p[1], p[2]};
+            pvista.getModelo().addRow(fila);
+            cont++;
+        }
+    }
+
+    //RECUPERAR LOS DATOS
+    public void agregarProducto() {
+        String nombre = pvista.getTxtNombre();
+        String precio = pvista.getPrecio();
+
+        if (!nombre.isEmpty() && !precio.isEmpty()) {
+            cmodelo.setNombre(nombre);
+            cmodelo.setPrecio(Double.parseDouble(precio));  
+            cmodelo.insertarProducto();                      
+            Object[] fila = {cmodelo.getNombre(), cmodelo.getPrecio()};
+            pvista.getModelo().addRow(fila);
+        }
+    }
+
+    public void iniciar() {
+        pvista.getBtnInsertar().addActionListener(e -> agregarProducto());
+        pvista.setVisible(true);
+        this.cargarDatosTabla();
+    }
 }

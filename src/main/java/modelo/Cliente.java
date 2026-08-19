@@ -183,8 +183,5 @@ public abstract class Cliente {
 
         return idGenerado;
 
-    }
-
-   
-    
+    } 
 }

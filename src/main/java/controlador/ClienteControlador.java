@@ -25,6 +25,10 @@ public class ClienteControlador {
         this.cvista = cvista;
     }
 
+    public ArrayList<String[]> obtenerClientes() {
+        return cmodelo.obtenerClientes();
+    }
+
     //CARGAR LA TABLA EN LA VISTA
     public void cargarDatosTabla() {
         cvista.getTblClientes().getRowCount();

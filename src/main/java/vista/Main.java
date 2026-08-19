@@ -14,6 +14,8 @@ import modelo.Cliente;
 import modelo.ClienteRegular;
 import modelo.ClienteVIP;
 import modelo.Numero;
+import modelo.Producto;
+import controlador.ProductoControlador;
 
 /**
  *
@@ -71,21 +73,29 @@ public class Main {
 //        Calculadora vista=new Calculadora();
 //        NumeroControlador controlador=new NumeroControlador(modelo, vista);
 //        controlador.iniciar();
-        //UPCASTING
-        ClienteVista vista = new ClienteVista();
-        String tipo = (String) vista.getCmbTipoCliente();
-        if (tipo.equals("Regular")) {
-            //UPCASTING
-            Cliente modelo = new ClienteRegular();
-            ClienteControlador controlador = new ClienteControlador(modelo, vista);
-            controlador.iniciar();
-        } else if (tipo.equals("VIP")) {
-            //UPCASTING
-            Cliente modelo = new ClienteVIP();
-            ClienteControlador controlador = new ClienteControlador(modelo, vista);
-            controlador.iniciar();
-        }
-       
-    }
 
+
+        //UPCASTING CLIENTE VISTA
+//        ClienteVista vista = new ClienteVista();
+//        String tipo = (String) vista.getCmbTipoCliente();
+//        if (tipo.equals("Regular")) {
+//            //UPCASTING
+//            Cliente modelo = new ClienteRegular();
+//            ClienteControlador controlador = new ClienteControlador(modelo, vista);
+//            controlador.iniciar();
+//        } else if (tipo.equals("VIP")) {
+//            //UPCASTING
+//            Cliente modelo = new ClienteVIP();
+//            ClienteControlador controlador = new ClienteControlador(modelo, vista);
+//            controlador.iniciar();
+//        }
+//
+//    }
+
+        // PRODUCTO
+        ProductoVista productoVista = new ProductoVista();
+        Producto producto = new Producto();
+        ProductoControlador productoControlador = new ProductoControlador(producto, productoVista);
+        productoControlador.iniciar();
+    }
 }
