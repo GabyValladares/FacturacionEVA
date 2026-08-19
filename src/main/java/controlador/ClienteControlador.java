@@ -16,6 +16,7 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 import modelo.Cliente;
 import modelo.ClienteRegular;
+import modelo.ClienteVIP;
 import vista.ClienteVista;
 
 /**
@@ -64,10 +65,11 @@ public class ClienteControlador {
 //        }
 //        return lregistros;
 //    }
-    
     //Referencia a modelo y vista
     private Cliente cmodelo;
     private ClienteVista cvista;
+    int cont = 1;
+
     //Constructores
     public ClienteControlador() {
     }
@@ -76,8 +78,21 @@ public class ClienteControlador {
         this.cmodelo = cmodelo;
         this.cvista = cvista;
     }
+
+    //CARGAR LA TABLA EN LA VISTA
+    public void cargarDatosTabla() {
+        cvista.getjTableClientes().getRowCount();
+//        int cont = 1;
+        ArrayList<String[]> lClientes = cmodelo.obtenerClientes();
+        for (String[] puntero : lClientes) {
+            Object[] fila = {cont, puntero[1], puntero[6], puntero[2], puntero[7], puntero[3], puntero[4], puntero[5]};
+            cvista.getModelo().addRow(fila);
+            cont++;
+        }
+    }
+
     //Recuperar los datos
-    public void recuperarClientes() {
+    public void agregarClientes() {
         String nombre = cvista.getTxtNombre();
         String email = cvista.getTxtEmail();
         String telefono = cvista.getTxtTelefono();
@@ -96,11 +111,31 @@ public class ClienteControlador {
             //Downcasting
             ClienteRegular cr = (ClienteRegular) cmodelo;
             cr.insertarClientes(tipoCliente.toString()); //+""
+            Object[] fila = {cont,cmodelo.getNombre(),cmodelo.getCedula(),cmodelo.getEmail(),cmodelo.getDireccion(),cmodelo.getTelefono(),"Regular",0};
+            cvista.getModelo().addRow(fila);
+            cont++; //
+            
+            
+            
+        } else if (!nombre.isEmpty() && !email.isEmpty() && !telefono.isEmpty() && !direccion.isEmpty()
+                && tipoCliente.equals("VIP")) {
+            cmodelo.setNombre(nombre);
+            cmodelo.setCedula(cedula);
+            cmodelo.setDireccion(direccion);
+            cmodelo.setEmail(email);
+            cmodelo.setTelefono(telefono);
+            ClienteVIP cv = (ClienteVIP) cmodelo;
+            cv.insertarClientes(tipoCliente.toString());
+            Object[] fila={cv.getNombre(),cv.getCedula(),cv.getEmail(),cv.getDireccion(),
+            cv.getTelefono(),"VIP",0};
+            cvista.getModelo().addRow(fila);
+            cont++; //
         }
     }
 
     public void iniciar() {
-        cvista.getBtnCrear().addActionListener(e -> recuperarClientes());
+        cvista.getBtnCrear().addActionListener(e -> agregarClientes());
         cvista.setVisible(true);
+        this.cargarDatosTabla();
     }
 }

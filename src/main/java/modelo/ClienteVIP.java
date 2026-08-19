@@ -19,8 +19,8 @@ public class ClienteVIP extends Cliente {
         this.porcentajeFidelidad = porcentajeFidelidad;
     }
 
-    public ClienteVIP(double porcentajeFidelidad, int id, String nombre, String email, String telefono,String cedula, String direccion) {
-        super(id, nombre, email, telefono, cedula, direccion);
+    public ClienteVIP(double porcentajeFidelidad, int id, String nombre, String email, String telefono,String cedula, String direccion, String tipo) {
+        super(id, nombre, email, telefono, cedula, direccion, tipo);
         this.porcentajeFidelidad = porcentajeFidelidad;
     }
 
@@ -39,5 +39,10 @@ public class ClienteVIP extends Cliente {
 //        return subtotal*porcentajeFidelidad;
 //    
 //    }
+
+    @Override
+    public double calcularDescuento(double subtotal) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
 }

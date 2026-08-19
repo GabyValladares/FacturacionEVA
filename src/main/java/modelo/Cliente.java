@@ -35,17 +35,19 @@ public abstract class Cliente {
     private String telefono;
     private String cedula;
     private String direccion;
+    private String tipo;
 
     public Cliente() {
     }
 
-    public Cliente(int id, String nombre, String email, String telefono,String cedula, String direccion) {
+    public Cliente(int id, String nombre, String email, String telefono,String cedula, String direccion, String tipo) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.telefono = telefono;
         this.cedula = cedula;
         this.direccion = direccion;
+        this.tipo = tipo;
     }
 
     public int getId() {
@@ -95,8 +97,48 @@ public abstract class Cliente {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
     
     
+    public abstract double calcularDescuento(double subtotal);
+    
+    //OBTENER EL LISTADO TOTAL DE CLIENTES SEAN VIP O REGULAR
+    public ArrayList<String[]> obtenerClientes() {
+        ArrayList<String[]> lregistros = new ArrayList<>();
+        String sentenciaSQL = "{call sp_consultar_clientes()}";
+
+        try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)) {
+            ResultSet res = ejecutar.executeQuery();
+
+            while (res.next()) {
+                String[] listaClientes = new String[8];
+                listaClientes[0] = res.getInt("id") + "";
+                listaClientes[1] = res.getString("nombre");
+                listaClientes[2] = res.getString("email");
+                listaClientes[3] = res.getString("telefono") + "";
+                listaClientes[4] = res.getString("tipo_cliente");
+                listaClientes[5] = res.getDouble("descuento_vip")+"";
+                listaClientes[6] = res.getString("cedula");
+                listaClientes[7] = res.getString("direccion");
+                lregistros.add(listaClientes);
+
+            }
+
+            ejecutar.close();
+            //conectado.close();
+            return lregistros;
+        } catch (SQLException e) {
+            System.out.println("------" + e);
+        }
+        return lregistros;
+    }
     
     //SP
     //MÉTODOS DE TRANSACCIONABILIDAD

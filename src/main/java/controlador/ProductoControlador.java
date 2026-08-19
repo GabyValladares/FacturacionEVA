@@ -64,9 +64,21 @@ public class ProductoControlador {
         this.pmodelo = pmodelo;
         this.pvista = pvista;
     }
+    
+    //Obtener prodcutos
+    public void cargarDatosTabla(){
+        pvista.getjTableProductos().getRowCount();
+        int cont = 1;
+        ArrayList<String[]> lProductos = pmodelo.obtenerProductos();
+        for (String[] puntero : lProductos) {
+            Object[] fila = {cont, puntero[1], puntero[2]};
+            pvista.getModelo().addRow(fila);
+            cont++;
+        }
+    }
 
     //Recuperar los datos
-    public void recuperarProductos() {
+    public void agregarProductos() {
         String nombre = pvista.getNombreProducto();
         String precio = pvista.getPrecioProducto();
 
@@ -74,6 +86,7 @@ public class ProductoControlador {
             pmodelo.setNombre(nombre);
             pmodelo.setPrecio(precio);
             pmodelo.insertarProductos(); //llamo al metodo
+            
             //Downcasting
 //            ClienteRegular cr = (ClienteRegular) cmodelo;
 //            cr.insertarClientes(tipoCliente.toString()); //+""
@@ -81,7 +94,8 @@ public class ProductoControlador {
     }
 
     public void iniciar() {
-        pvista.getBtnInsertar().addActionListener(e -> recuperarProductos());
+        pvista.getBtnInsertar().addActionListener(e -> agregarProductos());
         pvista.setVisible(true);
+        this.cargarDatosTabla();
     }
 }

@@ -11,12 +11,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 
 /**
  *
  * @author hp
  */
 public class Producto {
+
     //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
     ConexionBDD conectar = new ConexionBDD();
     //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
@@ -25,7 +27,7 @@ public class Producto {
     PreparedStatement ejecutar;
     //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
-    
+
     //Contiene id, nombre y precio.
     private int id;
     private String nombre;
@@ -73,10 +75,35 @@ public class Producto {
 //    public void setMarca(Marca marca) {
 //        this.marca = marca;
 //    }
-
     @Override
     public String toString() {
         return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + '}';
+    }
+
+    //OBTENER EL LISTADO TOTAL DE PRODUCTOS
+    public ArrayList<String[]> obtenerProductos() {
+        ArrayList<String[]> lregistros = new ArrayList<>();
+        String sentenciaSQL = "{call sp_consultar_productos()}";
+
+        try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)) {
+            ResultSet res = ejecutar.executeQuery();
+
+            while (res.next()) {
+                String[] lProductos = new String[3];
+                lProductos[0] = res.getInt("id_prod") + "";
+                lProductos[1] = res.getString("nombre");
+                lProductos[2] = res.getString("precio");
+                lregistros.add(lProductos);
+
+            }
+
+            ejecutar.close();
+            //conectado.close();
+            return lregistros;
+        } catch (SQLException e) {
+            System.out.println("------" + e);
+        }
+        return lregistros;
     }
 
     //SP
@@ -88,8 +115,8 @@ public class Producto {
         // El CallableStatement se cerrará automáticamente al finalizar la ejecución.
         try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)) {
             // 1. Mapeo de parámetros de entrada (IN)          
-            ejecutar.setString(1,nombre); 
-            ejecutar.setDouble(2,Double.parseDouble(precio)); // convertir el precio de string a decimal
+            ejecutar.setString(1, nombre);
+            ejecutar.setDouble(2, Double.parseDouble(precio)); // convertie el precio de string a decimal
 
             // 2. Parámetro de salida (OUT idCliente)
             ejecutar.registerOutParameter(3, Types.INTEGER);
@@ -114,7 +141,5 @@ public class Producto {
         return idGenerado;
 
     }
-    
-     
-    
+
 }

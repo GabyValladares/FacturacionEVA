@@ -23,4 +23,9 @@ public class ClienteRegular extends Cliente {
 //            }
 //            return 0; }
 //    
+
+    @Override
+    public double calcularDescuento(double subtotal) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

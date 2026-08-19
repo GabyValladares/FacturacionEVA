@@ -5,6 +5,8 @@
 package vista;
 
 import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,12 +17,20 @@ import javax.swing.JButton;
     public class ProductoVista extends javax.swing.JFrame {
 
         private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProductoVista.class.getName());
-
-        /**
-         * Creates new form ProductoVista
-         */
+        
+        //Atributos
+        private JTable tablasProductos;
+        String[] encabezado = {"N°","Nombre", "Precio"}; //global
+        DefaultTableModel modelo = new DefaultTableModel(encabezado,0);//inicie en posicion 0 // global
+        
         public ProductoVista() {
             initComponents();
+            this.modelo();
+        }
+        public void modelo(){
+//        String[] encabezado = {"Nombres", "Cedula", "Email", "Teléfono", "Dirección", "Tipo_Cliente", "Descuento"};
+//        DefaultTableModel modelo = new DefaultTableModel(encabezado,0);//inicie en posicion 0
+        jTableProductos.setModel(modelo); //"llamando a la tabla"
         }
 
         /**
@@ -134,6 +144,14 @@ import javax.swing.JButton;
             return btnInsertar;
         }
         
+        public JTable getjTableProductos() {
+        return jTableProductos;
+        }
+        
+        public void setjTableProductos(JTable jTableProductos) {
+        this.jTableProductos = jTableProductos;
+        }
+        
         public String getNombreProducto() {
             return txtNombreProducto.getText();
         }
@@ -148,6 +166,10 @@ import javax.swing.JButton;
         
         public void setPrecioProducto(String mensaje){
             this.txtPrecioProducto.setText(mensaje);
+        }
+        
+        public DefaultTableModel getModelo(){
+        return modelo;
         }
 
     /**

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.Cliente;
 import modelo.ClienteRegular;
+import modelo.ClienteVIP;
 import modelo.Numero;
 import modelo.Producto;
 
@@ -72,15 +73,22 @@ public class Main {
 //        NumeroControlador controlador = new NumeroControlador(modelo, vista);
 //        controlador.iniciar();
     //Upcasting
-//    Cliente modelo = new ClienteRegular();
-//        ClienteVista vista = new ClienteVista();
-//        ClienteControlador controlador = new ClienteControlador(modelo, vista);
-//        controlador.iniciar();
+    ClienteVista vista = new ClienteVista();
+        String tipo = (String) vista.getCbmTipoCliente();
+        if (tipo.equals("Regular")) {
+            //UPCASTING
+            Cliente modelo = new ClienteRegular();
+            ClienteControlador controlador = new ClienteControlador(modelo, vista);
+            controlador.iniciar();
+        } else if (tipo.equals("VIP")) {
+            Cliente modelo = new ClienteVIP();
+            ClienteControlador controlador = new ClienteControlador(modelo, vista);
+            controlador.iniciar();
+        }
 
-        Producto mod = new Producto();
-        ProductoVista view = new ProductoVista();
-        ProductoControlador control = new ProductoControlador(mod, view);
-        control.iniciar();
-
+//        Producto mod = new Producto();
+//        ProductoVista view = new ProductoVista();
+//        ProductoControlador control = new ProductoControlador(mod, view);
+//        control.iniciar();
     }
 }
