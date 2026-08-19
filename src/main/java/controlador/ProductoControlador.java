@@ -34,10 +34,11 @@ public class ProductoControlador {
             ResultSet res = ejecutar.executeQuery();
             
             while (res.next()) {
-                String[] listaProducto = new String[3];
+                String[] listaProducto = new String[4];
                 listaProducto[0] = res.getInt("id_producto") + "";
                 listaProducto[1] = res.getString("nombre");
                 listaProducto[2] = res.getString("precio");
+                listaProducto[3] = res.getInt("stock") + "";
                 lregistros.add(listaProducto);
             }
              ejecutar.close();
@@ -53,15 +54,16 @@ public class ProductoControlador {
     public ArrayList<String[]> obtenerProductosMarca(int m) {
         ArrayList<String[]> lregistros = new ArrayList<>();
         try {
-            String sentenciaSQL = "select id_producto, nombre, precio from productos where id_marca = '"+ m +"';";
+            String sentenciaSQL = "select id_producto, nombre, precio, stock from productos where id_marca = '"+ m +"';";
             ejecutar = conectado.prepareCall(sentenciaSQL);
             ResultSet res = ejecutar.executeQuery();
             
             while (res.next()) {
-                String[] listaProductoMarca = new String[3];
+                String[] listaProductoMarca = new String[4];
                 listaProductoMarca[0] = res.getInt("id_producto") + "";
                 listaProductoMarca[1] = res.getString("nombre");
                 listaProductoMarca[2] = res.getString("precio");
+                listaProductoMarca[3] = res.getString("stock");
                 lregistros.add(listaProductoMarca);
             }
              ejecutar.close();
