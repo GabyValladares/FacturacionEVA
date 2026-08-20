@@ -523,7 +523,7 @@ public void cargarClientesCombo() {
     double precio = Double.parseDouble(txtPrecio.getText());
     int cantidad = (int) spnCantidad.getValue();
     int stockDisponible = listaProductos.get(this.productoSelecionado()).getStock();
-
+// spiner cantidad para el stockkk......
 if (stockDisponible < 5) { javax.swing.JOptionPane.showMessageDialog(this, "Generar el restock");
 }
 
@@ -596,12 +596,13 @@ if (cantidad > stockDisponible) { javax.swing.JOptionPane.showMessageDialog(this
                     descuento = subtotal * 0.05;
                 }
 
-                // CÁLCULO  IVA
+                // CÁLCULO  IVA 
                 double subtotalConDescuento = subtotal - descuento;
                 double iva = calcularIvaFactura(subtotalConDescuento);
                 double total = subtotalConDescuento + iva;
 
-                // Guardar Factura en Bdd exampooo
+                // Guardar Factura en Bdd exampooo..
+                
                 FacturaControlador fc = new FacturaControlador();
                 int idFacturaGenerado = fc.insertarFacturaSp(factura, total);
 

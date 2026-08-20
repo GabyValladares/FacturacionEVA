@@ -66,7 +66,7 @@ public class ProductoControlador {
                 producto.setStock(rs.getInt("stock"));
             }
         } catch (SQLException e) {
-            System.out.println("Error al buscar el producto: " + e.getMessage());
+            System.out.println("Erroor al buscar el producto: " + e.getMessage());
         }
         return producto;
     }
