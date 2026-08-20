@@ -23,5 +23,4 @@ public class ClienteRegular extends Cliente
                        
             }
             return 0; }
-    
 }

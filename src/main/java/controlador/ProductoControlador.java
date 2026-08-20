@@ -4,17 +4,9 @@
  */
 package controlador;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import modelo.Cliente;
-import modelo.ClienteRegular;
-import modelo.ClienteVIP;
 import modelo.Producto;
-import vista.ClienteVista;
 import vista.ProductoVista;
 
 /**
@@ -34,13 +26,25 @@ public class ProductoControlador {
         this.pvista = pvista;
     }
 
-        public ArrayList<String[]> obtenerProductos() {
-            return cmodelo.obtenerProductos();
-        }
+    public ArrayList<String[]> obtenerProductos() {
+        return cmodelo.obtenerProductos();
+    }
 
-        //CARGAR LA TABLA EN LA VISTA
-        public void cargarDatosTabla() {
-        pvista.getModelo().setRowCount(0);  
+    public boolean validarCantidad(int idProducto, int cantidadSolicitada) {
+        int cantidadDisponible = cmodelo.obtenerCantidad(idProducto);
+        if (cantidadDisponible < 5) {
+            JOptionPane.showMessageDialog(null, "Generar el restock");
+        }
+        if (cantidadSolicitada > cantidadDisponible) {
+            JOptionPane.showMessageDialog(null, "La cantidad ingresada supera el stock disponible (" + cantidadDisponible + ")");
+            return false;
+        }
+        return true;
+    }
+
+    //CARGAR LA TABLA EN LA VISTA
+    public void cargarDatosTabla() {
+        pvista.getModelo().setRowCount(0);
         int cont = 1;
         ArrayList<String[]> lProducto = cmodelo.obtenerProductos();
         for (String[] p : lProducto) {
@@ -49,24 +53,24 @@ public class ProductoControlador {
             cont++;
         }
     }
-
-    //RECUPERAR LOS DATOS
-    public void agregarProducto() {
-        String nombre = pvista.getTxtNombre();
-        String precio = pvista.getPrecio();
-
-        if (!nombre.isEmpty() && !precio.isEmpty()) {
-            cmodelo.setNombre(nombre);
-            cmodelo.setPrecio(Double.parseDouble(precio));  
-            cmodelo.insertarProducto();                      
-            Object[] fila = {cmodelo.getNombre(), cmodelo.getPrecio()};
-            pvista.getModelo().addRow(fila);
-        }
-    }
-
-    public void iniciar() {
-        pvista.getBtnInsertar().addActionListener(e -> agregarProducto());
-        pvista.setVisible(true);
-        this.cargarDatosTabla();
-    }
 }
+
+//RECUPERAR LOS DATOS
+//    public void agregarProducto() {
+//        String nombre = pvista.getTxtNombre();
+//        String precio = pvista.getPrecio();
+//
+//        if (!nombre.isEmpty() && !precio.isEmpty()) {
+//            cmodelo.setNombre(nombre);
+//            cmodelo.setPrecio(Double.parseDouble(precio));  
+//            cmodelo.insertarProducto();                      
+//            Object[] fila = {cmodelo.getNombre(), cmodelo.getPrecio()};
+//            pvista.getModelo().addRow(fila);
+//        }
+//    }
+//    public void iniciar() {
+//        pvista.getBtnInsertar().addActionListener(e -> agregarProducto());
+//        pvista.setVisible(true);
+//        this.cargarDatosTabla();
+//    }
+//}

@@ -92,10 +92,10 @@ public class Main {
 //
 //    }
 
-        // PRODUCTO
-        ProductoVista productoVista = new ProductoVista();
-        Producto producto = new Producto();
-        ProductoControlador productoControlador = new ProductoControlador(producto, productoVista);
-        productoControlador.iniciar();
+//        // PRODUCTO
+//        ProductoVista productoVista = new ProductoVista();
+//        Producto producto = new Producto();
+//        ProductoControlador productoControlador = new ProductoControlador(producto, productoVista);
+//        productoControlador.iniciar();
     }
 }

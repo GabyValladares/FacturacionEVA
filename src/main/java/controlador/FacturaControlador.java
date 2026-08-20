@@ -62,43 +62,52 @@ public class FacturaControlador {
     }
     
     //SP
-    public int insertarFacturaSp(Factura p, double total) {
-        int idGenerado = -1;
-        String sentenciaSQL = "{call sp_insertar_factura(?, ?, ?, ?)}";
-
-        // USO DE TRY-WITH-RESOURCES: 
-        // El CallableStatement se cerrará automáticamente al finalizar la ejecución.
-        try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)) {
-
-            // 1. Mapeo de parámetros de entrada (IN)
-            // Si p.getFecha() devuelve java.sql.Date o LocalDate:
-            ejecutar.setDate(1, java.sql.Date.valueOf(p.getFecha().toString())); // o simplemente p.getFecha() si ya es Date
-            ejecutar.setInt(2, p.getCliente().getId());
-            ejecutar.setDouble(3, total);
-
-            // 2. Parámetro de salida (OUT - id_factura)
-            ejecutar.registerOutParameter(4, Types.INTEGER);
-
-            // 3. Ejecutar el Stored Procedure
-            ejecutar.execute();
-
-            // 4. Recuperar la Primary Key recién insertada
-            idGenerado = ejecutar.getInt(4);
-
-            if (idGenerado > 0) {
-                JOptionPane.showMessageDialog(null, 
-                    "Factura creada con éxito. " );
-            } else {
-                JOptionPane.showMessageDialog(null, 
-                    "La factura no se pudo crear. Verifique los datos ingresados.");
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, 
-                "Comuníquese con el Administrador para solicitar ayuda.");
-            System.err.println("Error en el conector MySQL JDBC: " + e.getMessage());
-        }
-
-        return idGenerado;
-    }
+//    public int insertarFacturaSp(Factura p, double total) {
+//        int idGenerado = -1;
+//        String sentenciaSQL = "{call sp_insertar_factura(?, ?, ?, ?)}";
+//
+//        // USO DE TRY-WITH-RESOURCES: 
+//        // El CallableStatement se cerrará automáticamente al finalizar la ejecución.
+//        try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)) {
+//
+//            // 1. Mapeo de parámetros de entrada (IN)
+//            // Si p.getFecha() devuelve java.sql.Date o LocalDate:
+//            ejecutar.setDate(1, java.sql.Date.valueOf(p.getFecha().toString())); // o simplemente p.getFecha() si ya es Date
+//            ejecutar.setInt(2, p.getCliente().getId());
+//            ejecutar.setDouble(3, total);
+//
+//            // 2. Parámetro de salida (OUT - id_factura)
+//            ejecutar.registerOutParameter(4, Types.INTEGER);
+//
+//            // 3. Ejecutar el Stored Procedure
+//            ejecutar.execute();
+//
+//            // 4. Recuperar la Primary Key recién insertada
+//            idGenerado = ejecutar.getInt(4);
+//
+//            if (idGenerado > 0) {
+//                JOptionPane.showMessageDialog(null, 
+//                    "Factura creada con éxito. " );
+//            } else {
+//                JOptionPane.showMessageDialog(null, 
+//                    "La factura no se pudo crear. Verifique los datos ingresados.");
+//            }
+//
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(null, 
+//                "Comuníquese con el Administrador para solicitar ayuda.");
+//            System.err.println("Error en el conector MySQL JDBC: " + e.getMessage());
+//        }
+//
+//        return idGenerado;
+//    }
 }
+ 
+
+//    public calcularDescuento(double subtotal) {
+//        if (subtotal > 1000) {
+//            return 0.05;
+//        
+//        }
+//        return 0;
+//    }
