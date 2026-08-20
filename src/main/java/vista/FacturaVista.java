@@ -621,7 +621,6 @@ if (cantidad > stockDisponible) { javax.swing.JOptionPane.showMessageDialog(this
                     for (DetalleFactura item : listaDF) {
                         dfc.insertarDetalleFactura(item, idFacturaGenerado);
                     }
-
                     pgbProceso.setValue(100);
                     listaDF.clear();
                     modelo.setRowCount(0);
