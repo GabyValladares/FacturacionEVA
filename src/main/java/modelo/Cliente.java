@@ -107,10 +107,7 @@ public abstract class Cliente {
     //OBTENER RESULTADOS DE LA CONSULTA
     ResultSet resultado;
 
-  
-
-
-    
+   
 
  public int insertarClientesSP(String tipoCliente) {
         int idGenerado = -1;

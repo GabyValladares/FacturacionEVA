@@ -199,20 +199,7 @@ public Object getCmbTipoCliente() {
     return cmbTipoCliente.getSelectedItem();
 
 }
-//
-//    public void setCmbTipoCliente(JComboBox<String> cmbTipoCliente) {
-//        this.cmbTipoCliente = cmbTipoCliente;
-//    }
 
-
-
-//    public JScrollPane getjScrollPane1() {
-//        return jScrollPane1;
-//    }
-//
-//    public void setjScrollPane1(JScrollPane jScrollPane1) {
-//        this.jScrollPane1 = jScrollPane1;
-//    }
 
     public String getTxtCedula() {
         return txtCedula.getText();
