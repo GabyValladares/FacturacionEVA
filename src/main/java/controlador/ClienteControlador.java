@@ -125,7 +125,7 @@ public class ClienteControlador {
             cmodelo.setDireccion(direccion);
             cmodelo.setEmail(email);
             cmodelo.setTelefono(telefono);
-            ClienteVIP cv = new ClienteVIP (nombre, email, telefono, cedula, telefono);
+            ClienteVIP cv = new ClienteVIP ();
             cv.insertarClientes(tipoCliente.toString());
             Object[] fila={cv.getNombre(),cv.getCedula(),cv.getEmail(),cv.getDireccion(),
             cv.getTelefono(),"VIP",0};
