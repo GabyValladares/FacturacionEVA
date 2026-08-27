@@ -225,6 +225,10 @@ public class ClienteVista extends javax.swing.JFrame {
     public Object getCmbTipoCliente() {
         return cmbTipoCliente.getSelectedItem();
     }
+    
+    public void setCmbTipoCliente(Object tipo){
+        cmbTipoCliente.setSelectedItem(tipo);
+    }
 
     public JTable getTblClientes() {
         return tblClientes;

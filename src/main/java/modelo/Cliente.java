@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
  */
 public abstract class Cliente {
 //CÉDULA +DIRECCIÓN
+
     private int id;
     private String nombre;
     private String email;
@@ -27,21 +28,36 @@ public abstract class Cliente {
     private String cedula;
     private String direccion;
     private String tipo;
+    //  EX CONTRALADOR ----- CAPA DAO
+    //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
+    ConexionBDD conectar = new ConexionBDD();
+    //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
+    Connection conectado = (Connection) conectar.conectar();
+    //CLASE QUE ME PERMITE EJECUTAR MI SENTENCIA SQL
+    PreparedStatement ejecutar;
+    //OBTENER RESULTADOS DE LA CONSULTA
+    ResultSet resultado;
 
     public Cliente() {
     }
-
-    public Cliente(int id, String nombre, String email, String telefono, String cedula, String direccion,String tipo) {
+      public Cliente( String nombre, String email, String telefono, String cedula, String direccion, String tipo) {
+        
+        this.nombre = nombre;
+        this.email = email;
+        this.telefono = telefono;
+        this.cedula = cedula;
+        this.direccion = direccion;
+        this.tipo = tipo;
+    }
+    public Cliente(int id, String nombre, String email, String telefono, String cedula, String direccion, String tipo) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.telefono = telefono;
         this.cedula = cedula;
         this.direccion = direccion;
-        this.tipo=tipo;
+        this.tipo = tipo;
     }
-
-  
 
     public int getId() {
         return id;
@@ -98,22 +114,10 @@ public abstract class Cliente {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-    
-    
+
     public abstract double calcularDescuento(double subtotal);
-    
-    //  EX CONTRALADOR ----- CAPA DAO
-        //INSTANCIAR LA CONEXIÓN A LA BASE DE DATOS
-    ConexionBDD conectar = new ConexionBDD();
-    //CLASE QUE ME PERMITA CONECTARME DIRECTAMENTE A MYSQL
-    Connection conectado = (Connection) conectar.conectar();
-    //CLASE QUE ME PERMITE EJECUTAR MI SENTENCIA SQL
-    PreparedStatement ejecutar;
-    //OBTENER RESULTADOS DE LA CONSULTA
-    ResultSet resultado;
-    
+
     //OBTENER EL LISTADO TOTAL DE CLIENTES SEAN VIP O REGULAR
-    
     public ArrayList<String[]> obtenerClientes() {
         ArrayList<String[]> lregistros = new ArrayList<>();
 
@@ -129,7 +133,7 @@ public abstract class Cliente {
                 listaClientes[2] = res.getString("email");
                 listaClientes[3] = res.getString("telefono") + "";
                 listaClientes[4] = res.getString("tipo_cliente");
-                listaClientes[5] = res.getDouble("descuento_vip")+"";
+                listaClientes[5] = res.getDouble("descuento_vip") + "";
                 listaClientes[6] = res.getString("cedula");
                 listaClientes[7] = res.getString("direccion");
                 lregistros.add(listaClientes);
@@ -137,14 +141,14 @@ public abstract class Cliente {
             }
 
             ejecutar.close();
-            conectado.close();
+            //conectado.close();
             return lregistros;
         } catch (SQLException e) {
             System.out.println("------" + e);
         }
         return lregistros;
     }
-    
+
     //MÉTODOS DE TRANSACCIONABILIDAD
     public int insertarClientes(String tipoCliente) {
         int idGenerado = -1;
@@ -153,12 +157,12 @@ public abstract class Cliente {
         // El CallableStatement se cerrará automáticamente al finalizar la ejecución.
         try (CallableStatement ejecutar = conectado.prepareCall(sentenciaSQL)) {
             // 1. Mapeo de parámetros de entrada (IN)          
-            ejecutar.setString(1,nombre); 
-            ejecutar.setString(2,email);
-            ejecutar.setString(3,telefono); 
-            ejecutar.setString(4,tipoCliente); 
+            ejecutar.setString(1, nombre);
+            ejecutar.setString(2, email);
+            ejecutar.setString(3, telefono);
+            ejecutar.setString(4, tipoCliente);
             ejecutar.setDouble(5, 0);
-            ejecutar.setString(6,this.cedula);
+            ejecutar.setString(6, this.cedula);
             ejecutar.setString(7, getDireccion());
 
             // 2. Parámetro de salida (OUT idCliente)
@@ -185,6 +189,9 @@ public abstract class Cliente {
 
     }
 
-   
-    
+    @Override
+    public String toString() {
+        return "Cliente{" + "id=" + id + ", nombre=" + nombre + ", email=" + email + ", telefono=" + telefono + ", cedula=" + cedula + ", direccion=" + direccion + ", tipo=" + tipo + '}';
+    }
+
 }
