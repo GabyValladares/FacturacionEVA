@@ -9,12 +9,14 @@ import controlador.ConexionBDD;
 import controlador.MenuControlador;
 import controlador.NumeroControlador;
 import controlador.ProductoControlador;
+import controlador.UsuarioControlador;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.Cliente;
 import modelo.ClienteRegular;
 import modelo.ClienteVIP;
 import modelo.Numero;
+import modelo.Usuario;
 
 /**
  *
@@ -34,9 +36,10 @@ public class Main {
 //        ClienteControlador controlador = new ClienteControlador(modelo, vista);
 //        controlador.iniciar();
             
-        Menu m=new Menu();
-        MenuControlador mc=new MenuControlador(m);
-        mc.iniciar();
+          Usuario u=new Usuario();
+          InicioSesionVista isv=new InicioSesionVista();
+          UsuarioControlador uc=new UsuarioControlador(isv, u);
+          uc.iniciar();
             
     }
 

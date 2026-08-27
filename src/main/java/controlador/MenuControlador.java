@@ -31,7 +31,21 @@ public class MenuControlador {
         fv.setVisible(true);
         this.vista.dispose();
     }
+     public void verGestionCliente(){
+        ClienteVista fv=new ClienteVista();
+        fv.setVisible(true);
+        this.vista.dispose();
+    }
+      public void verGestionFactura(){
+        FacturaVista fv=new FacturaVista();
+        fv.setVisible(true);
+        this.vista.dispose();
+    }
     public void iniciar(){
+        vista.getBtnProducto().addActionListener(e->verGestionProducto());
+        vista.setVisible(true);
+        vista.getBtnCliente().addActionListener(e->verGestionCliente());
+        vista.setVisible(true);
         vista.getBtnProducto().addActionListener(e->verGestionProducto());
         vista.setVisible(true);
     
