@@ -4,37 +4,23 @@
  */
 package modelo;
 
-import controlador.ClienteControlador;
-import controlador.ConexionBDD;
-import controlador.FacturaControlador;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
+import controlador.ProductoControlador;
+import vista.vistaProducto;
 
 /**
  *
  * @author AMARU
  */
 public class Main {
-    static ConexionBDD prueba = new ConexionBDD();
-    public static void main(String[] args) { 
-   
-      prueba.conectar();
-      mostrarClientes();
-    
-}
-         
-       public static void mostrarClientes() {
-        ClienteControlador p = new ClienteControlador();
-        ArrayList<String[]> clientes = p.obtenerClientes();
-        String lista = "LISTA DE CLIENTES\n\n";
+    public static void main(String[] args) {
 
-        for (int i = 0; i < clientes.size(); i++) {
-            lista += (i + 1) + ". " + clientes.get(i)[1] + " - " + clientes.get(i)[2] + "\n";
-        }
-        JOptionPane.showMessageDialog(null, lista);
-    
-        prueba.conectar();
-    
+        vistaProducto vista = new vistaProducto();
+
+        ProductoControlador controlador =
+                new ProductoControlador(vista);
+
+        vista.setLocationRelativeTo(null);
+        vista.setVisible(true);
     }
 }
 
